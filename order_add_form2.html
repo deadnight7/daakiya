@@ -1,0 +1,754 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Daakiya - Route Optimization and Delivery Management</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <link href="./css/bootstrap-theme.min.css" rel="stylesheet"/>
+  <link href="css/theme.css" rel="stylesheet"/>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <link rel="icon" href="./img/favicon-d.png">
+
+</head>
+<html>
+
+<body>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+              aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Daakiya</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">Delivery Associates</a></li>
+        <li><a href="#">Orders</a></li>
+        <li><a href="#">Routes</a></li>
+
+
+        <!--        <li class="dropdown">-->
+        <!--          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
+        <!--          <ul class="dropdown-menu">-->
+        <!--            <li><a href="#">Action</a></li>-->
+        <!--            <li><a href="#">Another action</a></li>-->
+        <!--            <li><a href="#">Something else here</a></li>-->
+        <!--            <li role="separator" class="divider"></li>-->
+        <!--            <li class="dropdown-header">Nav header</li>-->
+        <!--            <li><a href="#">Separated link</a></li>-->
+        <!--            <li><a href="#">One more separated link</a></li>-->
+        <!--          </ul>-->
+        <!--        </li>-->
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+<style type="text/css">
+  .body {
+    font-family: 'Raleway', sans-serif;
+  }
+  .thumbnail {
+    padding: 4px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
+  }
+
+  .header {
+    margin-top: -19px;
+    margin-bottom: 29px;
+    background: linear-gradient(45deg, #083100 0%, #336d61 100%);
+    box-shadow: 0px 8px 31px 0px #0e0b0b96 inset;
+    padding-top: 28px;
+    padding-bottom: 27px;
+    color: #ececec;
+    text-shadow: 1px 1px 1px #000;
+    background: linear-gradient(45deg, #0e1d0c 0%, #335a6d 100%);
+  }
+
+  .header .dropdown-menu {
+    text-shadow: 0px 0px 0px #000;
+    /*display:table;*/
+  }
+
+
+
+
+  .dropdown-menu {
+    top: 27px;
+    left: 0px;
+    /*display: table;*/
+    width: 556px;
+  }
+
+</style>
+
+<div class="">
+
+  <div class="container">
+    <div class="">
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-6" style="height: 450px;">
+
+          <!--          <div class="form-group">-->
+          <!--            <div class="hidden-xs">-->
+          <!--              <input type="password" class="form-control" id="pwd" >-->
+          <!--            </div>-->
+          <!--          </div>-->
+
+          <div class="">
+            <div class="dropdown">
+              <!--              <input onchange="" class="form-control" id="typeahead" placeholder="Search order address here..." type="text"-->
+              <!--                     autocomplete="off" data-provide="typeahead"/>-->
+              <input onchange="this.value = strip(this.value);" class="form-control"
+                     id="typeahead"
+                     class=" typeahead"
+                     placeholder="Start typing order address here"
+                     style="
+                        /*margin-bottom: 0px;*/
+                        /*z-index: 3;*/
+                        /*position: absolute;*/
+                        /*margin-top: 31px;*/
+                        /*width: 77%;*/
+                        /*height: 38px;*/
+                        /*box-shadow: 0px 0px 4px 0px #000 inset;*/
+                        /*border: 1px solid black;*/
+                        /* color: #000; */
+                        /* font-size: 23px; */
+                        /*margin-left: 67px;*/
+                    "
+                     type="search"
+                     autocomplete="off" data-provide="typeahead"/>
+            </div>
+          </div>
+          <br/>
+
+          <div class="col-xs-12 col-md-12 col-lg-12" style="height: 450px; border:1px solid #CCC;">
+            <div id="map"
+                 style="height: 100%; width: 100%; position: absolute; top: 0px; left: 0px; background-color: transparent;"></div>
+          </div>
+        </div>
+
+
+        <div class="col-xs-12 col-md-12 col-lg-6" style="margin-top: 33px;">
+          <h1>Add Order Details</h1>
+          <br/>
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="email">Order Number: </label>
+              <div class="col-sm-9">
+                <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
+                <div class="input-group">
+                  <input type="text" class="form-control" id="orderNumber" autocomplete="new-order" placeholder="Order Number">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="genrerateNumber()">Generate Number</button>
+                  </span>
+                </div><!-- /input-group -->
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3">Customer Name: </label>
+              <div class="col-sm-9">
+                <input autocomplete="new-customer" type="email" class="form-control" id="customerName" placeholder="Enter Customer Name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Edit Address:</label>
+              <div class="col-sm-9">
+                <input autocomplete="new-address" type="text" class="form-control" id="address" placeholder="Enter address">
+              </div>
+
+
+              <!--              <div class="dropdown col-sm-9">-->
+              <!--                <input autocomplete="false" onkeypress="getPlaces()" class="form-control" id="typeahead" placeholder="Search an address" type="text"-->
+              <!--                       data-provide="typeahead"/>-->
+              <!--              </div>-->
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Delivery ETA:</label>
+              <div class="col-sm-9">
+                <input type="datetime-local" class="form-control" id="pwd" placeholder="Deliver before">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Latitude: </label>
+              <div class="col-sm-9">
+                <input type="number" class="form-control" id="lat" placeholder="">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3" for="pwd">Longitude :</label>
+              <div class="col-sm-9">
+                <input type="number" class="form-control" id="long" placeholder="">
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-primary">Add Order</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+<div class="container" role="main">
+
+  <div class="row">
+  </div>
+</div> <!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="./js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+<script src="./js/bootstrap.min.js"></script>
+
+<script src="./js/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+
+<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
+<script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+
+<script type="text/javascript">
+
+
+  function genrerateNumber () {
+    //Set new Date().getTime() to order number
+    document.getElementById("orderNumber").value = new Date().getTime()
+  }
+
+  function strip(html)
+  {
+    var tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    $("ul.dropdown-menu").css('display', 'table');
+
+    //$('.example').css('background-color', 'red');
+    return tmp.textContent || tmp.innerText || " ";
+  }
+
+  /**
+   * Moves the map to display over Berlin
+   *
+   * @param  {H.Map} map      A HERE Map instance within the application
+   */
+  let latitude = 19.075983;
+  let longitude = 72.877655;
+
+  function moveMap(map){
+    map.setCenter({lat: latitude, lng: longitude});
+    map.setZoom(14);
+  }
+
+  //Get Geolocation
+  function getLocation(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      console.log("Geolocation is not supported");
+      //Showing Default Map Location
+      moveMap(map)
+      //moveMyMapAndMarker(latitude, longitude);
+    }
+  }
+
+  function showPosition(position){
+    console.log(position.coords.latitude + " " + position.coords.longitude);
+    latitude = position.coords.latitude;
+    longitude = position.coords.longitude;
+
+    moveMyMapAndMarker(latitude, longitude);
+  }
+
+
+  /**
+   * Boilerplate map initialization code starts below:
+   */
+
+//Step 1: initialize communication with the platform
+  var platform = new H.service.Platform({
+    app_id: 'hVA6vKr6ixW90KYvkb7k',
+    app_code: 'IulCKZdfTxT9b5NPveT_og',
+    useCIT: true,
+    useHTTPS: true
+  });
+  var defaultLayers = platform.createDefaultLayers();
+
+  //Step 2: initialize a map  - not specificing a location will give a whole world view.
+  var map = new H.Map(document.getElementById('map'),
+    defaultLayers.normal.map);
+  // Create a MapTileService instance to request base tiles (i.e.
+  // base.map.api.here.com):
+  var mapTileService = platform.getMapTileService({'type': 'base'});
+
+  //
+  // // Create a tile layer which requests map tiles with an additional 'style'
+  // // URL parameter set to 'fleet':
+  // var fleetStyleLayer = mapTileService.createTileLayer(
+  //   'maptile',
+  //   'normal.day',
+  //   256,
+  //   'png8');
+  //
+  // // Set the new fleet style layer as a base layer on the map:
+  // map.setBaseLayer(fleetStyleLayer);fleetStyleLayer
+
+
+  // Enable the event system on the map instance:
+  var mapEvents = new H.mapevents.MapEvents(map);
+
+  const clicked = {onMapMarker: false, outsideMapMarker: false}
+
+  // Add event listener:
+  map.addEventListener('tap', function (evt){
+    // Log 'tap' and 'mouse' events:
+    console.log(evt)
+    let target = evt.target
+
+    console.log(evt.type, evt.currentPointer.type);
+  });
+
+  // disable the default draggability of the underlying map
+  // when starting to drag a marker object:
+  map.addEventListener('dragstart', function (ev){
+    var target = ev.target;
+    if (target instanceof H.map.Marker) {
+      behavior.disable();
+    }
+  }, false);
+
+
+  // re-enable the default draggability of the underlying map
+  // when dragging has completed
+  map.addEventListener('dragend', function (ev){
+    var target = ev.target;
+
+    if (target instanceof mapsjs.map.Marker) {
+      behavior.enable();
+      latitude = target.getPosition().lat;
+      longitude = target.getPosition().lng;
+
+      document.getElementById("lat").value = latitude;
+      document.getElementById("long").value = longitude;
+
+      console.log(target.getPosition().lat + " " + target.getPosition().lng)
+
+      //Optionally : Reverse Geocode an address and print it in
+
+    }
+  }, false);
+
+  // Listen to the drag event and move the position of the marker
+  // as necessary
+  map.addEventListener('drag', function (ev){
+    var target = ev.target,
+      pointer = ev.currentPointer;
+    if (target instanceof mapsjs.map.Marker) {
+      target.setPosition(map.screenToGeo(pointer.viewportX, pointer.viewportY));
+      //console.log(target.getPosition().lat +" "+target.getPosition().lng)
+    }
+  }, false);
+
+
+  //Step 3: make the map interactive
+  // MapEvents enables the event system
+  // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+  var behavior = new H.mapevents.Behavior(mapEvents);
+
+  // Create the default UI components
+  //var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+
+  // Add info bubble to the UI:
+  // Create an info bubble object at a specific geographic location:
+  var bubble = new H.ui.InfoBubble({lng: longitude, lat: latitude}, {
+    content: '<div><a href=\'http://www.mcfc.co.uk\' style="color:cornflowerblue" >Manchester City</a>' +
+      '</div><div >City of Manchester Stadium<br>Capacity: 48,000</div>'
+  });
+
+  //Adding markers
+  let coords = {lat: latitude, lng: longitude},
+    marker = new H.map.Marker(coords);
+  marker.draggable = true;
+
+  // Add the marker to the map and center the map at the location of the marker:
+  map.addObject(marker);
+  map.setCenter(coords);
+
+  var forMarker = true;
+
+  marker.addEventListener("tap", function (evt){
+    // Log 'tap' and 'mouse' events:
+    console.log("On Marker: " + evt)
+    forMarker = true;
+
+    // Add info bubble to the UI:
+    //ui.addBubble(bubble);
+    bubble.open();
+    console.log(evt.type, evt.currentPointer.type);
+  })
+
+
+  // Now use the map as required...
+
+  moveMap(map);
+  getLocation();
+  //moveMyMapAndMarker(latitude, longitude)
+  //moveMap(map);
+
+  function dropDownHide(){
+    $(".dropdown-menu").css("display", "false")
+  }
+
+  /**
+   * Will Navigate to area selected on autocomplete
+   */
+  function autocompleteNavigateToArea (location) {
+
+    if (location && location.name != "") {
+      latitude = location.position[0];
+      longitude = location.position[1];
+
+      //Navigate marker to the position which is selected on dropdown
+      moveMyMapAndMarker(latitude, longitude)
+
+      document.getElementById("address").value = location.name;
+    }
+
+  }
+
+  function moveMyMapAndMarker(lat, long){
+
+    coords = {lat: lat, lng: long}
+    map.setCenter(coords);
+    map.setZoom(14);
+
+    //Move Marker
+    //coords = {lat: 11, lng: 12}
+
+    // Add the marker to the map and center the map at the location of the marker:
+    //map.addObject(marker);
+    console.log("Moving Map : "+marker.getPosition())
+    marker.setPosition(coords)
+
+    //Set Lat Lon on Text fields
+    document.getElementById("lat").value = lat;
+    document.getElementById("long").value = long;
+
+  }
+
+  // moveMyMapToDelhi(map);
+
+
+</script>
+
+<!--&lt;!&ndash; jQuery CDN &ndash;&gt;-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.0/bootstrap3-typeahead.js"></script>-->
+
+<script type="text/javascript" src="./js/autocomplete/typeahead.js">
+
+  //https://github.com/bassjobsen/Bootstrap-3-Typeahead
+
+</script>
+
+<!--&lt;!&ndash; JS file &ndash;&gt;-->
+<!--<script src="./js/autocomplete/jquery.easy-autocomplete.min.js"></script>-->
+
+<!--&lt;!&ndash; CSS file &ndash;&gt;-->
+<!--<link rel="stylesheet" href="./js/autocomplete/easy-autocomplete.min.css">-->
+
+
+<script type="text/javascript">
+
+  var data = [];
+  //
+  // var typeahead = {
+  //   typeaheadInit: function (){
+  //
+  //     var jsonData = [];
+  //
+  //     $.each(jsonData, function (index, location){
+  //       data.push(location.title + "#" + location.highlightedTitle + " # " + location.highlightedVicinity + " # " + location.href + " #" + location.id);
+  //     });
+  //
+  //     $('#typeahead').typeahead({
+  //       //source: data,
+  //       source: function (query, process) {
+  //         console.log(query)
+  //         return $.ajax({
+  //           url: "https://places.cit.api.here.com/places/v1/" +
+  //             "autosuggest?at="+latitude+","+longitude+"" +
+  //             "&q="+query+
+  //             "&app_id=BpplrrmjrB6JKrACzYmi" +
+  //             "&app_code=P_DAr6Tm3U-aqDvSmzkpgg" ,
+  //           // "" +
+  //           // "https://places.demo.api.here.com/places/v1/suggest" +
+  //           // "?at=52.5159%2C13.3777" +
+  //           // "&q=Silver Park" +
+  //           // "&app_id=BpplrrmjrB6JKrACzYmi" +
+  //           // "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
+  //           //data: {q: query},
+  //           dataType: 'json'
+  //         }).done(function(response) {
+  //           console.log("TYPEHEAD : ",response);
+  //           let array = [];
+  //           data = response;
+  //           response.results.map((location, index) => {
+  //             // let json =
+  //             //   {
+  //             //     title: location.title ,
+  //             //     highlightedTitle : location.highlightedTitle,
+  //             //     highlightedVicinity : location.highlightedVicinity,
+  //             //     id : location.id
+  //             //   }
+  //             array.push(location.highlightedTitle + "# " + (location.highlightedVicinity || "") + " "+"#"+location.id);
+  //             //array.push(json);
+  //           })
+  //           //alert(data);
+  //           return process(array);
+  //         });
+  //       },
+  //       // updater: function(item) {
+  //       //   // This may need some tweaks as it has not been tested
+  //       //   var obj = JSON.parse(item);
+  //       //   return item;
+  //       // },
+  //       highlighter: function (item){
+  //         console.log("HIGHLIGHTER", item)
+  //         //
+  //
+  //         var parts = item.split('#'),
+  //           html = '<div  class="col-xs-12 col-md-12 col-lg-6"><div class="typeahead-inner" id="' + parts[2] + '">';
+  //         html += '<div class="item-img" ></div>';
+  //         html += '<div class="item-body">';
+  //         html += '<p class="item-heading">' + strip(parts[0]) +" "+  strip(parts[1])+ '</p>';
+  //         html += '</div>';
+  //         html += '</div></div>';
+  //         //
+  //         // var parts = item;//.split('#'),
+  //         //   html = '<div  class="col-xs-12 col-md-12 col-lg-6"><div class="typeahead-inner" id="' + parts.id + '">';
+  //         // html += '<div class="item-img" ></div>';
+  //         // html += '<div class="item-body">';
+  //         // html += '<p class="item-heading">' + strip(parts.highlightedTitle) +" "+  strip(parts.highlightedVicinity)+ '</p>';
+  //         // html += '</div>';
+  //         // html += '</div></div>';
+  //
+  //         //
+  //         // var query = this.query;
+  //         // var reEscQuery = query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+  //         // var reQuery = new RegExp('(' + reEscQuery + ')', "gi");
+  //         // var jElem = $(html);
+  //         // var textNodes = $(jElem.find('*')).add(jElem).contents().filter(function (){
+  //         //   return this.nodeType === 3;
+  //         // });
+  //         // textNodes.replaceWith(function (){
+  //         //   return $(this).text().replace(reQuery, '<strong>$1</strong>');
+  //         // });
+  //         var jElem = $(html);
+  //         return jElem.html();
+  //       },
+  //     });
+  //
+  //   },
+  //
+  //   initialize: function (){
+  //     var _this = this;
+  //     _this.typeaheadInit();
+  //   }
+  // };
+
+
+  // use this hash to cache search results
+  window.query_cache = {};
+
+
+  $('#typeahead').typeahead({
+    updater: function(item) {
+      // do what you want with the item here
+      console.log(item);
+      autocompleteNavigateToArea(item);
+      return item;
+    },
+    source:function(query,process){
+
+
+      // if in cache use cached value, if don't wanto use cache remove this if statement
+      if(query_cache[query]){
+        process(query_cache[query]);
+        return;
+      }
+      if( typeof searching != "undefined") {
+        clearTimeout(searching);
+        process([]);
+      }
+
+
+      searching = setTimeout(function() {
+        return $.getJSON(
+          "https://places.cit.api.here.com/places/v1/" +
+          "autosuggest?at="+(latitude || 19.15175231269505)+","+(longitude || 72.88745407619615)+"" +
+          "&q="+""+query+
+          "&app_id=BpplrrmjrB6JKrACzYmi" +
+          "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
+          //{ q:query },
+          function(data){
+            // save result to cache, remove next line if you don't want to use cache
+            let array = [];
+
+            data.results.map((location, index) => {
+              let json =
+                {
+                  name: strip(location.highlightedTitle) + " " + strip((location.highlightedVicinity || " ")),
+                  highlightedTitle : location.highlightedTitle,
+                  highlightedVicinity : location.highlightedVicinity,
+                  position : location.position,
+                  id : location.id
+                }
+
+              //Push the resultset only when there is a location object
+              if (json && json.position && json.position  !== undefined){
+                //array.push(location.highlightedTitle + "# " + (location.highlightedVicinity || "") + " "+"#"+location.id);
+                array.push(json);
+              }
+
+            })
+            data = array;
+            console.log("DATA:", data)
+            query_cache[query] = array;
+            // only search if stop typing for 300ms aka fast typers
+            return process(array);
+          }
+        );
+      }, 150); // 300 ms
+    }
+  });
+
+
+  function getPlacesAPI (placeName) {
+    return new Promise ((resolve, reject) => {
+      $.ajax({url: "https://places.cit.api.here.com/places/v1/" +
+          "autosuggest?at=19.111743,72.9095206" +
+          "&q="+placeName+
+          "&app_id=BpplrrmjrB6JKrACzYmi" +
+          "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
+        success: function(result){
+          //$("#div1").html(result);
+          resolve(result);
+        },
+        error: function(xhr, status, error){
+          reject({status : xhr.status , statusText : xhr.statusText, error, status});
+          console.log('Error - ' + xhr.status +" : "+ xhr.statusText);
+        }
+      });
+    });
+  }
+
+  //
+  // $.get("https://next.json-generator.com/api/json/get/V1cGoKmDV", function(data){
+  //   console.log(data);
+  //   // use a data source with 'id' and 'name' keys
+  //   $("#typeahead").typeahead({ source:data });
+  // },'json');
+
+  function getPlaces(){
+    let placeName = document.getElementById("typeahead").value
+
+    $.get("https://next.json-generator.com/api/json/get/V1cGoKmDV", function(data){
+      console.log(data);
+      // use a data source with 'id' and 'name' keys
+
+
+      $("#typeahead").typeahead({ source:data });
+    },'json');
+
+    //console.log("Searching for : "+placeName);
+    //var placesResults = await getPlacesAPI(placeName);
+    //await console.log(placesResults)
+    //
+    //
+    // var options = {
+    //   url: "https://places.cit.api.here.com/places/v1/" +
+    //     "autosuggest?at=19.111743,72.9095206" +
+    //     "&q="+placeName+
+    //     "&app_id=BpplrrmjrB6JKrACzYmi" +
+    //     "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
+    //   getValue:
+    //     "name",
+    //   list: {
+    //     match: {
+    //       enabled: true
+    //     }
+    //   },
+    //   theme: "square"
+    // };
+    // $("#typeahead").easyAutocomplete(options);
+    //
+
+  }
+
+  $(document).ready(function (){
+    //typeahead.initialize();
+
+  });
+
+</script>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="500" viewBox="0 0 1140 500" preserveAspectRatio="none"
+     style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;">
+  <defs>
+    <style type="text/css"></style>
+  </defs>
+  <text x="0" y="57" style="font-weight:bold;font-size:57pt;font-family:Arial, Helvetica, Open Sans, sans-serif">
+
+  </text>
+</svg>
+</body>
+</html>
+
