@@ -20,7 +20,7 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   <link rel="icon" href="./img/favicon-d.png">
-
+  <script type="text/javascript" src="./accessKeys.js"></script>
 </head>
 <html>
 
@@ -261,7 +261,7 @@
 <!--                      </form>-->
 <!--                    </div>-->
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Add an another order</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload();">Add an another order</button>
 <!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
                       <button type="button" class="btn btn-primary">View all orders</button>
                     </div>
@@ -372,8 +372,8 @@
 
 //Step 1: initialize communication with the platform
   var platform = new H.service.Platform({
-    app_id: 'hVA6vKr6ixW90KYvkb7k',
-    app_code: 'IulCKZdfTxT9b5NPveT_og',
+    app_id: module_HEREDeveloperAccess.app_id,
+    app_code: module_HEREDeveloperAccess.app_code,//'IulCKZdfTxT9b5NPveT_og',
     useCIT: true,
     useHTTPS: true
   });
@@ -703,8 +703,8 @@
       $.ajax({url: "https://places.cit.api.here.com/places/v1/" +
           "autosuggest?at=19.111743,72.9095206" +
           "&q="+placeName+
-          "&app_id=BpplrrmjrB6JKrACzYmi" +
-          "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
+          "&app_id="+module_HEREDeveloperAccess.app_id +
+          "&app_code="+module_HEREDeveloperAccess.app_code,
         success: function(result){
           //$("#div1").html(result);
           resolve(result);
@@ -779,18 +779,16 @@
 <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
 
+<style type="text/css">
+  .background-input {
+    background-color:#d9edff;
+    color:#000;
+  }
+</style>
 <script type="text/javascript">
 
   // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyBFE7JabWokLVa3MxZ-lvon0_-Eu-l4eHQ",
-    authDomain: "a-positronium.firebaseapp.com",
-    databaseURL: "https://a-positronium.firebaseio.com",
-    projectId: "a-positronium",
-    storageBucket: "a-positronium.appspot.com",
-    messagingSenderId: "284632398484",
-    appId: "1:284632398484:web:e3528a21d6e70c94"
-  };
+  var firebaseConfig = module_firebaseConfig;
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
@@ -801,14 +799,47 @@
 
   async function addOrder () {
 
+    let validationFailed = false;
+
+    document.getElementById("addOrderSubmit").setAttribute("disabled", "true")
+
     //Get Order Details
     let orderNumber = document.getElementById("orderNumber").value;
+    if (orderNumber == ""){
+      $("#orderNumber").addClass("background-input");
+      validationFailed = true;
+      //return;
+    }
+
     let orderName = document.getElementById("orderName").value;
+
     let customerName = document.getElementById("customerName").value;
+    if (customerName == ""){
+      $("#customerName").addClass("background-input");
+      validationFailed = true;
+      //return;
+    }
 
     let eta = document.getElementById("eta").value;
+    // if (eta == ""){
+    //   $("#customerName").addClass("background-input");
+    //   validationFailed = true;
+    //   //return;
+    // }
+    let custAddress = document.getElementById("address").value;
+    if (custAddress == ""){
+      $("#address").addClass("background-input");
+      validationFailed = true;
+      //return;
+    }
     let lat = document.getElementById("lat").value;
     let long = document.getElementById("long").value;
+
+    if (validationFailed){
+      document.getElementById("addOrderSubmit").removeAttribute("disabled")
+      return;
+    }
+
     let creationDate = new Date().getTime();
     let status = "NEW";
 
@@ -816,6 +847,7 @@
       orderNumber : orderNumber,
       orderName : orderName,
       customerName : customerName,
+      custAddress : custAddress,
       eta : eta,
       position : [lat, long],
       creationDate : creationDate,
@@ -830,13 +862,16 @@
         console.log("document successfully added..")
         genrerateNumber();
         $("#myMessage").text("Order successfully added..")
+        document.getElementById("addOrderSubmit").removeAttribute("disabled")
         $('#myModal').modal({show : true})
       }
       else{
         $("#myMessage").text("Error in adding order..")
+        document.getElementById("addOrderSubmit").removeAttribute("disabled")
       }
     } catch (err) {
       console.log("Unable to add order ", doc)
+      document.getElementById("addOrderSubmit").removeAttribute("disabled")
       $("#myMessage").text("Error in adding order..")
     }
   }

@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<!-- saved from url=(0083)http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26 -->
+<html lang="en" class="gr__localhost"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Daakiya - Route Optimization and Delivery Management</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="./Daakiya - Route Optimization and Delivery Management_files/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <link href="./Daakiya - Route Optimization and Delivery Management_files/bootstrap-theme.min.css" rel="stylesheet">
+  <link href="./Daakiya - Route Optimization and Delivery Management_files/theme.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <link rel="icon" href="http://localhost:63342/daakiya/img/favicon-d.png">
+
+</head>
+
+
+<body data-gr-c-s-loaded="true">
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#">Daakiya</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#">Dashboard</a></li>
+        <li><a href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#">Delivery Associates</a></li>
+        <li><a href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#">Orders</a></li>
+        <li><a href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#">Routes</a></li>
+
+
+        <!--        <li class="dropdown">-->
+        <!--          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
+        <!--          <ul class="dropdown-menu">-->
+        <!--            <li><a href="#">Action</a></li>-->
+        <!--            <li><a href="#">Another action</a></li>-->
+        <!--            <li><a href="#">Something else here</a></li>-->
+        <!--            <li role="separator" class="divider"></li>-->
+        <!--            <li class="dropdown-header">Nav header</li>-->
+        <!--            <li><a href="#">Separated link</a></li>-->
+        <!--            <li><a href="#">One more separated link</a></li>-->
+        <!--          </ul>-->
+        <!--        </li>-->
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+<style type="text/css">
+  .body {
+    font-family: 'Raleway', sans-serif;
+  }
+  .thumbnail {
+    padding: 4px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .075);
+  }
+
+  .header {
+    margin-top: -19px;
+    margin-bottom: 29px;
+    background: linear-gradient(45deg, #083100 0%, #336d61 100%);
+    box-shadow: 0px 8px 31px 0px #0e0b0b96 inset;
+    padding-top: 28px;
+    padding-bottom: 27px;
+    color: #ececec;
+    text-shadow: 1px 1px 1px #000;
+    background: linear-gradient(45deg, #0e1d0c 0%, #335a6d 100%);
+  }
+
+  .header .dropdown-menu {
+    text-shadow: 0px 0px 0px #000;
+    /*display:table;*/
+  }
+
+
+
+
+  .dropdown-menu {
+    top: 27px;
+    left: 0px;
+    /*display: table;*/
+    width: 556px;
+  }
+
+</style>
+
+<div class="">
+
+  <div class="container">
+    <div class="">
+      <div class="row">
+        <div class="col-xs-12 col-md-12 col-lg-6" style="height: 450px;">
+
+          <!--          <div class="form-group">-->
+          <!--            <div class="hidden-xs">-->
+          <!--              <input type="password" class="form-control" id="pwd" >-->
+          <!--            </div>-->
+          <!--          </div>-->
+
+          <div class="">
+            <div class="dropdown">
+              <!--              <input onchange="" class="form-control" id="typeahead" placeholder="Search order address here..." type="text"-->
+              <!--                     autocomplete="off" data-provide="typeahead"/>-->
+              <input onchange="this.value = strip(this.value);" class="form-control" id="typeahead" placeholder="Start typing order address here to geocode." style="height: 38px;" type="search" autocomplete="off" data-provide="typeahead">Silver Park Mira Bhayander RoadMira Bhayander 401107 MH</input><ul class="typeahead dropdown-menu display:table; " role="listbox" style="top: 38px; left: 0px; display: none;"><li class="active"><a class="dropdown-item" href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#" onclick="dropDownHide()" role="option"><strong>Silver Pa</strong>rk Mira Bhayander RoadMira Bhayander 401107 MH</a></li><li class=""><a class="dropdown-item" href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#" onclick="dropDownHide()" role="option"><strong>Silver Pa</strong>rk A-3 Mira Bhayander 401107 MH</a></li><li><a class="dropdown-item" href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#" onclick="dropDownHide()" role="option"><strong>Silver Pa</strong>rk A-2 Mira Bhayander 401107 MH</a></li><li><a class="dropdown-item" href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#" onclick="dropDownHide()" role="option"><strong>Silver Pa</strong>rk Vishal B-6 100 Feet RoadMira Bhayander 401107 MH</a></li><li><a class="dropdown-item" href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#" onclick="dropDownHide()" role="option"><strong>Silver Pa</strong>rk Mira Bhayander RoadMira Bhayander 401107 MH</a></li><li><a class="dropdown-item" href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#" onclick="dropDownHide()" role="option"><strong>Silver Pa</strong>rk-Entrance 1 100 Feet RoadMira Bhayander 401107 MH</a></li><li><a class="dropdown-item" href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#" onclick="dropDownHide()" role="option"><strong>Silver Pa</strong>rk Sadhana B-9 Mira Bhayander 401107 MH</a></li><li><a class="dropdown-item" href="http://localhost:63342/daakiya/order_add_form2.html?_ijt=ap7kvj9t6f800fa9h5okchbb26#" onclick="dropDownHide()" role="option"><strong>Silver Pa</strong>rk Sadhana B-8 Mira Bhayander 401107 MH</a></li></ul>
+            </div>
+          </div>
+          <br>
+
+          <div class="col-xs-12 col-md-12 col-lg-12" style="height: 480px; border:1px solid #CCC;">
+            <div id="map" style="height: 100%;width: 100%;position: absolute;top: 0px;left: 0px;
+                 background-color: transparent;
+                 box-shadow: 1px 1px 7px 4px #CCC;
+                 border: 1px solid #CCC;"><div style="position: relative; width: 100%; height: 100%; overflow: hidden; -webkit-tap-highlight-color: transparent;"><div style="z-index: 0; width: 100%; height: 100%; position: absolute; touch-action: none;"><div style="position: absolute; height: 100%; width: 100%; z-index: 0;"><canvas width="551" height="476" style="position: absolute; left: 0px; top: 0px; width: 551px; height: 476px; z-index: 0;"></canvas><div style="position: absolute; width: 551px; height: 476px; z-index: 1;"><div style="user-select: none; cursor: default; z-index: 0; transform: matrix(1, 0, 0, 1, 282, 263); position: absolute; opacity: 1;"><span class="glyphicon glyphicon-map-marker" data-toggle="popover" data-placement="top" data-content="Your order location" data-original-title="Order" style="color: rgb(189, 58, 58); background-color: rgb(189, 58, 58); box-shadow: rgb(0, 0, 0) 1px 1px 7px 1px; border: 2px solid white; border-radius: 10px; font: 12px/12px arial; padding-top: 2px; padding-left: 4px; width: 20px; height: 20px; margin-top: -10px; margin-left: -10px; opacity: 1;"></span></div></div></div></div><div style="position: absolute; bottom: 4.55em; left: 0.5em; z-index: 1; height: 0px; direction: ltr; color: rgb(51, 51, 51); font: 11px Arial, sans-serif;"><div style="position: absolute; top: 0px; pointer-events: none;"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="3.64em" height="2.72em" viewBox="7 10 33 18" style="position: relative; left: 2px;"><g style="fill: rgba(0, 0, 0, 0.7);"><path id="triangle_22_" d="M14.1,28l-3.6,3.6L7,28L14.1,28z"></path><path id="here_21_" d="M19.4,19.9c-0.7-0.9-0.7-1.4-0.2-1.8c0.6-0.6,1.1-0.3,1.8,0.3L19.4,19.9z M27,10.3c0.6-0.6,1.1-0.3,1.8,0.3l-1.5,1.5C26.5,11.2,26.6,10.7,27,10.3z M31.6,11.8c-0.7,1-1.9,2.7-3.2,1.4l3.2-3.2c-0.3-0.3-0.5-0.6-0.7-0.7c-1.7-1.7-3.7-1.7-5.2-0.2c-1,1-1.3,2.2-1,3.3l-1-1.1c-0.3,0.2-1.5,1.2-0.6,2.9l-1.1-1l-1.5,1.5l2.1,2.1C21,15.5,19.3,15.6,18,17c-1.5,1.5-1.4,3.2-0.3,4.7l-0.2-0.2c-1.5-1.5-3-0.9-3.8-0.2c-0.6,0.6-1,1.4-0.8,2l-3.1-3.1L8,21.8l6.2,6.2h3.3l-2.2-2.2c-1.2-1.2-1.2-1.8-0.6-2.4c0.5-0.5,1.2-0.2,2.3,0.9l2.2,2.2l1.7-1.7l-2.1-2.1c1.5,1.1,3.3,1.2,4.9-0.4c0,0,0,0,0,0l0,0c1-0.9,1.3-1.8,1.3-1.8l-1.3-0.8c-0.7,1-1.9,2.7-3.1,1.5l3.2-3.2l2,2l1.7-1.7l-2.5-2.5c-1.2-1.2-0.5-2.3,0-2.7c0.2,0.5,0.6,0.9,1,1.4c1.6,1.6,3.7,1.9,5.5,0.1c0,0,0,0,0,0l0,0c1-0.9,1.3-1.8,1.3-1.8L31.6,11.8z"></path></g></svg></div><div style="user-select: none; position: relative; top: 2.73em; padding-left: 1px;"><span unselectable="on">© 1987–2019 HERE | </span><a target="_blank" href="https://legal.here.com/en/terms/serviceterms/us" style="color: inherit;">Terms of use</a><span style="color: inherit; display: none;"> | <a target="_blank" style="color: inherit;">Report image</a></span></div></div></div></div>
+          </div>
+        </div>
+
+
+        <div class="col-xs-12 col-md-12 col-lg-6" style="margin-top: 33px;">
+          <h1>Order Details</h1>
+          <br>
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="control-label col-sm-3">Order Number *: </label>
+              <div class="col-sm-9">
+                <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
+                <div class="input-group">
+                  <input type="text" class="form-control" id="orderNumber" autocomplete="new-order" placeholder="Order Number" readonly="" required="">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="genrerateNumber()">Generate Number</button>
+                  </span>
+                </div><!-- /input-group -->
+              </div>
+            </div>
+            <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Customer*: </label>
+              <div class="col-sm-9">
+                <input autocomplete="new-customer" id="customerName" type="text" class="form-control" placeholder="Enter Customer Name" required="">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Order Tags: </label>
+              <div class="col-sm-9">
+                <input autocomplete="new-customer" id="orderName" type="text" class="form-control" placeholder="Your order tags (Eg. Jack&#39;s Order)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Edit Address*:</label>
+              <div class="col-sm-9">
+                <input autocomplete="new-address" id="address" type="text" class="form-control" placeholder="Enter address" required="">
+              </div>
+
+
+              <!--              <div class="dropdown col-sm-9">-->
+              <!--                <input autocomplete="false" onkeypress="getPlaces()" class="form-control" id="typeahead" placeholder="Search an address" type="text"-->
+              <!--                       data-provide="typeahead"/>-->
+              <!--              </div>-->
+            </div>
+            <div class="form-group">
+              <label class="control-label col-sm-3">Delivery ETA:</label>
+              <div class="col-sm-9">
+                <input type="datetime-local" class="form-control" id="eta" placeholder="Deliver before">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Latitude: </label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="lat" placeholder="lat">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Longitude :</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" id="long" placeholder="long">
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" id="addOrderSubmit" onclick="addOrder()" class="btn btn-primary">Add Order</button>
+              </div>
+
+<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>-->
+<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>-->
+<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>-->
+<!--              ...more buttons...-->
+
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                      <h4 class="modal-title" id="exampleModalLabel"><span id="myMessage">New message</span></h4>
+                    </div>
+<!--                    <div class="modal-body">-->
+<!--                      <form>-->
+<!--                        <div class="form-group">-->
+<!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
+<!--                          <input type="text" class="form-control" id="recipient-name">-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                          <label for="message-text" class="control-label">Message:</label>-->
+<!--                          <textarea class="form-control" id="message-text"></textarea>-->
+<!--                        </div>-->
+<!--                      </form>-->
+<!--                    </div>-->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Add an another order</button>
+<!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
+                      <button type="button" class="btn btn-primary">View all orders</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <script src="./Daakiya - Route Optimization and Delivery Management_files/jquery.min.js"></script>
+              <script src="./Daakiya - Route Optimization and Delivery Management_files/bootstrap.min.js"></script>
+              <script type="text/javascript">
+                $(document).ready(function(){
+                  $('[data-toggle="popover"]').popover();
+                });
+              </script>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+
+</div>
+
+<div class="container" role="main">
+
+  <div class="row">
+
+  </div>
+</div> <!-- /container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="./Daakiya - Route Optimization and Delivery Management_files/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="./js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+<script src="./Daakiya - Route Optimization and Delivery Management_files/bootstrap.min(1).js"></script>
+
+<script src="./Daakiya - Route Optimization and Delivery Management_files/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+
+<script type="text/javascript" src="./Daakiya - Route Optimization and Delivery Management_files/mapsjs-core.js"></script>
+<script type="text/javascript" src="./Daakiya - Route Optimization and Delivery Management_files/mapsjs-service.js"></script>
+<script type="text/javascript" src="./Daakiya - Route Optimization and Delivery Management_files/mapsjs-ui.js"></script>
+<script type="text/javascript" src="./Daakiya - Route Optimization and Delivery Management_files/mapsjs-mapevents.js"></script>
+
+<script type="text/javascript">
+
+  function genrerateNumber () {
+    //Set new Date().getTime() to order number
+    document.getElementById("orderNumber").value = new Date().getTime()
+  }
+
+  function strip(html)
+  {
+    var tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    $("ul.dropdown-menu").css('display', 'table');
+
+    //$('.example').css('background-color', 'red');
+    return tmp.textContent || tmp.innerText || " ";
+  }
+
+  /**
+   * Moves the map to display over Berlin
+   *
+   * @param  {H.Map} map      A HERE Map instance within the application
+   */
+  let latitude = 19.075983;
+  let longitude = 72.877655;
+
+  function moveMap(map){
+    map.setCenter({lat: latitude, lng: longitude});
+    map.setZoom(14);
+  }
+
+  //Get Geolocation
+  function getLocation(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      console.log("Geolocation is not supported");
+      //Showing Default Map Location
+      moveMap(map)
+      //moveMyMapAndMarker(latitude, longitude);
+    }
+  }
+
+  function showPosition(position){
+    console.log(position.coords.latitude + " " + position.coords.longitude);
+    latitude = position.coords.latitude;
+    longitude = position.coords.longitude;
+
+    moveMyMapAndMarker(latitude, longitude);
+  }
+
+
+  /**
+   * Boilerplate map initialization code starts below:
+   */
+
+//Step 1: initialize communication with the platform
+  var platform = new H.service.Platform({
+    app_id: 'hVA6vKr6ixW90KYvkb7k',
+    app_code: 'IulCKZdfTxT9b5NPveT_og',
+    useCIT: true,
+    useHTTPS: true
+  });
+  var defaultLayers = platform.createDefaultLayers();
+
+  //Step 2: initialize a map  - not specificing a location will give a whole world view.
+  var map = new H.Map(document.getElementById('map'),
+    defaultLayers.normal.map);
+
+  // Create a MapTileService instance to request base tiles (i.e.
+  // base.map.api.here.com):
+  var mapTileService = platform.getMapTileService({'type': 'base'});
+
+  // Enable the event system on the map instance:
+  var mapEvents = new H.mapevents.MapEvents(map);
+
+  const clicked = {onMapMarker: false, outsideMapMarker: false}
+
+  // Add event listener:
+  map.addEventListener('tap', function (evt){
+    // Log 'tap' and 'mouse' events:
+    console.log(evt)
+    let target = evt.target
+
+    console.log(evt.type, evt.currentPointer.type);
+  });
+
+  // disable the default draggability of the underlying map
+  // when starting to drag a marker object:
+  map.addEventListener('dragstart', function (ev){
+    var target = ev.target;
+    // if (target instanceof H.map.Marker || target instanceof H.map.DomMarker ) {
+    //   behavior.disable();
+    // }
+    if (target instanceof H.map.Marker || target instanceof H.map.DomMarker) {
+      behavior.disable();
+    }
+  }, false);
+
+
+  // re-enable the default draggability of the underlying map
+  // when dragging has completed
+  map.addEventListener('dragend', function (ev){
+    var target = ev.target;
+
+    if (target instanceof H.map.Marker || target instanceof H.map.DomMarker) {
+      behavior.enable();
+
+      // if (target instanceof mapsjs.map.Marker || target instanceof mapsjs.map.DomMarker) {
+      //   behavior.enable();
+      //
+
+
+      latitude = target.getPosition().lat;
+      longitude = target.getPosition().lng;
+
+      document.getElementById("lat").value = latitude;
+      document.getElementById("long").value = longitude;
+
+      console.log(target.getPosition().lat + " " + target.getPosition().lng)
+
+      //Optionally : Reverse Geocode an address and print it in
+
+    }
+  }, false);
+
+  // Listen to the drag event and move the position of the marker
+  // as necessary
+  map.addEventListener('drag', function (ev){
+    var target = ev.target,
+      pointer = ev.currentPointer;
+    if (target instanceof H.map.Marker || target instanceof H.map.DomMarker) {
+      target.setPosition(map.screenToGeo(pointer.viewportX, pointer.viewportY));
+    }
+  }, false);
+
+
+  //Step 3: make the map interactive
+  // MapEvents enables the event system
+  // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+  var behavior = new H.mapevents.Behavior(mapEvents);
+
+  // Create the default UI components
+  //var ui = H.ui.UI.createDefault(map, defaultLayers);
+
+
+  // Add info bubble to the UI:
+  // Create an info bubble object at a specific geographic location:
+  var bubble = new H.ui.InfoBubble({lng: longitude, lat: latitude}, {
+    content: '<div><a href=\'http://www.mcfc.co.uk\' style="color:cornflowerblue" >Manchester City</a>' +
+      '</div><div >City of Manchester Stadium<br>Capacity: 48,000</div>'
+  });
+
+
+  //Adding markers
+
+  //create dom icon and add/remove opacity listeners
+
+  var outerElement = document.createElement('div'),
+    innerElement = document.createElement('span');
+
+  outerElement.style.userSelect = 'none';
+  outerElement.style.webkitUserSelect = 'none';
+  outerElement.style.msUserSelect = 'none';
+  outerElement.style.mozUserSelect = 'none';
+  outerElement.style.cursor = 'default';
+
+  /**
+   *     color: #bd3a3a;
+   background-color: #bd3a3a;
+   border: 2px solid white;
+   border-radius: 10px;
+   font: 12px/12px arial;
+   padding-top: 2px;
+   padding-left: 4px;
+   width: 20px;
+   height: 20px;
+   margin-top: -10px;
+   margin-left: -10px;
+   opacity: 1;
+   box-shadow: 1px 1px 10px 1px #000;
+   */
+  innerElement.style.color = '#bd3a3a';
+  innerElement.style.backgroundColor = '#bd3a3a';
+  innerElement.style.boxShadow = "1px 1px 7px 1px #000";
+  innerElement.style.border = '2px solid white';
+  innerElement.style.borderRadius = '10px';
+  innerElement.style.borderRadius = '10px';
+  innerElement.style.font = 'normal 12px arial';
+  innerElement.style.lineHeight = '12px';
+
+  //Add icon
+  innerElement.setAttribute("class", "glyphicon glyphicon-map-marker")
+
+  //Add bootstrap popvers
+  innerElement.setAttribute("data-toggle", "popover")
+  innerElement.setAttribute("data-placement", "top")
+  innerElement.setAttribute("data-content", "Your order location")
+  innerElement.setAttribute("data-original-title", "Order")
+
+  innerElement.style.paddingTop = '2px';
+  innerElement.style.paddingLeft = '4px';
+  innerElement.style.width = '20px';
+  innerElement.style.height = '20px';
+
+  // add negative margin to inner element
+  // to move the anchor to center of the div
+  innerElement.style.marginTop = '-10px';
+  innerElement.style.marginLeft = '-10px';
+
+  outerElement.appendChild(innerElement);
+
+  // Add text to the DOM element
+  innerElement.innerHTML = '';
+
+  function changeOpacity(evt) {
+    evt.target.style.opacity = 0.6;
+  };
+
+  function changeOpacityToOne(evt) {
+    evt.target.style.opacity = 1;
+  };
+
+  var domIcon = new H.map.DomIcon(outerElement, {
+    // the function is called every time marker enters the viewport
+    onAttach: function(clonedElement, domIcon, domMarker) {
+      clonedElement.addEventListener('mouseover', changeOpacity);
+      clonedElement.addEventListener('mouseout', changeOpacityToOne);
+    },
+    // the function is called every time marker leaves the viewport
+    onDetach: function(clonedElement, domIcon, domMarker) {
+      clonedElement.removeEventListener('mouseover', changeOpacity);
+      clonedElement.removeEventListener('mouseout', changeOpacityToOne);
+    }
+  });
+
+  let coords = {lat: latitude, lng: longitude};
+  //let marker = new H.map.Marker(coords);
+
+  //Change marker to dom marker
+  let marker = new H.map.DomMarker(coords, {  icon: domIcon });
+  marker.draggable = true;
+
+
+  // Add the marker to the map and center the map at the location of the marker:
+  map.addObject(marker);
+  map.setCenter(coords);
+
+  var forMarker = true;
+
+  marker.addEventListener("tap", function (evt){
+    // Log 'tap' and 'mouse' events:
+    console.log("On Marker: " + evt)
+    forMarker = true;
+
+    // Add info bubble to the UI:
+    //ui.addBubble(bubble);
+    bubble.open();
+    console.log(evt.type, evt.currentPointer.type);
+  })
+
+
+  // Now use the map as required...
+
+  moveMap(map);
+  getLocation();
+  //moveMyMapAndMarker(latitude, longitude)
+  //moveMap(map);
+
+  function dropDownHide(){
+    $(".dropdown-menu").css("display", "false")
+  }
+
+  /**
+   * Will Navigate to area selected on autocomplete
+   */
+  function autocompleteNavigateToArea (location) {
+
+    if (location && location.name != "") {
+      latitude = location.position[0];
+      longitude = location.position[1];
+
+      //Navigate marker to the position which is selected on dropdown
+      moveMyMapAndMarker(latitude, longitude)
+
+      document.getElementById("address").value = location.name;
+    }
+
+  }
+
+  function moveMyMapAndMarker(lat, long){
+
+    coords = {lat: lat, lng: long}
+    map.setCenter(coords);
+    map.setZoom(14);
+
+    //Move Marker
+    //coords = {lat: 11, lng: 12}
+
+    // Add the marker to the map and center the map at the location of the marker:
+    //map.addObject(marker);
+    console.log("Moving Map : "+marker.getPosition())
+    marker.setPosition(coords)
+
+    //Set Lat Lon on Text fields
+    document.getElementById("lat").value = lat;
+    document.getElementById("long").value = long;
+
+  }
+
+</script>
+
+<script type="text/javascript" src="./Daakiya - Route Optimization and Delivery Management_files/typeahead.js"></script>
+
+<script type="text/javascript">
+
+  var data = [];
+
+  // use this hash to cache search results
+  window.query_cache = {};
+
+
+  $('#typeahead').typeahead({
+    updater: function(item) {
+      // do what you want with the item here
+      console.log(item);
+      autocompleteNavigateToArea(item);
+      return item;
+    },
+    source:function(query,process){
+
+
+      // if in cache use cached value, if don't wanto use cache remove this if statement
+      if(query_cache[query]){
+        process(query_cache[query]);
+        return;
+      }
+      if( typeof searching != "undefined") {
+        clearTimeout(searching);
+        process([]);
+      }
+
+
+      searching = setTimeout(function() {
+        return $.getJSON(
+          "https://places.cit.api.here.com/places/v1/" +
+          "autosuggest?at="+(latitude || 19.15175231269505)+","+(longitude || 72.88745407619615)+"" +
+          "&q="+""+query+
+          "&app_id=BpplrrmjrB6JKrACzYmi" +
+          "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
+          //{ q:query },
+          function(data){
+            // save result to cache, remove next line if you don't want to use cache
+            let array = [];
+
+            data.results.map((location, index) => {
+              let json =
+                {
+                  name: strip(location.highlightedTitle) + " " + strip((location.highlightedVicinity || " ")),
+                  highlightedTitle : location.highlightedTitle,
+                  highlightedVicinity : location.highlightedVicinity,
+                  position : location.position,
+                  id : location.id
+                }
+
+              //Push the resultset only when there is a location object
+              if (json && json.position && json.position  !== undefined){
+                //array.push(location.highlightedTitle + "# " + (location.highlightedVicinity || "") + " "+"#"+location.id);
+                array.push(json);
+              }
+
+            })
+            data = array;
+            console.log("DATA:", data)
+            query_cache[query] = array;
+            // only search if stop typing for 300ms aka fast typers
+            return process(array);
+          }
+        );
+      }, 150); // 300 ms
+    }
+  });
+
+
+  function getPlacesAPI (placeName) {
+    return new Promise ((resolve, reject) => {
+      $.ajax({url: "https://places.cit.api.here.com/places/v1/" +
+          "autosuggest?at=19.111743,72.9095206" +
+          "&q="+placeName+
+          "&app_id=BpplrrmjrB6JKrACzYmi" +
+          "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
+        success: function(result){
+          //$("#div1").html(result);
+          resolve(result);
+        },
+        error: function(xhr, status, error){
+          reject({status : xhr.status , statusText : xhr.statusText, error, status});
+          console.log('Error - ' + xhr.status +" : "+ xhr.statusText);
+        }
+      });
+    });
+  }
+
+  //
+  // $.get("https://next.json-generator.com/api/json/get/V1cGoKmDV", function(data){
+  //   console.log(data);
+  //   // use a data source with 'id' and 'name' keys
+  //   $("#typeahead").typeahead({ source:data });
+  // },'json');
+
+  function getPlaces(){
+    let placeName = document.getElementById("typeahead").value
+
+    $.get("https://next.json-generator.com/api/json/get/V1cGoKmDV", function(data){
+      console.log(data);
+      // use a data source with 'id' and 'name' keys
+      $("#typeahead").typeahead({ source:data });
+    },'json');
+
+    //console.log("Searching for : "+placeName);
+    //var placesResults = await getPlacesAPI(placeName);
+    //await console.log(placesResults)
+    //
+    //
+    // var options = {
+    //   url: "https://places.cit.api.here.com/places/v1/" +
+    //     "autosuggest?at=19.111743,72.9095206" +
+    //     "&q="+placeName+
+    //     "&app_id=BpplrrmjrB6JKrACzYmi" +
+    //     "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
+    //   getValue:
+    //     "name",
+    //   list: {
+    //     match: {
+    //       enabled: true
+    //     }
+    //   },
+    //   theme: "square"
+    // };
+    // $("#typeahead").easyAutocomplete(options);
+    //
+
+  }
+
+  $(document).ready(function (){
+    //typeahead.initialize();
+    genrerateNumber();
+
+
+    //
+    // let onSubmitAdd = document.getElementById("addOrderSubmit");
+    // onSubmitAdd.addEventListener("submit" , (e) => {
+    //   e.preventDefault();
+    // })
+  });
+
+</script>
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="./Daakiya - Route Optimization and Delivery Management_files/firebase-app.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="./Daakiya - Route Optimization and Delivery Management_files/firebase-auth.js"></script>
+<script src="./Daakiya - Route Optimization and Delivery Management_files/firebase-firestore.js"></script>
+
+<script type="text/javascript">
+
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBFE7JabWokLVa3MxZ-lvon0_-Eu-l4eHQ",
+    authDomain: "a-positronium.firebaseapp.com",
+    databaseURL: "https://a-positronium.firebaseio.com",
+    projectId: "a-positronium",
+    storageBucket: "a-positronium.appspot.com",
+    messagingSenderId: "284632398484",
+    appId: "1:284632398484:web:e3528a21d6e70c94"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Get a reference to the database service
+  //var database = firebase.database();
+
+  var db = firebase.firestore();
+
+  async function addOrder () {
+
+    //Get Order Details
+    let orderNumber = document.getElementById("orderNumber").value;
+    let orderName = document.getElementById("orderName").value;
+    let customerName = document.getElementById("customerName").value;
+
+    let eta = document.getElementById("eta").value;
+    let lat = document.getElementById("lat").value;
+    let long = document.getElementById("long").value;
+    let creationDate = new Date().getTime();
+    let status = "NEW";
+
+    let doc = {
+      orderNumber : orderNumber,
+      orderName : orderName,
+      customerName : customerName,
+      eta : eta,
+      position : [lat, long],
+      creationDate : creationDate,
+      status : status
+    }
+    console.log(doc);
+
+    try{
+      let documentAdd = await db.collection("orders").add(doc);
+      console.log(documentAdd)
+      if (documentAdd){
+        console.log("document successfully added..")
+        genrerateNumber();
+        $("#myMessage").text("Order successfully added..")
+        $('#myModal').modal({show : true})
+      }
+      else{
+        $("#myMessage").text("Error in adding order..")
+      }
+    } catch (err) {
+      console.log("Unable to add order ", doc)
+      $("#myMessage").text("Error in adding order..")
+    }
+  }
+  //
+  // $('#exampleModal').on('show.bs.modal', function (event) {
+  //   var button = $(event.relatedTarget) // Button that triggered the modal
+  //   var recipient = button.data('whatever') // Extract info from data-* attributes
+  //   // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  //   // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  //   var modal = $(this)
+  //   modal.find('.modal-title').text('New message to ' + recipient)
+  //   modal.find('.modal-body input').val(recipient)
+  // })
+
+
+</script>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="500" viewBox="0 0 1140 500" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;">
+  <defs>
+    <style type="text/css"></style>
+  </defs>
+  <text x="0" y="57" style="font-weight:bold;font-size:57pt;font-family:Arial, Helvetica, Open Sans, sans-serif">
+
+  </text>
+</svg>
+
+
+
+</body></html>

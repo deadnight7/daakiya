@@ -20,7 +20,7 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
   <link rel="icon" href="./img/favicon-d.png">
-
+  <script type="text/javascript" src="./accessKeys.js"></script>
 </head>
 <html>
 
@@ -131,7 +131,7 @@
               <input onchange="this.value = strip(this.value);" class="form-control"
                      id="typeahead"
                      class=" typeahead"
-                     placeholder="Start typing order address here"
+                     placeholder="Start typing order address here to geocode."
                      style="
                         height: 38px;
                         /*box-shadow: 0px 0px 4px 0px #0000005c inset;*/
@@ -154,44 +154,53 @@
           </div>
           <br/>
 
-          <div class="col-xs-12 col-md-12 col-lg-12" style="height: 450px; border:1px solid #CCC;">
+          <div class="col-xs-12 col-md-12 col-lg-12" style="height: 480px; border:1px solid #CCC;">
             <div id="map"
                  style="height: 100%;width: 100%;position: absolute;top: 0px;left: 0px;
                  background-color: transparent;
                  box-shadow: 1px 1px 7px 4px #CCC;
-                 border: 1px solid #CCC;
-              "
+                 border: 1px solid #CCC;"
             ></div>
           </div>
         </div>
 
 
         <div class="col-xs-12 col-md-12 col-lg-6" style="margin-top: 33px;">
-          <h1>Add Order Details</h1>
+          <h1>Order Details</h1>
           <br/>
           <form class="form-horizontal">
             <div class="form-group">
-              <label class="control-label col-sm-3" for="email">Order Number: </label>
+              <label class="control-label col-sm-3">Order Number *: </label>
               <div class="col-sm-9">
                 <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
                 <div class="input-group">
-                  <input type="text" class="form-control" id="orderNumber" autocomplete="new-order" placeholder="Order Number">
+                  <input type="text" class="form-control" id="orderNumber"  autocomplete="new-order" placeholder="Order Number" readonly required/>
                   <span class="input-group-btn">
                     <button class="btn btn-default" type="button" onclick="genrerateNumber()">Generate Number</button>
                   </span>
                 </div><!-- /input-group -->
               </div>
             </div>
+            <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
+
             <div class="form-group">
-              <label class="control-label col-sm-3">Customer Name: </label>
+              <label class="control-label col-sm-3">Customer*: </label>
               <div class="col-sm-9">
-                <input autocomplete="new-customer" type="email" class="form-control" id="customerName" placeholder="Enter Customer Name">
+                <input autocomplete="new-customer" id="customerName" type="text" class="form-control" id="customerName" placeholder="Enter Customer Name" required/>
               </div>
             </div>
+
             <div class="form-group">
-              <label class="control-label col-sm-3" for="pwd">Edit Address:</label>
+              <label class="control-label col-sm-3">Order Tags: </label>
               <div class="col-sm-9">
-                <input autocomplete="new-address" type="text" class="form-control" id="address" placeholder="Enter address">
+                <input autocomplete="new-customer" id="orderName" type="text" class="form-control" placeholder="Your order tags (Eg. Jack's Order)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-sm-3">Edit Address*:</label>
+              <div class="col-sm-9">
+                <input autocomplete="new-address" id="address" type="text" class="form-control" id="address" placeholder="Enter address" required/>
               </div>
 
 
@@ -201,31 +210,65 @@
               <!--              </div>-->
             </div>
             <div class="form-group">
-              <label class="control-label col-sm-3" for="pwd">Delivery ETA:</label>
+              <label class="control-label col-sm-3">Delivery ETA:</label>
               <div class="col-sm-9">
-                <input type="datetime-local" class="form-control" id="pwd" placeholder="Deliver before">
+                <input type="datetime-local" class="form-control" id="eta" placeholder="Deliver before">
               </div>
             </div>
 
             <div class="form-group">
-              <label class="control-label col-sm-3" for="pwd">Latitude: </label>
+              <label class="control-label col-sm-3">Latitude: </label>
               <div class="col-sm-9">
-                <input type="number" class="form-control" id="lat" placeholder="">
+                <input type="text" class="form-control" id="lat" placeholder="lat"/>
               </div>
             </div>
 
             <div class="form-group">
-              <label class="control-label col-sm-3" for="pwd">Longitude :</label>
+              <label class="control-label col-sm-3">Longitude :</label>
               <div class="col-sm-9">
-                <input type="number" class="form-control" id="long" placeholder="">
+                <input type="text" class="form-control" id="long" placeholder="long">
               </div>
             </div>
 
 
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                <button type="button" class="btn btn-primary">Add Order</button>
+                <button type="button" id="addOrderSubmit" onclick="addOrder()" class="btn btn-primary">Add Order</button>
               </div>
+
+<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>-->
+<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>-->
+<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>-->
+<!--              ...more buttons...-->
+
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="exampleModalLabel"><span id="myMessage">New message</span></h4>
+                    </div>
+<!--                    <div class="modal-body">-->
+<!--                      <form>-->
+<!--                        <div class="form-group">-->
+<!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
+<!--                          <input type="text" class="form-control" id="recipient-name">-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                          <label for="message-text" class="control-label">Message:</label>-->
+<!--                          <textarea class="form-control" id="message-text"></textarea>-->
+<!--                        </div>-->
+<!--                      </form>-->
+<!--                    </div>-->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload();">Add an another order</button>
+<!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
+                      <button type="button" class="btn btn-primary">View all orders</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
               <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
               <script type="text/javascript">
@@ -273,7 +316,6 @@
 <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
 
 <script type="text/javascript">
-
 
   function genrerateNumber () {
     //Set new Date().getTime() to order number
@@ -330,8 +372,8 @@
 
 //Step 1: initialize communication with the platform
   var platform = new H.service.Platform({
-    app_id: 'hVA6vKr6ixW90KYvkb7k',
-    app_code: 'IulCKZdfTxT9b5NPveT_og',
+    app_id: module_HEREDeveloperAccess.app_id,
+    app_code: module_HEREDeveloperAccess.app_code,//'IulCKZdfTxT9b5NPveT_og',
     useCIT: true,
     useHTTPS: true
   });
@@ -340,22 +382,10 @@
   //Step 2: initialize a map  - not specificing a location will give a whole world view.
   var map = new H.Map(document.getElementById('map'),
     defaultLayers.normal.map);
+
   // Create a MapTileService instance to request base tiles (i.e.
   // base.map.api.here.com):
   var mapTileService = platform.getMapTileService({'type': 'base'});
-
-  //
-  // // Create a tile layer which requests map tiles with an additional 'style'
-  // // URL parameter set to 'fleet':
-  // var fleetStyleLayer = mapTileService.createTileLayer(
-  //   'maptile',
-  //   'normal.day',
-  //   256,
-  //   'png8');
-  //
-  // // Set the new fleet style layer as a base layer on the map:
-  // map.setBaseLayer(fleetStyleLayer);fleetStyleLayer
-
 
   // Enable the event system on the map instance:
   var mapEvents = new H.mapevents.MapEvents(map);
@@ -392,9 +422,9 @@
     if (target instanceof H.map.Marker || target instanceof H.map.DomMarker) {
       behavior.enable();
 
-    // if (target instanceof mapsjs.map.Marker || target instanceof mapsjs.map.DomMarker) {
-    //   behavior.enable();
-    //
+      // if (target instanceof mapsjs.map.Marker || target instanceof mapsjs.map.DomMarker) {
+      //   behavior.enable();
+      //
 
 
       latitude = target.getPosition().lat;
@@ -418,10 +448,6 @@
     if (target instanceof H.map.Marker || target instanceof H.map.DomMarker) {
       target.setPosition(map.screenToGeo(pointer.viewportX, pointer.viewportY));
     }
-    // if (target instanceof mapsjs.map.Marker) {
-    //   target.setPosition(map.screenToGeo(pointer.viewportX, pointer.viewportY));
-    //   //console.log(target.getPosition().lat +" "+target.getPosition().lng)
-    // }
   }, false);
 
 
@@ -472,7 +498,7 @@
    */
   innerElement.style.color = '#bd3a3a';
   innerElement.style.backgroundColor = '#bd3a3a';
-  innerElement.style.boxShadow = "1px 1px 10px 1px #000";
+  innerElement.style.boxShadow = "1px 1px 7px 1px #000";
   innerElement.style.border = '2px solid white';
   innerElement.style.borderRadius = '10px';
   innerElement.style.borderRadius = '10px';
@@ -598,126 +624,13 @@
 
   }
 
-  // moveMyMapToDelhi(map);
-
-
 </script>
 
-<!--&lt;!&ndash; jQuery CDN &ndash;&gt;-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.0/bootstrap3-typeahead.js"></script>-->
-
-<script type="text/javascript" src="./js/autocomplete/typeahead.js">
-
-  //https://github.com/bassjobsen/Bootstrap-3-Typeahead
-
-</script>
-
-<!--&lt;!&ndash; JS file &ndash;&gt;-->
-<!--<script src="./js/autocomplete/jquery.easy-autocomplete.min.js"></script>-->
-
-<!--&lt;!&ndash; CSS file &ndash;&gt;-->
-<!--<link rel="stylesheet" href="./js/autocomplete/easy-autocomplete.min.css">-->
-
+<script type="text/javascript" src="./js/autocomplete/typeahead.js"></script>
 
 <script type="text/javascript">
 
   var data = [];
-  //
-  // var typeahead = {
-  //   typeaheadInit: function (){
-  //
-  //     var jsonData = [];
-  //
-  //     $.each(jsonData, function (index, location){
-  //       data.push(location.title + "#" + location.highlightedTitle + " # " + location.highlightedVicinity + " # " + location.href + " #" + location.id);
-  //     });
-  //
-  //     $('#typeahead').typeahead({
-  //       //source: data,
-  //       source: function (query, process) {
-  //         console.log(query)
-  //         return $.ajax({
-  //           url: "https://places.cit.api.here.com/places/v1/" +
-  //             "autosuggest?at="+latitude+","+longitude+"" +
-  //             "&q="+query+
-  //             "&app_id=BpplrrmjrB6JKrACzYmi" +
-  //             "&app_code=P_DAr6Tm3U-aqDvSmzkpgg" ,
-  //           // "" +
-  //           // "https://places.demo.api.here.com/places/v1/suggest" +
-  //           // "?at=52.5159%2C13.3777" +
-  //           // "&q=Silver Park" +
-  //           // "&app_id=BpplrrmjrB6JKrACzYmi" +
-  //           // "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
-  //           //data: {q: query},
-  //           dataType: 'json'
-  //         }).done(function(response) {
-  //           console.log("TYPEHEAD : ",response);
-  //           let array = [];
-  //           data = response;
-  //           response.results.map((location, index) => {
-  //             // let json =
-  //             //   {
-  //             //     title: location.title ,
-  //             //     highlightedTitle : location.highlightedTitle,
-  //             //     highlightedVicinity : location.highlightedVicinity,
-  //             //     id : location.id
-  //             //   }
-  //             array.push(location.highlightedTitle + "# " + (location.highlightedVicinity || "") + " "+"#"+location.id);
-  //             //array.push(json);
-  //           })
-  //           //alert(data);
-  //           return process(array);
-  //         });
-  //       },
-  //       // updater: function(item) {
-  //       //   // This may need some tweaks as it has not been tested
-  //       //   var obj = JSON.parse(item);
-  //       //   return item;
-  //       // },
-  //       highlighter: function (item){
-  //         console.log("HIGHLIGHTER", item)
-  //         //
-  //
-  //         var parts = item.split('#'),
-  //           html = '<div  class="col-xs-12 col-md-12 col-lg-6"><div class="typeahead-inner" id="' + parts[2] + '">';
-  //         html += '<div class="item-img" ></div>';
-  //         html += '<div class="item-body">';
-  //         html += '<p class="item-heading">' + strip(parts[0]) +" "+  strip(parts[1])+ '</p>';
-  //         html += '</div>';
-  //         html += '</div></div>';
-  //         //
-  //         // var parts = item;//.split('#'),
-  //         //   html = '<div  class="col-xs-12 col-md-12 col-lg-6"><div class="typeahead-inner" id="' + parts.id + '">';
-  //         // html += '<div class="item-img" ></div>';
-  //         // html += '<div class="item-body">';
-  //         // html += '<p class="item-heading">' + strip(parts.highlightedTitle) +" "+  strip(parts.highlightedVicinity)+ '</p>';
-  //         // html += '</div>';
-  //         // html += '</div></div>';
-  //
-  //         //
-  //         // var query = this.query;
-  //         // var reEscQuery = query.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-  //         // var reQuery = new RegExp('(' + reEscQuery + ')', "gi");
-  //         // var jElem = $(html);
-  //         // var textNodes = $(jElem.find('*')).add(jElem).contents().filter(function (){
-  //         //   return this.nodeType === 3;
-  //         // });
-  //         // textNodes.replaceWith(function (){
-  //         //   return $(this).text().replace(reQuery, '<strong>$1</strong>');
-  //         // });
-  //         var jElem = $(html);
-  //         return jElem.html();
-  //       },
-  //     });
-  //
-  //   },
-  //
-  //   initialize: function (){
-  //     var _this = this;
-  //     _this.typeaheadInit();
-  //   }
-  // };
-
 
   // use this hash to cache search results
   window.query_cache = {};
@@ -790,8 +703,8 @@
       $.ajax({url: "https://places.cit.api.here.com/places/v1/" +
           "autosuggest?at=19.111743,72.9095206" +
           "&q="+placeName+
-          "&app_id=BpplrrmjrB6JKrACzYmi" +
-          "&app_code=P_DAr6Tm3U-aqDvSmzkpgg",
+          "&app_id="+module_HEREDeveloperAccess.app_id +
+          "&app_code="+module_HEREDeveloperAccess.app_code,
         success: function(result){
           //$("#div1").html(result);
           resolve(result);
@@ -817,8 +730,6 @@
     $.get("https://next.json-generator.com/api/json/get/V1cGoKmDV", function(data){
       console.log(data);
       // use a data source with 'id' and 'name' keys
-
-
       $("#typeahead").typeahead({ source:data });
     },'json');
 
@@ -849,8 +760,132 @@
 
   $(document).ready(function (){
     //typeahead.initialize();
+    genrerateNumber();
 
+
+    //
+    // let onSubmitAdd = document.getElementById("addOrderSubmit");
+    // onSubmitAdd.addEventListener("submit" , (e) => {
+    //   e.preventDefault();
+    // })
   });
+
+</script>
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
+
+<style type="text/css">
+  .background-input {
+    background-color:#d9edff;
+    color:#000;
+  }
+</style>
+<script type="text/javascript">
+
+  // Your web app's Firebase configuration
+  var firebaseConfig = module_firebaseConfig;
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Get a reference to the database service
+  //var database = firebase.database();
+
+  var db = firebase.firestore();
+
+  async function addOrder () {
+
+    let validationFailed = false;
+
+    document.getElementById("addOrderSubmit").setAttribute("disabled", "true")
+
+    //Get Order Details
+    let orderNumber = document.getElementById("orderNumber").value;
+    if (orderNumber == ""){
+      $("#orderNumber").addClass("background-input");
+      validationFailed = true;
+      //return;
+    }
+
+    let orderName = document.getElementById("orderName").value;
+
+    let customerName = document.getElementById("customerName").value;
+    if (customerName == ""){
+      $("#customerName").addClass("background-input");
+      validationFailed = true;
+      //return;
+    }
+
+    let eta = document.getElementById("eta").value;
+    // if (eta == ""){
+    //   $("#customerName").addClass("background-input");
+    //   validationFailed = true;
+    //   //return;
+    // }
+    let custAddress = document.getElementById("address").value;
+    if (custAddress == ""){
+      $("#address").addClass("background-input");
+      validationFailed = true;
+      //return;
+    }
+    let lat = document.getElementById("lat").value;
+    let long = document.getElementById("long").value;
+
+    if (validationFailed){
+      document.getElementById("addOrderSubmit").removeAttribute("disabled")
+      return;
+    }
+
+    let creationDate = new Date().getTime();
+    let status = "NEW";
+
+    let doc = {
+      orderNumber : orderNumber,
+      orderName : orderName,
+      customerName : customerName,
+      custAddress : custAddress,
+      eta : eta,
+      position : [lat, long],
+      creationDate : creationDate,
+      status : status
+    }
+    console.log(doc);
+
+    try{
+      let documentAdd = await db.collection("orders").add(doc);
+      console.log(documentAdd)
+      if (documentAdd){
+        console.log("document successfully added..")
+        genrerateNumber();
+        $("#myMessage").text("Order successfully added..")
+        document.getElementById("addOrderSubmit").removeAttribute("disabled")
+        $('#myModal').modal({show : true})
+      }
+      else{
+        $("#myMessage").text("Error in adding order..")
+        document.getElementById("addOrderSubmit").removeAttribute("disabled")
+      }
+    } catch (err) {
+      console.log("Unable to add order ", doc)
+      document.getElementById("addOrderSubmit").removeAttribute("disabled")
+      $("#myMessage").text("Error in adding order..")
+    }
+  }
+  //
+  // $('#exampleModal').on('show.bs.modal', function (event) {
+  //   var button = $(event.relatedTarget) // Button that triggered the modal
+  //   var recipient = button.data('whatever') // Extract info from data-* attributes
+  //   // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  //   // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  //   var modal = $(this)
+  //   modal.find('.modal-title').text('New message to ' + recipient)
+  //   modal.find('.modal-body input').val(recipient)
+  // })
+
 
 </script>
 

@@ -1,3 +1,4 @@
+<!--http://localhost:63342/daakiya/db_tracking_history.html?trackingId=HERE-970436b8-ab88-4c86-864e-70bdf7faa98c&_ijt=ap7kvj9t6f800fa9h5okchbb26-->
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,9 +19,14 @@
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+
   <![endif]-->
   <link rel="icon" href="./img/favicon-d.png">
 
+  <script src="./accessKeys.js"></script>
+  <script>
+  </script>
 </head>
 <html>
 
@@ -122,48 +128,6 @@
             <h1>Tracking History</h1><h3>Delivery Associate : Frank Williams - 46458</h3>
             <p><strong>Last Tracking received on: </strong><span>10 Jun 2019, 12:30am</span></p>
           </div>
-
-          <!--          <div class="col-xs-12 col-md-12 col-lg-6" style="margin-top: 15px;">-->
-          <!--            <div class="col-xs-1 col-md-1 col-lg-2 btn-group">-->
-          <!--              <button type="button" style="margin:5px" class="btn btn-default dropdown-toggle" data-toggle="dropdown">-->
-          <!--                Filter By-->
-          <!--                <span class="caret"></span>-->
-          <!--              </button>-->
-
-          <!--              <ul class="dropdown-menu" role="menu">-->
-          <!--                <li><a href="#">All New Orders</a></li>-->
-          <!--                <li><a href="#">All In Transit Orders</a></li>-->
-          <!--                <li><a href="#">All Completed Orders</a></li>-->
-          <!--                <li><a href="#">All Cancelled Orders</a></li>-->
-          <!--              </ul>-->
-          <!--            </div>-->
-
-          <!--            <div class="col-xs-1 col-md-1 col-lg-2 btn-group">-->
-          <!--              <button type="button" style="margin:5px" class="btn btn-default dropdown-toggle" data-toggle="dropdown">-->
-          <!--                Sort By-->
-          <!--                <span class="caret"></span>-->
-          <!--              </button>-->
-
-          <!--              <ul class="dropdown-menu" role="menu">-->
-          <!--                <li><a href="#">Sort by last added date desc</a></li>-->
-          <!--                <li><a href="#">Order Number desc</a></li>-->
-          <!--                <li><a href="#">Customer Name desc</a></li>-->
-
-          <!--                <li><a href="#">Sort by last added date asc</a></li>-->
-          <!--                <li><a href="#">Order Number asc</a></li>-->
-          <!--                <li><a href="#">Customer Name asc</a></li>-->
-          <!--              </ul>-->
-          <!--            </div>-->
-
-          <!--            <div class="col-xs-7 col-md-6 col-lg-5" style="margin-left: -20px;">-->
-          <!--              <input type="email" style="margin-top: 5px; margin-left: 20px;" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Order Number">-->
-          <!--            </div>-->
-
-          <!--            <button class="col-xs-2 col-md-2 col-lg-2 btn btn-primary" type="button" style="margin:5px">-->
-          <!--              Search <span class="glyphicon glyphicon-search"></span>-->
-          <!--            </button>-->
-          <!--          </div>-->
-
         </div>
 
 
@@ -197,21 +161,6 @@
         </div>
 
       </div>
-
-<!--      <div class="col-xs-12 col-md-12 col-lg-12" >-->
-<!--        <div class="form-group col-xs-12 col-md-12 col-lg-4">-->
-<!--          <label class="control-label col-sm-2">Start Time:</label>-->
-<!--          <div class="col-sm-10">-->
-<!--            <input type="datetime-local" class="form-control" id="start_time" placeholder="Start Time">-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="form-group col-xs-12 col-md-12 col-lg-4">-->
-<!--          <label class="control-label col-sm-2">End Time:</label>-->
-<!--          <div class="col-sm-10">-->
-<!--            <input type="datetime-local" class="form-control" id="end_time" placeholder="End Time">-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
 
     </div>
   </div>
@@ -252,8 +201,6 @@
     console.log(position.coords.latitude + " " + position.coords.longitude);
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
-
-
   }
 
   //Get Geolocation
@@ -278,8 +225,8 @@
 
   // Instantiate a map and platform object:
   var platform = new H.service.Platform({
-    'app_id': 'hVA6vKr6ixW90KYvkb7k',
-    'app_code': 'IulCKZdfTxT9b5NPveT_og'
+    'app_id': module_HEREDeveloperAccess.app_id,//localStorage.getItem("module_HEREDeveloperAccess").app_id,//module_HEREDeveloperAccess.app_id,
+    'app_code': module_HEREDeveloperAccess.app_code,//localStorage.getItem("module_HEREDeveloperAccess").app_code//module_HEREDeveloperAccess.app_code//'IulCKZdfTxT9b5NPveT_og'
   });
   // Retrieve the target element for the map:
   var targetElement = document.getElementById('map');
@@ -376,8 +323,8 @@
   function getTrackingAccessToken (){
     return new Promise ((resolve, reject) => {
 
-      let strTrackingAppEmail = "cpandit202@gmail.com"
-      let strTrackingAppPassword = "Q2hpcmFnIzAwNw==" //btoa("passwordString")
+      let strTrackingAppEmail = module_HERETrackingAccount.trackingEmail;//"cpandit202@gmail.com"
+      let strTrackingAppPassword = module_HERETrackingAccount.trackingPassword;//"Q2hpcmFnIzAwNw==" //btoa("passwordString")
 
       //Tracking Access Token URL - https://tracking.api.here.com/users/v2/login
       $.ajax({
@@ -459,7 +406,6 @@
           throw new Error("No tracking points receieved for this user");
         }
         else {
-
           //loop through the trackingPoints.data array backwards and put data in routingParameters array as shown below
           // Create the parameters for the routing request:
           var routingParameters = {
@@ -542,15 +488,7 @@
 <script type="text/javascript">
 
   // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyBFE7JabWokLVa3MxZ-lvon0_-Eu-l4eHQ",
-    authDomain: "a-positronium.firebaseapp.com",
-    databaseURL: "https://a-positronium.firebaseio.com",
-    projectId: "a-positronium",
-    storageBucket: "a-positronium.appspot.com",
-    messagingSenderId: "284632398484",
-    appId: "1:284632398484:web:e3528a21d6e70c94"
-  };
+  var firebaseConfig = localStorage.getItem("module_firebaseConfig");//module_firebaseConfig;
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 

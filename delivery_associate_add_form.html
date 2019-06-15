@@ -18,7 +18,9 @@
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
   <![endif]-->
+  <script src="./accessKeys.js"></script>
   <link rel="icon" href="./img/favicon-d.png">
 
 </head>
@@ -204,7 +206,7 @@
               <div class="form-group">
                 <label class="control-label col-sm-3">Password*:</label>
                 <div class="col-sm-9">
-                  <input autocomplete="new-address" id="deliveryAssociatePassword" type="text" class="form-control" placeholder="Default Password" required/>
+                  <input autocomplete="new-address" id="deliveryAssociatePassword" type="password" class="form-control" placeholder="Default Password" required/>
                 </div>
               </div>
 
@@ -294,7 +296,7 @@
             <!--            </div>-->
             <br/>
             <div class="text-center col-xs-12 col-md-12 col-lg-6" >
-              <button type="button" id="addDeliveryAssociate" class="btn btn-lg btn-default">Add new delivery associate</button>
+              <button type="button" id="addDeliveryAssociate" onclick="addDeliveryAssociate();" class="btn btn-lg btn-default">Add new delivery associate</button>
             </div>
           </div>
 
@@ -311,8 +313,8 @@
                   </div>
 
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Add an another delivery associate</button>
-                    <button type="button" class="btn btn-primary">View all orders</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload();">Add an another delivery associate</button>
+                    <button type="button" class="btn btn-primary">View all delivery associates</button>
                   </div>
                 </div>
               </div>
@@ -345,7 +347,12 @@
   </div>
 </div> <!-- /container -->
 
-
+<style type="text/css">
+  .background-input {
+    background-color:#d9edff;
+    color:#000;
+  }
+</style>
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
@@ -354,7 +361,6 @@
         crossorigin="anonymous"></script>
 <script>window.jQuery || document.write('<script src="./js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
 <script src="./js/bootstrap.min.js"></script>
-
 <script src="./js/docs.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 
@@ -363,7 +369,125 @@
 <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
 <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
 
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
+
+
+
 <script type="text/javascript">
+
+  async function addDeliveryAssociate (){
+    try{
+
+      document.getElementById("addDeliveryAssociate").setAttribute("disabled","true");
+      let validationFailed = false;
+
+      //Check whether every value is present - id="customerName"
+      let customerName = document.getElementById("customerName").value;
+      if (customerName == ""){
+        $("#customerName").addClass("background-input");
+        validationFailed = true;
+        //return;
+      }
+
+      //id="deliveryAssociateAddress"
+      let deliveryAssociateAddress = document.getElementById("deliveryAssociateAddress").value;
+      if (deliveryAssociateAddress == ""){
+        $("#deliveryAssociateAddress").addClass("background-input")
+        validationFailed = true;
+        //return;
+      }
+
+      //id="deliveryAssociateEmail"
+      let deliveryAssociateEmail = document.getElementById("deliveryAssociateEmail").value;
+      if (deliveryAssociateEmail == ""){
+        $("#deliveryAssociateEmail").addClass("background-input")
+        validationFailed = true;
+        //return;
+      }
+
+      //id="deliveryAssociateEmail"
+      let deliveryAssociatePassword = document.getElementById("deliveryAssociatePassword").value;
+      if (deliveryAssociatePassword == ""){
+        $("#deliveryAssociatePassword").addClass("background-input")
+        validationFailed = true;
+        //return;
+      }
+
+      //id="deliveryAssociatePassword"
+      let licenceSelect = document.getElementById("licence");
+      let licenceOption = licenceSelect.options[licenceSelect.selectedIndex].value;//id="licence"
+      // if (licenceOption == ""){
+      //   //$("#deliveryAssociateEmail").addClass("background-input")
+      //   validationFailed = true;
+      //   //return;
+      // }
+      if (validationFailed){
+        console.log("Please correct the errors..")
+        document.getElementById("addDeliveryAssociate").removeAttribute("disabled");
+        return;
+      }
+
+      //Check deviceID, TrackingId, DeviceName
+      let trackingId = document.getElementById("trackingId").value;
+      let deviceId = document.getElementById("deviceId").value;
+      let deviceName = document.getElementById("deviceName").value;
+      let employeeId = document.getElementById("deliveryAssociateEmpId").value;//
+      //Store the new name to HERE Tracking Registry
+      if (trackingId != ""){
+        let data = await getTrackingAccessToken();
+        console.log("token:", data.accessToken)
+        let accessToken =  data.accessToken;
+        if (data && data.accessToken) {
+          //Change Device Name to Device - new Date().getTime()
+          let responseNewName = await editDeviceDetails (trackingId, deviceName ,accessToken)
+        }
+      }
+
+      //Add Data to Firebase under `delivery_associates` table
+      var firebaseConfig = module_firebaseConfig;
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Get a reference to the database service
+      //var database = firebase.database();
+
+      var db = firebase.firestore();
+      let doc = {
+        associateName: customerName,
+        employeeId : employeeId,
+        deliveryAssociateAddress : deliveryAssociateAddress,
+        deliveryAssociateEmail : deliveryAssociateEmail,
+        deliveryAssociatePassword : deliveryAssociatePassword,
+        trackingId : trackingId,
+        deviceId : deviceId,
+        deviceName : deviceName,
+        licenceType : licenceOption
+      }
+
+      let documentAdd = await db.collection("delivery_associates").add(doc);
+      console.log(documentAdd)
+      if (documentAdd) {
+        console.log("document successfully added..")
+        //genrerateNumber();
+        // if (trackingId != ""){
+        //   $("#myMessage").text("Delivery Associate added successfully, Save the QR..")
+        // }
+        $("#myMessage").text("Delivery Associate added successfully")
+        document.getElementById("addDeliveryAssociate").removeAttribute("disabled");
+        $('#myModal').modal({show: true})
+      }
+      document.getElementById("addDeliveryAssociate").removeAttribute("disabled");
+    }catch(error){
+      document.getElementById("addDeliveryAssociate").removeAttribute("disabled");
+      console.log(error);
+    }
+  }
 
   async function activateNewTrackingLicence () {
     $("#getNewLicence").hide()
@@ -378,7 +502,7 @@
       if (data && data.accessToken){
 
         //Get new licence and create a QR Code for it
-        let appId = "zsP1dvyg3Avu97H3kQlG"
+        let appId = module_HERETrackingAccount.trackingAppId;//"zsP1dvyg3Avu97H3kQlG"
         let accessToken = data.accessToken;
         let deviceDetails = await getNewDeviceLicence(appId, accessToken);
 
@@ -435,8 +559,8 @@
   function getTrackingAccessToken (){
     return new Promise ((resolve, reject) => {
 
-      let strTrackingAppEmail = "cpandit202@gmail.com"
-      let strTrackingAppPassword = "Q2hpcmFnIzAwNw==" //btoa("passwordString")
+      let strTrackingAppEmail = module_HERETrackingAccount.trackingEmail;//"cpandit202@gmail.com"
+      let strTrackingAppPassword = module_HERETrackingAccount.trackingPassword// "Q2hpcmFnIzAwNw==" //btoa("passwordString")
 
       //Tracking Access Token URL - https://tracking.api.here.com/users/v2/login
       $.ajax({
@@ -497,7 +621,6 @@
 
     });
   }
-
 
   //Get its Tracking ID by making a call into HERE Registry - PUT - https://tracking.api.here.com/registry/v2/devices/02ffe85a-2537-4939-9b7d-f76377690962
   //Heraders / appjson / bearer - token
