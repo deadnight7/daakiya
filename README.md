@@ -1,9 +1,8 @@
 # Daakiya (डाकिया)
-Route Optimization, Planning and Management for Last Mile Trips
-
 
 [![Build Status](https://travis-ci.org/deadnight7/daakiya.svg?branch=master)](https://travis-ci.org/deadnight7/daakiya)
 
+Route Optimization, Planning and Management for Last Mile Trips
 ## This project is still under construction
 
 ### Development
