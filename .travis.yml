@@ -1,0 +1,13 @@
+language: node_js
+sudo: required
+services:
+  - docker
+os:
+  - osx
+node_js:
+  - '8'
+script:
+  # build
+  - python -m SimpleHTTPServer 7000 &
+  - ifconfig
+  - xvfb-run --server-args="-screen 0 1920x1080x24" # mvn clean test
