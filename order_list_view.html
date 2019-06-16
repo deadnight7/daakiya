@@ -89,11 +89,34 @@
 
   });
 
+  async function deleteOrder (orderRef) {
+    try {
+
+      orderRef.setAttribute("disabled", true)
+      let orderNumber = orderRef.getAttribute("data-id")
+      console.log(orderNumber)
+      //Fetch records from firestore
+      let snapshot = await firebase.firestore().collection("orders")
+        .where("createdBy", "==", ""+firebase.auth().currentUser.uid)
+        .where("orderNumber", "==" , orderNumber).get()
+
+      snapshot.forEach(async (doc) => {
+        console.log("deleting",doc.data())
+        let isDeleted = await doc.ref.delete();
+        //window.location.reload()
+        $('#row-'+orderNumber).hide()
+      })
+
+    } catch (e){
+      console.log("Unable to delete order : ",e);
+    }
+  }
 
   async function getOrders (currentUserId) {
     let docs;
     try {
-      docs = await firebase.firestore().collection("orders").where("createdBy", "==", currentUserId+"").get();
+      //firebase.firestore().collection("orders").where("createdBy", "==", "W0snQdSu0hdDUmTH85BlJKzkPTr2").orderBy("creationDate", "desc").get();
+      docs = await firebase.firestore().collection("orders").where("createdBy", "==", currentUserId+"").orderBy("creationDate", "desc").get();
     }
     catch (e) {
       console.log("error: ",e);
@@ -131,8 +154,12 @@
           try {
 
             if (currentDocument.eta != "" && currentDocument.eta != undefined) {
-              let eta = new Date(parseInt(currentDocument.eta));
+              let eta = new Date((currentDocument.eta));
               format = moment(eta).format('MMMM Do YYYY, h:mm:ss a');;//(eta, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+
+              if (format == ""){
+                format = moment(eta).format('MMMM Do YYYY');
+              }
             }
 
             if (currentDocument.custAddress == undefined) {
@@ -159,7 +186,7 @@
           }
 
           htmlContent += '\n' +
-            '  <div class="row">\n' +
+            '  <div class="row" id="row-'+currentDocument.orderNumber+'">\n' +
             '\n' +
             '    <img src="https://image.maps.api.here.com/mia/1.6/mapview?c='+currentDocument.position[0]+'%2C'+currentDocument.position[1]+'&z=14&w=250&h=120&f=1&app_id='+module_HEREDeveloperAccess.app_id+'&app_code='+module_HEREDeveloperAccess.app_code+'"\n' +
             '         class="col-xs-12 col-md-12 col-lg-3 thumbnail "/>\n' +
@@ -175,33 +202,33 @@
             '    </div>\n' +
             '\n' +
             '    <div class="buttons col-xs-12 col-md-12 col-lg-2">\n' +
-            '      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11 btn btn-default">\n' +
+            '      <a href="./order_edit_form.html?orderNumber='+currentDocument.orderNumber+'" type="button" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11 btn btn-default">\n' +
             '        Edit\n' +
-            '      </button>\n' +
-            '      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11  btn btn-default">\n' +
+            '      </a>\n' +
+            '      <button type="button" onclick="deleteOrder(this)" data-id="'+currentDocument.orderNumber+'" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11  btn btn-default">\n' +
             '        Delete\n' +
             '      </button>\n' +
-            '\n' +
-            '      <div class = "btn-group">\n' +
-            '        <button type = "button"  style="margin:5px" class = "btn btn-primary dropdown-toggle" data-toggle = "dropdown">\n' +
-            '          More Option\n' +
-            '          <span class = "caret"></span>\n' +
-            '        </button>\n' +
-            '\n' +
-            '        <ul class = "dropdown-menu" role = "menu">\n' +
-            '          <li><a href = "#">Mark Order Complete</a></li>\n' +
-            '          <li><a href = "#">Mark In Transit</a></li>\n' +
-            '          <li><a href = "#">Order Cancelled</a></li>\n' +
-            '\n' +
-            '          <li class = "divider"></li>\n' +
-            '          <li><a href = "#">Navigate to order</a></li>\n' +
-            '        </ul>\n' +
-            '      </div>\n' +
+            // '\n' +
+            // '      <div class = "btn-group">\n' +
+            // '        <button type = "button"  style="margin:5px" class = "btn btn-primary dropdown-toggle" data-toggle = "dropdown">\n' +
+            // '          More Option\n' +
+            // '          <span class = "caret"></span>\n' +
+            // '        </button>\n' +
+            // '\n' +
+            // '        <ul class = "dropdown-menu" role = "menu">\n' +
+            // '          <li><a href = "#">Mark Order Complete</a></li>\n' +
+            // '          <li><a href = "#">Mark In Transit</a></li>\n' +
+            // '          <li><a href = "#">Order Cancelled</a></li>\n' +
+            // '\n' +
+            // '          <li class = "divider"></li>\n' +
+            // '          <li><a href = "#">Navigate to order</a></li>\n' +
+            // '        </ul>\n' +
+            // '      </div>\n' +
             '\n' +
             '    </div>\n' +
             '\n' +
-            '  </div>\n' +
-            '  <hr/>'
+            ' <hr/> </div>\n' +
+            '  '
         })
         $("#render_container").html(htmlContent)
       }

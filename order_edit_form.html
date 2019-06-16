@@ -21,6 +21,7 @@
   <![endif]-->
   <link rel="icon" href="./img/favicon-d.png">
   <script type="text/javascript" src="./accessKeys.js"></script>
+
 </head>
 <html>
 
@@ -167,19 +168,28 @@
           <h1>Order Details</h1>
           <br/>
           <form class="form-horizontal">
+
+<!--            <div class="form-group">-->
+<!--              <label class="control-label col-sm-3">Order Number *: </label>-->
+<!--              <div class="col-sm-9">-->
+<!--                &lt;!&ndash;                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">&ndash;&gt;-->
+<!--                <div class="input-group">-->
+<!--                  <input type="text" class="col-sm-12 form-control" id="orderNumber"  autocomplete="new-order" placeholder="Order Number" readonly required/>-->
+<!--                  <span class="input-group-btn">-->
+<!--                    <button class="btn btn-default" type="button" onclick="genrerateNumber()" disabled>Generate Number</button>-->
+<!--                  </span>-->
+<!--                </div>&lt;!&ndash; /input-group &ndash;&gt;-->
+<!--              </div>-->
+<!--            </div>-->
+            <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
+
             <div class="form-group">
               <label class="control-label col-sm-3">Order Number *: </label>
               <div class="col-sm-9">
-                <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
-                <div class="input-group">
-                  <input type="text" class="form-control" id="orderNumber"  autocomplete="new-order" placeholder="Order Number" readonly required/>
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" onclick="genrerateNumber()">Generate Number</button>
-                  </span>
-                </div><!-- /input-group -->
+                <input autocomplete="new-customer" id="orderNumber" type="text" class="form-control" placeholder="Order Number" disabled/>
               </div>
             </div>
-            <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
+
 
             <div class="form-group">
               <label class="control-label col-sm-3">Customer*: </label>
@@ -231,13 +241,14 @@
 
             <div class="form-group">
               <div class="col-sm-offset-2 col-sm-10">
-                <button type="button" id="addOrderSubmit" onclick="addOrder()" class="btn btn-primary">Add Order</button>
+                <button type="button" id="addOrderSubmit" onclick="addOrder()" class="btn btn-primary">Save</button>
+                <a href="./order_list_view.html" type="button" class="btn btn-default">Cancel</a>
               </div>
 
-<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>-->
-<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>-->
-<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>-->
-<!--              ...more buttons...-->
+              <!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>-->
+              <!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>-->
+              <!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>-->
+              <!--              ...more buttons...-->
 
               <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                 <div class="modal-dialog" role="document">
@@ -246,21 +257,21 @@
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title" id="exampleModalLabel"><span id="myMessage">New message</span></h4>
                     </div>
-<!--                    <div class="modal-body">-->
-<!--                      <form>-->
-<!--                        <div class="form-group">-->
-<!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
-<!--                          <input type="text" class="form-control" id="recipient-name">-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                          <label for="message-text" class="control-label">Message:</label>-->
-<!--                          <textarea class="form-control" id="message-text"></textarea>-->
-<!--                        </div>-->
-<!--                      </form>-->
-<!--                    </div>-->
+                    <!--                    <div class="modal-body">-->
+                    <!--                      <form>-->
+                    <!--                        <div class="form-group">-->
+                    <!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
+                    <!--                          <input type="text" class="form-control" id="recipient-name">-->
+                    <!--                        </div>-->
+                    <!--                        <div class="form-group">-->
+                    <!--                          <label for="message-text" class="control-label">Message:</label>-->
+                    <!--                          <textarea class="form-control" id="message-text"></textarea>-->
+                    <!--                        </div>-->
+                    <!--                      </form>-->
+                    <!--                    </div>-->
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload();">Add an another order</button>
-<!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
+<!--                      <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload();">Add an another order</button>-->
+                      <!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
                       <a href="./order_list_view.html" type="button" class="btn btn-primary">View all orders</a>
                     </div>
                   </div>
@@ -792,6 +803,12 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
+  //Retrieve Data from Tracking API - Eg https://tracking.api.here.com/traces/v2/HERE-970436b8-ab88-4c86-864e-70bdf7faa98c?count=1000  - [{"description":"","enabled":true,"key":"Content-Type","type":"text","value":"application/json"},{"description":"","enabled":true,"key":"Authorization","type":"text","value":"Bearer h1.QqQ1511VSx110Ql_bkhY4w.}
+  var url_string = location.href; //Current URL Parameter - eg - HERE-970436b8-ab88-4c86-864e-70bdf7faa98c
+  var url = new URL(url_string);
+  var orderNumberURLParam = url.searchParams.get("orderNumber");
+  console.log("orderNumberURLParam :", orderNumberURLParam);
+
   // Get a reference to the database service
   //var database = firebase.database();
 
@@ -808,11 +825,48 @@
       let currentUserId = firebase.auth().currentUser.uid; //W0snQdSu0hdDUmTH85BlJKzkPTr2
       console.log("currentUserId: ",currentUserId)
       userId = currentUserId;
+
+      //Check whether order number is passed in URL Parameters
+      if (orderNumberURLParam && orderNumberURLParam != ""){
+        editOrderEnterValues (currentUserId, orderNumberURLParam);
+      }
+      else {
+        console.log("No order number present...")
+      }
+
     } else {
       // No user is signed in.
       window.location.href = "/";
     }
   });
+
+  async function editOrderEnterValues (currentUserId, orderNumberURLParam) {
+
+    try {
+
+      let snapshot = await firebase.firestore().collection("orders")
+        .where("createdBy", "==", ""+firebase.auth().currentUser.uid)
+        .where("orderNumber", "==" , orderNumberURLParam).get()
+
+      snapshot.forEach(async (doc) => {
+        console.log("fetch : ",doc.data())
+
+        //Get Order Details
+        document.getElementById("orderNumber").value = doc.data().orderNumber;
+        document.getElementById("orderName").value = doc.data().orderName;;
+        document.getElementById("customerName").value = doc.data().customerName;
+        document.getElementById("eta").value = doc.data().eta;
+        document.getElementById("address").value = doc.data().custAddress;
+        document.getElementById("lat").value = doc.data().position[0];
+        document.getElementById("long").value = doc.data().position[1];
+
+
+      })
+
+    }catch (e) {
+      console.log(e)
+    }
+  }
 
   async function addOrder () {
 
@@ -858,39 +912,52 @@
     }
 
     let creationDate = new Date().getTime();
-    let status = "NEW";
-
-    let doc = {
-      orderNumber : orderNumber,
-      orderName : orderName,
-      customerName : customerName,
-      custAddress : custAddress,
-      eta : eta,
-      position : [lat, long],
-      creationDate : creationDate,
-      status : status,
-      createdBy : userId
-    }
-    console.log(doc);
+    //let status = "NEW";
 
     try{
-      let documentAdd = await db.collection("orders").add(doc);
-      console.log(documentAdd)
-      if (documentAdd){
-        console.log("document successfully added..")
-        genrerateNumber();
-        $("#myMessage").text("Order successfully added..")
+
+      let snapshot = await firebase.firestore().collection("orders")
+        .where("createdBy", "==", ""+firebase.auth().currentUser.uid)
+        .where("orderNumber", "==" , orderNumberURLParam).get()
+
+      // let documentAdd = await db.collection("orders").add(doc);
+      // console.log(documentAdd)
+      if (snapshot){
+
+
+        snapshot.forEach(async (currentDoc) => {
+          console.log("deleting", currentDoc.data())
+
+          let doc = {
+            orderNumber : orderNumber,
+            orderName : orderName,
+            customerName : customerName,
+            custAddress : custAddress,
+            eta : eta,
+            position : [lat, long],
+            creationDate : creationDate,
+            status : currentDoc.data().status,
+            createdBy : userId
+          }
+          console.log(doc);
+
+          let isUpdated = await currentDoc.ref.update(doc);
+        });
+
+        console.log("document successfully edited..")
+
+        $("#myMessage").text("Order successfully edited..")
         document.getElementById("addOrderSubmit").removeAttribute("disabled")
         $('#myModal').modal({show : true})
       }
       else{
-        $("#myMessage").text("Error in adding order..")
+        $("#myMessage").text("Error in editing order..")
         document.getElementById("addOrderSubmit").removeAttribute("disabled")
       }
     } catch (err) {
-      console.log("Unable to add order ", doc)
+      console.log("Unable to edit order ", doc)
       document.getElementById("addOrderSubmit").removeAttribute("disabled")
-      $("#myMessage").text("Error in adding order..")
+      $("#myMessage").text("Error in editing order..")
     }
   }
   //
