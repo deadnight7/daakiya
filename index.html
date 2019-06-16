@@ -150,18 +150,18 @@
 <!--              <button type="button" class="btn btn-default"><span>Sign up with Facebook </span><img src="facebook.svg"/> </button>-->
               <br/>
               <h3>Daakiya helps you find your shortest path between locations.</h3>
-              <h1>One stop solution to<br/>
+              <div class="hidden-xs"><h1>One stop solution to<br/>
                 <span
                   class="txt-rotate"
                   data-period="2000"
                   data-rotate='[ "Route Optimization.", "Delivery Management.", "Saving Logistics Costs." ]'></span>
-              </h1>
+              </h1></div>
               <h2></h2>
 
             </div>
           </div>
 
-          <div class="col-xs-12 col-md-12 col-lg-4" style="margin-top: 0px;
+          <div class="col-xs-12 col-md -12 col-lg-4" style="margin-top: 0px;
     background: #EEE;
     color: #000;
     text-shadow: none;
@@ -206,12 +206,15 @@
                 <label class="form-check-label" for="exampleCheck1">Remember Me</label>
               </div>
               <button type="submit" class="btn btn-primary" id="registerButton">Register</button>
-              <button type="submit" class="btn btn-default" onclick="showLoginForm()">Already have an account - Login</button>
+<!--              <button type="submit" class="btn btn-default" onclick="showLoginForm()">Already have an account - Login</button>-->
+              <div class="form-group form-check">
+                <!--                <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+                <strong><p class="form-check-label text-center text-danger" style="display: none;" id="errorMessage">Message</p></strong>
+              </div>
               <br/><br/>
               <!--              <img src="./signin_light_google_web.png"/>-->
               <!--              <button type="submit" class="btn btn-default" onclick="showLoginForm()">Already have an account - Login</button>-->
             </form>
-
             <!--            -->
 
 
@@ -236,7 +239,7 @@
                 <label class="form-check-label" for="exampleCheck1">Remember Me</label>
               </div>
               <button type="submit" class="btn btn-primary">Login</button>
-              <button type="submit" class="btn btn-default" onClick="showRegisterForm();">I dont have an account - Register</button>
+<!--              <button type="submit" class="btn btn-default" onClick="showRegisterForm();">I dont have an account - Register</button>-->
             </form>
 
           </div>
@@ -322,12 +325,14 @@
 <script src="./accessKeys.js"></script>
 <script>
   async function showRegisterForm (){
-    await $(".loginForm").hide();
-    await $(".signUpForm").show();
+    //await $(".loginForm").hide();
+    // await $(".signUpForm").show();
+    window.location.href = "/index.html";
   }
   async function showLoginForm (){
-    await $(".signUpForm").hide();
-    await $(".loginForm").show();
+    //await $(".signUpForm").hide();
+    //await $(".loginForm").show();
+    window.location.href = "/login.html";
   }
 
   document.getElementById("registerButton").addEventListener("click", function(event){
@@ -340,6 +345,20 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
+
+  //Check whether user is already signed in?
+  firebase.auth().onAuthStateChanged(function(user) {
+    console.log(user)
+    if (user) {
+      // User is signed in. navigate to orders list view
+      window.location.href = "/order_list_view.html";
+      console.log("User Logged In", user.email);
+      console.log("window.location.href "+ window.location.href)
+    } else {
+      // No user is signed in. stay on the same page
+      console.log("User Not Logged In");
+    }
+  });
 
   async function registerUser () {
     let email = document.getElementById("loginEmail").value
@@ -354,19 +373,13 @@
       }
     }catch (e) {
       console.log("error: unable to register: ", e)
+      $("#errorMessage").text(e.message)
+      $('#errorMessage').show()
     }
   }
 
 
   function authenticateWithGoogle () {
-    // let baseProvider = new firebase.auth.GoogleAuthProvider();
-    // firebase.auth().signWithPopup(baseProvider).then(function (result) {
-    //   console.log(result)
-    //   console.log("Success.. Signed in with gmail")
-    // }).catch((err) => {
-    //   console.log(err)
-    //   console.log("Failed to do")
-    // })
     var provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
@@ -377,7 +390,6 @@
       // The signed-in user info.
       var user = result.user;
       console.log(user)
-      // ...
     }).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -390,7 +402,6 @@
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
       console.log(credential)
-      // ...
     });
 
   }

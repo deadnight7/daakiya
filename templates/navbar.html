@@ -1,0 +1,78 @@
+<script type="module" src="signIn_include.js"></script>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand col-xs-1 col-md-2 col-lg-2" href="#">Daakiya</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav  col-xs-12 col-md-6 col-lg-6">
+        <!--        <li><a href="#">Dashboard</a></li>-->
+        <!--        <li><a href="#">Delivery Associates</a></li>-->
+        <!--        <li><a href="#">Orders</a></li>-->
+        <!--        <li><a href="#">Routes</a></li>-->
+
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Orders<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Add Orders</a></li>
+            <li><a href="#">Add Bulk Orders</a></li>
+            <!--            <li><a href="#">Something else here</a></li>-->
+            <!--            <li role="separator" class="divider"></li>-->
+            <!--            <li class="dropdown-header">Nav header</li>-->
+            <!--            <li><a href="#">Separated link</a></li>-->
+            <!--            <li><a href="#">One more separated link</a></li>-->
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Fleet<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Add Delivery Associate</a></li>
+            <li><a href="#">View all delivery associates</a></li>
+            <!--            <li><a href="#">Something else here</a></li>-->
+            <!--            <li role="separator" class="divider"></li>-->
+            <!--            <li class="dropdown-header">Nav header</li>-->
+            <!--            <li><a href="#">Separated link</a></li>-->
+            <!--            <li><a href="#">One more separated link</a></li>-->
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Routes<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Trip Planning</a></li>
+            <li><a href="#">Create a Quick Route</a></li>
+            <!--            <li><a href="#">Something else here</a></li>-->
+            <!--            <li role="separator" class="divider"></li>-->
+            <!--            <li class="dropdown-header">Nav header</li>-->
+            <!--            <li><a href="#">Separated link</a></li>-->
+            <!--            <li><a href="#">One more separated link</a></li>-->
+          </ul>
+        </li>
+
+      </ul>
+
+      <ul class="nav navbar-nav col-xs-12 col-md-4 col-lg-4" style="float: right;">
+        <li><a href="#" class="navbar-nav col-xs-12 col-md-12 col-lg-4" style="text-align: left;" id="emailId"></a></li>
+        <li><a href="#" class="navbar-nav col-xs-12 col-md-12 col-lg-4" style="text-align: left;" onclick="logOut()">Logout</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+<script type="text/javascript">
+  // A $( document ).ready() block.
+  // $( document ).ready(async function() {
+  //   console.log( "Setting login email!" );
+  //   //$("#navbarLoader").load('./templates/navbar.html')
+  // });
+</script>
+

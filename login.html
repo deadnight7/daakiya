@@ -150,12 +150,12 @@
 <!--              <button type="button" class="btn btn-default"><span>Sign up with Facebook </span><img src="facebook.svg"/> </button>-->
               <br/>
               <h3>Daakiya helps you find your shortest path between locations.</h3>
-              <h1>One stop solution to<br/>
+              <div class="hidden-xs"><h1>One stop solution to<br/>
                 <span
                   class="txt-rotate"
                   data-period="2000"
                   data-rotate='[ "Route Optimization.", "Delivery Management.", "Saving Logistics Costs." ]'></span>
-              </h1>
+              </h1></div>
               <h2></h2>
 
             </div>
@@ -171,72 +171,34 @@
     height: 515px;
     border: 1px solid #000;">
 
-            <form class="signUpForm">
-              <h2 style="
-                  font-family: 'Raleway', sans-serif;
-                  color:#000;
-                  margin-bottom: 27px;">Sign Up  &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-default" onclick="authenticateWithGoogle()"><span>Sign in with Google </span><img src="img/google.svg"/> </button>
-                <!--                <img src="./google_sign_in_button.png"/>  -->
-
-                <!--                <a href="#"><img src="./github.svg"/></a>&nbsp;&nbsp;&nbsp;-->
-
-                <!--                <a href="#"><img src="./facebook.svg"/></a>-->
-                <!--                <img src="./facebook.svg"/>-->
-              </h2>
-
-              <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email">
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="loginPassword" placeholder="Password">
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Name</label>
-                <input type="text" class="form-control" id="firstName" aria-describedby="emailHelp" placeholder="First name">
-              </div>
-              <!--              <div class="form-group">-->
-              <!--                <label for="exampleInputEmail1">Mobile</label>-->
-              <!--                <input type="number" class="form-control" id="mobile" aria-describedby="emailHelp" placeholder="Mobile Number">-->
-              <!--              </div>-->
-
-              <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="rememberMe">
-                <label class="form-check-label" for="exampleCheck1">Remember Me</label>
-              </div>
-              <button type="submit" class="btn btn-primary" id="registerButton">Register</button>
-              <button type="submit" class="btn btn-default" onclick="showLoginForm()">Already have an account - Login</button>
-              <br/><br/>
-              <!--              <img src="./signin_light_google_web.png"/>-->
-              <!--              <button type="submit" class="btn btn-default" onclick="showLoginForm()">Already have an account - Login</button>-->
-            </form>
-
             <!--            -->
-
-
-            <form class="loginForm" style="display: none;">
+            <form class="loginForm" style="">
               <h2 style="
           font-family: 'Raleway', sans-serif;
           color:#000;
           margin-top: 79px;
-          margin-bottom: 27px;">Log in</h2>
+          margin-bottom: 27px;">Sign in &nbsp;&nbsp;&nbsp;&nbsp; <button type="button" class="btn btn-default" onclick="authenticateWithGoogle()"><span>Sign in with Google </span><img src="img/google.svg"/> </button></h2>
 
               <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                <label>Email address</label>
+                <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email">
               </div>
               <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                <label>Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
               </div>
 
               <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label" for="exampleCheck1">Remember Me</label>
               </div>
-              <button type="submit" class="btn btn-primary">Login</button>
-              <button type="submit" class="btn btn-default" onClick="showRegisterForm();">I dont have an account - Register</button>
+              <button type="button" class="btn btn-primary" onclick="loginForm()">Login</button>
+<!--              <button type="submit" class="btn btn-default" onClick="showRegisterForm();">I dont have an account - Register</button>-->
+
+              <div class="form-group form-check">
+                <!--                <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+                <strong><p class="form-check-label text-center text-danger" style="display: none;" id="errorMessage">Message</p></strong>
+              </div>
             </form>
 
           </div>
@@ -321,63 +283,114 @@
 
 <script src="./accessKeys.js"></script>
 <script>
-  async function showRegisterForm (){
-    await $(".loginForm").hide();
-    await $(".signUpForm").show();
-  }
-  async function showLoginForm (){
-    await $(".signUpForm").hide();
-    await $(".loginForm").show();
-  }
-
-  document.getElementById("registerButton").addEventListener("click", function(event){
-    event.preventDefault()
-    registerUser()
-  });
-
-  //e.preventDefault();
-  var firebaseConfig = module_firebaseConfig;
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
 
   //Check whether user is already signed in?
   firebase.auth().onAuthStateChanged(function(user) {
+    console.log(user)
     if (user) {
       // User is signed in. navigate to orders list view
-
+      window.location.href = "/order_list_view.html";
+      console.log("User Logged In", user.email);
+      console.log("window.location.href "+ window.location.href)
     } else {
       // No user is signed in. stay on the same page
-
+      console.log("User Not Logged In");
     }
   });
 
-  async function registerUser () {
-    let email = document.getElementById("loginEmail").value
-    let password = document.getElementById("loginPassword").value
+  async function showRegisterForm (){
+    //await $(".loginForm").hide();
+    // await $(".signUpForm").show();
+    window.location.href = "/index.html";
+  }
+  async function showLoginForm (){
+    //await $(".signUpForm").hide();
+    //await $(".loginForm").show();
+    window.location.href = "/login.html";
+  }
+
+  document.getElementById("registerButton").addEventListener("click", function(event){
+    //event.preventDefault()
+    //registerUser()
+  });
+
+  $(document).ready( () => {
+    //
+    // //e.preventDefault();
+    // var firebaseConfig = module_firebaseConfig;
+    // // Initialize Firebase
+    // firebase.initializeApp(firebaseConfig);
+    // var auth = firebase.auth();
+
+  })
+
+  async function loginForm () {
+
+    //e.preventDefault();
+    var firebaseConfig = module_firebaseConfig;
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    let email = document.getElementById("inputEmail").value
+    let password = document.getElementById("inputPassword").value
     console.log("Registering with : "+email+"")
     try {
-      let isLoggedIn = await auth.createUserWithEmailAndPassword (email, password);
+      let isLoggedIn = await auth.signInWithEmailAndPassword (email, password);//  chirag.pandit12@gmail.com 1231234
       console.log(isLoggedIn)
       if (isLoggedIn) {
-        console.log("User created...")
+        console.log("User logged in...")
+        window.location.href = "/order_list_view.html";
         //window.location.refresh();
       }
     }catch (e) {
       console.log("error: unable to register: ", e)
+      $("#errorMessage").text(e.message)
+      $('#errorMessage').show()
     }
   }
+  //
+  // //Check whether user is already signed in?
+  // firebase.auth().onAuthStateChanged(function(user) {
+  //   console.log(user)
+  //   if (user) {
+  //     // User is signed in. navigate to orders list view
+  //     window.location.href = "/order_list_view.html";
+  //     console.log("User Logged In", user.email);
+  //     console.log("window.location.href "+ window.location.href)
+  //   } else {
+  //     // No user is signed in. stay on the same page
+  //     console.log("User Not Logged In");
+  //   }
+  // });
 
+
+  //
+  // async function registerUser () {
+  //   let email = document.getElementById("loginEmail").value
+  //   let password = document.getElementById("loginPassword").value
+  //   console.log("Registering with : "+email+"")
+  //   try {
+  //     let isLoggedIn = await auth.createUserWithEmailAndPassword (email, password);
+  //     console.log(isLoggedIn)
+  //     if (isLoggedIn) {
+  //       console.log("User created...")
+  //       //window.location.refresh();
+  //     }
+  //   }catch (e) {
+  //     console.log("error: unable to register: ", e)
+  //   }
+  // }
+  //
 
   function authenticateWithGoogle () {
-    // let baseProvider = new firebase.auth.GoogleAuthProvider();
-    // firebase.auth().signWithPopup(baseProvider).then(function (result) {
-    //   console.log(result)
-    //   console.log("Success.. Signed in with gmail")
-    // }).catch((err) => {
-    //   console.log(err)
-    //   console.log("Failed to do")
-    // })
+
+    //e.preventDefault();
+    var firebaseConfig = module_firebaseConfig;
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    //const auth = firebase.auth();
+
     var provider = new firebase.auth.GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
 
@@ -388,7 +401,11 @@
       // The signed-in user info.
       var user = result.user;
       console.log(user)
-      // ...
+      if (user) {
+        console.log("User logged in...")
+        window.location.href = "/order_list_view.html";
+        //window.location.refresh();
+      }
     }).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -401,7 +418,9 @@
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
       console.log(credential)
-      // ...
+
+      $("#errorMessage").text(e.message)
+      $('#errorMessage').show()
     });
 
   }
