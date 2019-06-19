@@ -1,0 +1,177 @@
+Crate Code,Status,Amount,Order No,Item Code,Item Name,Item Type,Item Quantity,Crate Quantity
+-,-,-,-,-,-,-,-,-
+CR03413,UNLOADED,500.0,Ord_3264634_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+VzoBlUiUl8g4HOA,PACKED,-,ord_684399316220_test,4916191,Item Name - 1 - 106,Item Type - 1 - 106,1.0,-
+VzoBlUiUl8g4HOA,PACKED,-,ord_684399316220_test,1803387,Item Name - 2 - 216,Item Type - 2 - 216,0.0,-
+ED8r1iVVSj93fzh,PACKED,-,ord_684399316220_test,3001469,Item Name - 1 - 178,Item Type - 1 - 178,1.0,-
+ED8r1iVVSj93fzh,PACKED,-,ord_684399316220_test,2304501,Item Name - 2 - 445,Item Type - 2 - 445,5.0,-
+dLPQ3qiS2fdvHsM,PACKED,-,ord_174759579993_test,1432410,Item Name - 1 - 531,Item Type - 1 - 531,2.0,-
+dLPQ3qiS2fdvHsM,PACKED,-,ord_174759579993_test,3013911,Item Name - 2 - 096,Item Type - 2 - 096,9.0,-
+aDwcGyEgU38idku,PACKED,-,ord_174759579993_test,2176392,Item Name - 1 - 896,Item Type - 1 - 896,2.0,-
+aDwcGyEgU38idku,PACKED,-,ord_174759579993_test,0529763,Item Name - 2 - 044,Item Type - 2 - 044,7.0,-
+rfvn8l11c6ZeteO,PACKED,-,ord_802330240955_test,8391857,Item Name - 1 - 903,Item Type - 1 - 903,5.0,-
+rfvn8l11c6ZeteO,PACKED,-,ord_802330240955_test,6386654,Item Name - 2 - 199,Item Type - 2 - 199,8.0,-
+Fbwzco6yJSj7W4m,PACKED,-,ord_802330240955_test,4846176,Item Name - 1 - 764,Item Type - 1 - 764,6.0,-
+Fbwzco6yJSj7W4m,PACKED,-,ord_802330240955_test,9474372,Item Name - 2 - 030,Item Type - 2 - 030,7.0,-
+PKxrEpySbNQ2pPt,PACKED,-,ord_904077127203_test,7747539,Item Name - 1 - 696,Item Type - 1 - 696,3.0,-
+PKxrEpySbNQ2pPt,PACKED,-,ord_904077127203_test,9895627,Item Name - 2 - 343,Item Type - 2 - 343,6.0,-
+wL8UVqwH909z7wS,PACKED,-,ord_904077127203_test,5794058,Item Name - 1 - 485,Item Type - 1 - 485,6.0,-
+wL8UVqwH909z7wS,PACKED,-,ord_904077127203_test,5683996,Item Name - 2 - 217,Item Type - 2 - 217,4.0,-
+uxMtMQ5dISOniyk,UNLOADED,-,ord_654339654165_test,4018144,Item Name - 1 - 261,Item Type - 1 - 261,6.0,-
+uxMtMQ5dISOniyk,UNLOADED,-,ord_654339654165_test,2891509,Item Name - 2 - 310,Item Type - 2 - 310,7.0,-
+Ajl1PJzST6gk3gW,UNLOADED,-,ord_654339654165_test,8238084,Item Name - 1 - 408,Item Type - 1 - 408,5.0,-
+Ajl1PJzST6gk3gW,UNLOADED,-,ord_654339654165_test,2418755,Item Name - 2 - 537,Item Type - 2 - 537,8.0,-
+L5BQxW8kVVHwYTk,PACKED,-,ord_653530619259_test,5069435,Item Name - 1 - 804,Item Type - 1 - 804,0.0,-
+L5BQxW8kVVHwYTk,PACKED,-,ord_653530619259_test,5336717,Item Name - 2 - 426,Item Type - 2 - 426,1.0,-
+DZjNbSl9GhUf0fp,PACKED,-,ord_653530619259_test,0672313,Item Name - 1 - 056,Item Type - 1 - 056,1.0,-
+DZjNbSl9GhUf0fp,PACKED,-,ord_653530619259_test,8986647,Item Name - 2 - 840,Item Type - 2 - 840,7.0,-
+CR03413,PACKED,500.0,Ord_7886973_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_0534904_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_3522193_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,UNLOADED,500.0,Ord_1007568_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+TBl94JfBzPazEnj,PACKED,-,ord_256603775248_test,3663346,Item Name - 1 - 534,Item Type - 1 - 534,9.0,-
+TBl94JfBzPazEnj,PACKED,-,ord_256603775248_test,7116452,Item Name - 2 - 958,Item Type - 2 - 958,7.0,-
+8vvRJTVUprOqRA4,PACKED,-,ord_256603775248_test,6728015,Item Name - 1 - 863,Item Type - 1 - 863,2.0,-
+8vvRJTVUprOqRA4,PACKED,-,ord_256603775248_test,4601633,Item Name - 2 - 101,Item Type - 2 - 101,4.0,-
+TeZLh9ZYfl69XsM,PACKED,-,ord_764247406674_test,3828258,Item Name - 1 - 913,Item Type - 1 - 913,0.0,-
+TeZLh9ZYfl69XsM,PACKED,-,ord_764247406674_test,6127806,Item Name - 2 - 563,Item Type - 2 - 563,0.0,-
+rBM8EZD5pzKXjmg,PACKED,-,ord_764247406674_test,0860444,Item Name - 1 - 288,Item Type - 1 - 288,3.0,-
+rBM8EZD5pzKXjmg,PACKED,-,ord_764247406674_test,1701252,Item Name - 2 - 177,Item Type - 2 - 177,0.0,-
+1EYqmunaIkgPOF7,PACKED,-,ord_703570898582_test,9063044,Item Name - 1 - 974,Item Type - 1 - 974,9.0,-
+1EYqmunaIkgPOF7,PACKED,-,ord_703570898582_test,7129893,Item Name - 2 - 922,Item Type - 2 - 922,0.0,-
+BYJPFAePdK45rTb,PACKED,-,ord_703570898582_test,1086027,Item Name - 1 - 437,Item Type - 1 - 437,6.0,-
+BYJPFAePdK45rTb,PACKED,-,ord_703570898582_test,7171746,Item Name - 2 - 446,Item Type - 2 - 446,8.0,-
+W5poPSD2Un8XBm5,PACKED,-,ord_496544180817_test,4221089,Item Name - 1 - 698,Item Type - 1 - 698,3.0,-
+W5poPSD2Un8XBm5,PACKED,-,ord_496544180817_test,4896655,Item Name - 2 - 198,Item Type - 2 - 198,8.0,-
+BacBJjeniSrBjNn,PACKED,-,ord_496544180817_test,6193838,Item Name - 1 - 796,Item Type - 1 - 796,6.0,-
+BacBJjeniSrBjNn,PACKED,-,ord_496544180817_test,0448419,Item Name - 2 - 823,Item Type - 2 - 823,6.0,-
+pBSl62zGcB04dN3,UNLOADED,-,ord_126265875101_test,4232897,Item Name - 1 - 743,Item Type - 1 - 743,4.0,-
+pBSl62zGcB04dN3,UNLOADED,-,ord_126265875101_test,5270498,Item Name - 2 - 631,Item Type - 2 - 631,7.0,-
+cGfekSbay3HjVi9,UNLOADED,-,ord_126265875101_test,2911087,Item Name - 1 - 721,Item Type - 1 - 721,8.0,-
+cGfekSbay3HjVi9,UNLOADED,-,ord_126265875101_test,3397577,Item Name - 2 - 102,Item Type - 2 - 102,7.0,-
+Ld3SSreFByWdMwM,PACKED,-,ord_633712726003_test,9533431,Item Name - 1 - 944,Item Type - 1 - 944,9.0,-
+Ld3SSreFByWdMwM,PACKED,-,ord_633712726003_test,4564182,Item Name - 2 - 883,Item Type - 2 - 883,6.0,-
+JT7qtY8mGgIteIV,PACKED,-,ord_633712726003_test,1986678,Item Name - 1 - 499,Item Type - 1 - 499,6.0,-
+JT7qtY8mGgIteIV,PACKED,-,ord_633712726003_test,2307183,Item Name - 2 - 035,Item Type - 2 - 035,0.0,-
+CR03413,PACKED,500.0,Ord_4888351_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_7747162_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_4876227_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_2302433_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,UNLOADED,500.0,Ord_8611190_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+fxrPk2qOwfdWoPr,PACKED,-,ord_403377415263_test,2911488,Item Name - 1 - 214,Item Type - 1 - 214,4.0,-
+fxrPk2qOwfdWoPr,PACKED,-,ord_403377415263_test,1443176,Item Name - 2 - 469,Item Type - 2 - 469,0.0,-
+Elz2kmhrc5E5pIL,PACKED,-,ord_403377415263_test,5919972,Item Name - 1 - 088,Item Type - 1 - 088,0.0,-
+Elz2kmhrc5E5pIL,PACKED,-,ord_403377415263_test,9965259,Item Name - 2 - 763,Item Type - 2 - 763,0.0,-
+6qRNn2r7ig9fKFE,PACKED,-,ord_412142797460_test,1948206,Item Name - 1 - 173,Item Type - 1 - 173,4.0,-
+6qRNn2r7ig9fKFE,PACKED,-,ord_412142797460_test,0957384,Item Name - 2 - 427,Item Type - 2 - 427,4.0,-
+f1Hv6oEyvI0a7hf,PACKED,-,ord_412142797460_test,9531083,Item Name - 1 - 759,Item Type - 1 - 759,4.0,-
+f1Hv6oEyvI0a7hf,PACKED,-,ord_412142797460_test,6317001,Item Name - 2 - 093,Item Type - 2 - 093,9.0,-
+PQQUXnbNBvXDlFK,PACKED,-,ord_432391914449_test,1765723,Item Name - 1 - 298,Item Type - 1 - 298,2.0,-
+PQQUXnbNBvXDlFK,PACKED,-,ord_432391914449_test,7614667,Item Name - 2 - 236,Item Type - 2 - 236,3.0,-
+qOTjz4zIAbrM5EY,PACKED,-,ord_432391914449_test,7206743,Item Name - 1 - 018,Item Type - 1 - 018,6.0,-
+qOTjz4zIAbrM5EY,PACKED,-,ord_432391914449_test,6145956,Item Name - 2 - 701,Item Type - 2 - 701,8.0,-
+6WYDZOt1DQDRTsV,PACKED,-,ord_402336411374_test,7765393,Item Name - 1 - 012,Item Type - 1 - 012,8.0,-
+6WYDZOt1DQDRTsV,PACKED,-,ord_402336411374_test,5295913,Item Name - 2 - 222,Item Type - 2 - 222,3.0,-
+OEAoygZUTmhkh2S,PACKED,-,ord_402336411374_test,4219234,Item Name - 1 - 962,Item Type - 1 - 962,6.0,-
+OEAoygZUTmhkh2S,PACKED,-,ord_402336411374_test,7792023,Item Name - 2 - 567,Item Type - 2 - 567,3.0,-
+YgrHay7vgqTxglj,PACKED,-,ord_464016426536_test,3071977,Item Name - 1 - 225,Item Type - 1 - 225,7.0,-
+YgrHay7vgqTxglj,PACKED,-,ord_464016426536_test,3365241,Item Name - 2 - 082,Item Type - 2 - 082,8.0,-
+JSEsANIg9irl1q2,PACKED,-,ord_464016426536_test,2409754,Item Name - 1 - 466,Item Type - 1 - 466,9.0,-
+JSEsANIg9irl1q2,PACKED,-,ord_464016426536_test,4246424,Item Name - 2 - 020,Item Type - 2 - 020,1.0,-
+B73a2o5JQqrrabK,UNLOADED,-,ord_864056277994_test,4536771,Item Name - 1 - 609,Item Type - 1 - 609,9.0,-
+B73a2o5JQqrrabK,UNLOADED,-,ord_864056277994_test,9563125,Item Name - 2 - 598,Item Type - 2 - 598,1.0,-
+5JIX7juSqbGJbE5,UNLOADED,-,ord_864056277994_test,9305930,Item Name - 1 - 148,Item Type - 1 - 148,7.0,-
+5JIX7juSqbGJbE5,UNLOADED,-,ord_864056277994_test,0099477,Item Name - 2 - 446,Item Type - 2 - 446,4.0,-
+CR03413,PACKED,500.0,Ord_1218724_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_3033782_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_4580856_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_5687532_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+NlwOzMTIiIlswYW,PACKED,-,ord_829181824049_test,4389596,Item Name - 1 - 759,Item Type - 1 - 759,0.0,-
+NlwOzMTIiIlswYW,PACKED,-,ord_829181824049_test,7118648,Item Name - 2 - 433,Item Type - 2 - 433,4.0,-
+OTcAothZoouBLFx,PACKED,-,ord_829181824049_test,9292415,Item Name - 1 - 343,Item Type - 1 - 343,0.0,-
+OTcAothZoouBLFx,PACKED,-,ord_829181824049_test,2322703,Item Name - 2 - 157,Item Type - 2 - 157,4.0,-
+Z9dJlqmNxZndkWU,UNLOADED,-,ord_391325138023_test,8188380,Item Name - 1 - 606,Item Type - 1 - 606,8.0,-
+Z9dJlqmNxZndkWU,UNLOADED,-,ord_391325138023_test,5433003,Item Name - 2 - 709,Item Type - 2 - 709,0.0,-
+eDUlDoX8HywIIW6,UNLOADED,-,ord_391325138023_test,3204693,Item Name - 1 - 119,Item Type - 1 - 119,8.0,-
+eDUlDoX8HywIIW6,UNLOADED,-,ord_391325138023_test,5139329,Item Name - 2 - 010,Item Type - 2 - 010,3.0,-
+xM3MjcK0d9sDXSp,PACKED,-,ord_848134932570_test,8522531,Item Name - 1 - 351,Item Type - 1 - 351,4.0,-
+xM3MjcK0d9sDXSp,PACKED,-,ord_848134932570_test,5567807,Item Name - 2 - 127,Item Type - 2 - 127,8.0,-
+qeIv6gseXnFFLSU,PACKED,-,ord_848134932570_test,9474176,Item Name - 1 - 275,Item Type - 1 - 275,3.0,-
+qeIv6gseXnFFLSU,PACKED,-,ord_848134932570_test,8750675,Item Name - 2 - 385,Item Type - 2 - 385,6.0,-
+apye2ffLOXWlRks,PACKED,-,ord_033718592318_test,8335798,Item Name - 1 - 626,Item Type - 1 - 626,1.0,-
+apye2ffLOXWlRks,PACKED,-,ord_033718592318_test,4762540,Item Name - 2 - 099,Item Type - 2 - 099,2.0,-
+lD8tBo85a42k8wk,PACKED,-,ord_033718592318_test,3733253,Item Name - 1 - 979,Item Type - 1 - 979,8.0,-
+lD8tBo85a42k8wk,PACKED,-,ord_033718592318_test,1701273,Item Name - 2 - 736,Item Type - 2 - 736,9.0,-
+w1OS9RlHY87yL1n,UNLOADED,-,ord_749423252834_test,2693038,Item Name - 1 - 080,Item Type - 1 - 080,5.0,-
+w1OS9RlHY87yL1n,UNLOADED,-,ord_749423252834_test,6085797,Item Name - 2 - 299,Item Type - 2 - 299,9.0,-
+26HNNRPeBWSXjuk,UNLOADED,-,ord_749423252834_test,6993843,Item Name - 1 - 144,Item Type - 1 - 144,9.0,-
+26HNNRPeBWSXjuk,UNLOADED,-,ord_749423252834_test,6528247,Item Name - 2 - 848,Item Type - 2 - 848,7.0,-
+CR03413,PACKED,500.0,Ord_0447982_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_9792776_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_4334384_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+SgvXSzPk9tE5mEa,PACKED,-,ord_805122294445_test,9840614,Item Name - 1 - 880,Item Type - 1 - 880,4.0,-
+SgvXSzPk9tE5mEa,PACKED,-,ord_805122294445_test,4346886,Item Name - 2 - 713,Item Type - 2 - 713,1.0,-
+mnnPm7no2AWGESS,PACKED,-,ord_805122294445_test,8838184,Item Name - 1 - 336,Item Type - 1 - 336,5.0,-
+mnnPm7no2AWGESS,PACKED,-,ord_805122294445_test,2966094,Item Name - 2 - 043,Item Type - 2 - 043,5.0,-
+ySxFQ5lV4AVUnh9,PACKED,-,ord_872796121588_test,1138214,Item Name - 1 - 923,Item Type - 1 - 923,9.0,-
+ySxFQ5lV4AVUnh9,PACKED,-,ord_872796121588_test,6494366,Item Name - 2 - 671,Item Type - 2 - 671,6.0,-
+zWz0s6tFyH8f9QX,PACKED,-,ord_872796121588_test,5373723,Item Name - 1 - 923,Item Type - 1 - 923,3.0,-
+zWz0s6tFyH8f9QX,PACKED,-,ord_872796121588_test,5788240,Item Name - 2 - 390,Item Type - 2 - 390,6.0,-
+VjL4Fofhy7UyA2y,PACKED,-,ord_055767473704_test,8066321,Item Name - 1 - 295,Item Type - 1 - 295,6.0,-
+VjL4Fofhy7UyA2y,PACKED,-,ord_055767473704_test,0365020,Item Name - 2 - 732,Item Type - 2 - 732,8.0,-
+R6HGOE8b2rDQlf5,PACKED,-,ord_055767473704_test,9885525,Item Name - 1 - 737,Item Type - 1 - 737,2.0,-
+R6HGOE8b2rDQlf5,PACKED,-,ord_055767473704_test,5348909,Item Name - 2 - 834,Item Type - 2 - 834,8.0,-
+mEm1TyKnBRfOufq,PACKED,-,ord_648348666173_test,7141894,Item Name - 1 - 088,Item Type - 1 - 088,3.0,-
+mEm1TyKnBRfOufq,PACKED,-,ord_648348666173_test,7884509,Item Name - 2 - 659,Item Type - 2 - 659,9.0,-
+smRIghvTlIH9Q5m,PACKED,-,ord_648348666173_test,3599367,Item Name - 1 - 496,Item Type - 1 - 496,8.0,-
+smRIghvTlIH9Q5m,PACKED,-,ord_648348666173_test,9346788,Item Name - 2 - 740,Item Type - 2 - 740,2.0,-
+t5RAc26nNXKP9iw,PACKED,-,ord_560065330304_test,0733407,Item Name - 1 - 757,Item Type - 1 - 757,1.0,-
+t5RAc26nNXKP9iw,PACKED,-,ord_560065330304_test,3531634,Item Name - 2 - 311,Item Type - 2 - 311,3.0,-
+csXMhsLfcSouf2e,PACKED,-,ord_560065330304_test,5726070,Item Name - 1 - 633,Item Type - 1 - 633,5.0,-
+csXMhsLfcSouf2e,PACKED,-,ord_560065330304_test,4474829,Item Name - 2 - 857,Item Type - 2 - 857,3.0,-
+HDyZGxw3HlS3U55,PACKED,-,ord_883125833260_test,7396501,Item Name - 1 - 143,Item Type - 1 - 143,5.0,-
+HDyZGxw3HlS3U55,PACKED,-,ord_883125833260_test,2741774,Item Name - 2 - 924,Item Type - 2 - 924,7.0,-
+M0pvFwgZSSm2ntF,PACKED,-,ord_883125833260_test,9532925,Item Name - 1 - 579,Item Type - 1 - 579,7.0,-
+M0pvFwgZSSm2ntF,PACKED,-,ord_883125833260_test,8981185,Item Name - 2 - 400,Item Type - 2 - 400,3.0,-
+2dlwekldd7DmPFN,UNLOADED,-,ord_201955174745_test,0584718,Item Name - 1 - 712,Item Type - 1 - 712,1.0,-
+2dlwekldd7DmPFN,UNLOADED,-,ord_201955174745_test,6717228,Item Name - 2 - 830,Item Type - 2 - 830,4.0,-
+H5GdZ8f2GQmtEAV,UNLOADED,-,ord_201955174745_test,8674130,Item Name - 1 - 987,Item Type - 1 - 987,0.0,-
+H5GdZ8f2GQmtEAV,UNLOADED,-,ord_201955174745_test,7483928,Item Name - 2 - 784,Item Type - 2 - 784,7.0,-
+3t7esPayv5mtfUs,PACKED,-,ord_431599868697_test,3930770,Item Name - 1 - 219,Item Type - 1 - 219,5.0,-
+3t7esPayv5mtfUs,PACKED,-,ord_431599868697_test,6158840,Item Name - 2 - 557,Item Type - 2 - 557,8.0,-
+D0M05MbcK4TvSJg,PACKED,-,ord_431599868697_test,5622856,Item Name - 1 - 968,Item Type - 1 - 968,0.0,-
+D0M05MbcK4TvSJg,PACKED,-,ord_431599868697_test,9693687,Item Name - 2 - 505,Item Type - 2 - 505,0.0,-
+CR03413,PACKED,500.0,Ord_7040553_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_1996297_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_4017770_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_5688056_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_2031141_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_4425948_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+AikDlbejEvVXZZ4,PACKED,-,ord_169692601856_test,6193806,Item Name - 1 - 656,Item Type - 1 - 656,7.0,-
+AikDlbejEvVXZZ4,PACKED,-,ord_169692601856_test,3875168,Item Name - 2 - 366,Item Type - 2 - 366,6.0,-
+ZNlrtOJ317SQvin,PACKED,-,ord_169692601856_test,9970572,Item Name - 1 - 609,Item Type - 1 - 609,1.0,-
+ZNlrtOJ317SQvin,PACKED,-,ord_169692601856_test,9973678,Item Name - 2 - 236,Item Type - 2 - 236,1.0,-
+NZUTlBD5pnvcu13,PACKED,-,ord_752350130458_test,6785703,Item Name - 1 - 892,Item Type - 1 - 892,6.0,-
+NZUTlBD5pnvcu13,PACKED,-,ord_752350130458_test,7689713,Item Name - 2 - 927,Item Type - 2 - 927,2.0,-
+RRKNv0z9uI7ladb,PACKED,-,ord_752350130458_test,5776314,Item Name - 1 - 098,Item Type - 1 - 098,0.0,-
+RRKNv0z9uI7ladb,PACKED,-,ord_752350130458_test,9239255,Item Name - 2 - 294,Item Type - 2 - 294,4.0,-
+bFVy7InVEtzb5Fj,PACKED,-,ord_601162646433_test,7891687,Item Name - 1 - 212,Item Type - 1 - 212,6.0,-
+bFVy7InVEtzb5Fj,PACKED,-,ord_601162646433_test,1386902,Item Name - 2 - 489,Item Type - 2 - 489,4.0,-
+4VtoDt7PpeNL4Nu,PACKED,-,ord_601162646433_test,3160333,Item Name - 1 - 442,Item Type - 1 - 442,6.0,-
+4VtoDt7PpeNL4Nu,PACKED,-,ord_601162646433_test,6236452,Item Name - 2 - 713,Item Type - 2 - 713,4.0,-
+P4rWEIO0HPmqRGM,PACKED,-,ord_837408126210_test,0597724,Item Name - 1 - 590,Item Type - 1 - 590,0.0,-
+P4rWEIO0HPmqRGM,PACKED,-,ord_837408126210_test,7562012,Item Name - 2 - 593,Item Type - 2 - 593,3.0,-
+3qblEUUKsceVwSf,PACKED,-,ord_837408126210_test,3237769,Item Name - 1 - 233,Item Type - 1 - 233,4.0,-
+3qblEUUKsceVwSf,PACKED,-,ord_837408126210_test,0110859,Item Name - 2 - 395,Item Type - 2 - 395,1.0,-
+U2FrpyKkhjDPJwJ,UNLOADED,-,ord_516480970074_test,2238958,Item Name - 1 - 404,Item Type - 1 - 404,7.0,-
+U2FrpyKkhjDPJwJ,UNLOADED,-,ord_516480970074_test,3616752,Item Name - 2 - 808,Item Type - 2 - 808,3.0,-
+3p8cQoRV2AGYXqA,UNLOADED,-,ord_516480970074_test,2343789,Item Name - 1 - 912,Item Type - 1 - 912,7.0,-
+3p8cQoRV2AGYXqA,UNLOADED,-,ord_516480970074_test,2921159,Item Name - 2 - 214,Item Type - 2 - 214,1.0,-
+4mVHToglZ4lDPZ8,PACKED,-,ord_396234635379_test,6483430,Item Name - 1 - 261,Item Type - 1 - 261,2.0,-
+4mVHToglZ4lDPZ8,PACKED,-,ord_396234635379_test,8452950,Item Name - 2 - 127,Item Type - 2 - 127,3.0,-
+Ax7IeMhzqidSjJP,PACKED,-,ord_396234635379_test,5090536,Item Name - 1 - 029,Item Type - 1 - 029,1.0,-
+Ax7IeMhzqidSjJP,PACKED,-,ord_396234635379_test,4796276,Item Name - 2 - 233,Item Type - 2 - 233,7.0,-
+CR03413,PACKED,500.0,Ord_2227865_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_1179815_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+CR03413,PACKED,500.0,Ord_0073048_test,IT043,Chicken Soup 2X200gm,soup,1.0,-
+-,-,-,-,-,-,-,-,-

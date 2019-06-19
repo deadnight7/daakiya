@@ -1,0 +1,136 @@
+<!doctype html>  <html lang='en'>  <head>  <meta charset='utf-8'>  <meta name='viewport'	content='width=device-width, initial-scale=1, shrink-to-fit=no'>  <link rel='stylesheet'  href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' 	integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous' />  <script type='text/javascript' 	src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.min.js'>	</script>  <link rel='icon' 	href='https://products.loginextsolutions.com/product/images/favicon.ico'>  <style> .header {	padding: 17px; } .wrap {    white-space: pre-wrap;      /* CSS3 */      white-space: -moz-pre-wrap; /* Firefox */       white-space: -pre-wrap;     /* Opera <7 */      white-space: -o-pre-wrap;   /* Opera 7 */       word-wrap: break-word;      /* IE */}.footer {	position: absolute;	bottom: 0;	width: 100%;	background-color: #f5f5f5;}.executionDetails {	bottom: 0;  } .executionDetailsTable {	margin-top: 48px; } .testHeader { 	background: linear-gradient(45deg, #083100 0%, #336d61 100%);  box-shadow: 0px 8px 31px 0px #0e0b0b96 inset; padding-top: 62px;	padding-bottom: 40px;	color: #ececec;	text-shadow: 1px 1px 1px #000;  }  </style>  <title>Test Execution Report</title>  </head <body>	<div 		style='-webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, .13); -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, .13); -o-box-shadow: 0 2px 4px rgba(0, 0, 0, .13); -ms-box-shadow: 0 2px 4px rgba(0, 0, 0, .13); box-shadow: 0 2px 4px rgba(0, 0, 0, .13); padding-top: 19px; padding-bottom: 15px;'>		<div class='container'>	<div class='row'>  <div class='col-3'>  <img src='https://www.loginextsolutions.com/images/logo.png'						alt='loginext'>			</div>				<div class='col-9 text-center' style='margin-top: 10px'>					<h3>Test Automation Execution Report</h3>				</div>			</div>		</div>	</div><div class='testHeader'>		<div class='container'>			<div class='row'>				<div class='col-12'>					<h3><strong>Test Name - </strong>Mile Sanity  Verify OD Order Allocation</h3>					<br/>				</div>			</div>		</div>	</div>	<div class='container'>		<div class='row'>			<div class='col-12'>					<br/><h5>Test Started on : 06-15-2019 22:09:07</h5>			</div></div>		<div class='row'>			<div class='table'>				<table class='table table-bordered'>					<thead class='thead-dark'>						<tr>							<th class='text-center'>Step#</th>							<th class='' >Test Step</th>							<th class='text-center' >Expected</th>							<th class='text-center' >Actual</th>							<th class='text-center' >Time</th>							<th class='text-center'  width='10%'>Status</th>						</tr>					</thead>					<tbody>  <tr>   <th class='text-center' scope='row'>1</th>  <td class='wrap text-center'>Authenticate Mobile User - Client API</td>  <td class='wrap'>Should be able to authenticate</td>  <td class='wrap text-left'>Successfully Authenticated user - testautomation_od</td>  <td class='wrap text-center'>10:09:08s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  <tr>   <th class='text-center' scope='row'>2</th>  <td class='wrap text-center'>Set Mobile Tracker Data</td>  <td class='wrap'>Should be able to set Tracker Data</td>  <td class='wrap text-left'>Successfully updated Mobile  Tracker Data : strAPI: https://products.loginextsolutions.com/TrackingApp/track/mobile/put <br/>{
+  "location": [
+    {
+      "latitude": "19.119575",
+      "longitude": "72.906236",
+      "speed": "10",
+      "battery": "90",
+      "locationSource": "network",
+      "trackingDt": "2019-06-15T16:39:08Z",
+      "type": "MOBREG",
+      "distanceFromLastLocation": "0",
+      "accuracy": "100",
+      "bearing": "1",
+      "altitude": "1",
+      "lastLatitude": "19.119575",
+      "lastLongitude": "72.906236",
+      "isFirstPointFl": "1",
+      "currentTime": "1560616748",
+      "previousTime": "1560616748",
+      "signalStrength": "100",
+      "networkType": "MOBILE",
+      "imei": "911380458661315"
+    }
+  ]
+}</td>  <td class='wrap text-center'>10:09:09s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  <tr>   <th class='text-center' scope='row'>3</th>  <td class='wrap text-center'>Fetch Response</td>  <td class='wrap'>Tracking Data response should be fetched</td>  <td class='wrap text-left'>Tracking Data response fetched : {
+  "status": 200,
+  "moreResultsExists": false,
+  "data": {
+    "msg": [
+      "2019-06-15T16:39:08"
+    ],
+    "previousTimes": [
+      1560616748
+    ]
+  },
+  "hasError": false
+}</td>  <td class='wrap text-center'>10:09:09s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  <tr>   <th class='text-center' scope='row'>4</th>  <td class='wrap text-center'>Authenticate User - Client API</td>  <td class='wrap'>Should be able to authenticate</td>  <td class='wrap text-left'>Successfully Authenticated user - testing7@loginextsolutions.com</td>  <td class='wrap text-center'>10:09:12s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  <tr>   <th class='text-center' scope='row'>5</th>  <td class='wrap text-center'>Fetch Response Status</td>  <td class='wrap'>Response Status should be fetched</td>  <td class='wrap text-left'>Response status is : 200, Expecting 200;<br/>https://products.loginextsolutions.com/ShipmentApp/ondemand/v1/create;<br/><br/>RequestBody : [
+  {
+    "cashOnDelivery": 1000,
+    "cashOnPickup": 1000,
+    "customerName": "Chirag S.",
+    "address": "Supreme buisness Park, Hiranandani Gardens, Mumbai 400076",
+    "locality": "powai",
+    "subLocality": "hiranandani",
+    "deliverPhoneNumber": "9686049337",
+    "orderNo": "OD_Ord_1169417",
+    "distributionCenter": "OnDemandDemoBranch",
+    "paymentType": "COD",
+    "latitude": 19.119575,
+    "longitude": 72.906236
+  }
+]<br/>;<br/>Response from Client API : {
+  "status": 200,
+  "message": "Success",
+  "referenceId": [
+    "81b0ccc72ab94063aa55651df8ad7e00"
+  ],
+  "moreResultsExists": false,
+  "hasError": false
+}</td>  <td class='wrap text-center'>10:09:17s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  <tr>   <th class='text-center' scope='row'>6</th>  <td class='wrap text-center'>Add order - On Demand</td>  <td class='wrap'>Should be able to create order for On Demand</td>  <td class='wrap text-left'>Successfully created order OD_Ord_1169417- using API</td>  <td class='wrap text-center'>10:09:17s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  <tr>   <th class='text-center' scope='row'>7</th>  <td class='wrap text-center'>Fetch Response Status</td>  <td class='wrap'>Response Status should be fetched</td>  <td class='wrap text-left'>Response status is : 200, Expecting 200;<br/>https://products.loginextsolutions.com/ShipmentApp/mobile/shipment/list/neworder?version=9999&paramkey=com.loginext.tracknext;<br/><br/>RequestBody : <br/>;<br/>Response from Client API : {
+  "status": 200,
+  "message": "New Orders Fetched Successfully",
+  "moreResultsExists": false,
+  "data": [
+    {
+      "shipmentId": 20903466,
+      "orderNo": "OD_Ord_1169417",
+      "locations": [
+        {
+          "shipmentLocationId": 42120144,
+          "shipmentDetailsId": 20903466,
+          "locationStatusCd": "NOTDISPATCHED",
+          "capacityInUnits": 0,
+          "capacityInVolume": 0,
+          "capacityInWeight": 0,
+          "serviceTimeInMins": 0,
+          "clientNodeId": 941107,
+          "startTimeWindow": 1560616757000,
+          "endTimeWindow": 1560617657000,
+          "packageValue": 1000.0,
+          "shipmentOrderTypeCd": "DELIVER",
+          "deliveryTypeCd": "PICKUPLOCATION",
+          "paymentType": "COD",
+          "originClientNodeId": 941107,
+          "destClientNodeId": 15415508,
+          "clientNodeName": "OnDemandDemoBranch",
+          "address": "901 A , Supreme business park,Powai,Mumbai,400076",
+          "latitude": 19.111671,
+          "longitude": 72.908427,
+          "clientNodePhone": "",
+          "clientShipmentId": "OD_Ord_1169417",
+          "isPartialDeliveryAllowedFl": "N",
+          "packageStatusCd": "NOTDISPATCHED",
+          "orderNo": "OD_Ord_1169417",
+          "pincode": "400076",
+          "cashAmount": 1000.0,
+          "isP2POrder": false
+        },
+        {
+          "shipmentLocationId": 42120145,
+          "shipmentDetailsId": 20903466,
+          "locationStatusCd": "NOTDISPATCHED",
+          "capacityInUnits": 0,
+          "capacityInVolume": 0,
+          "capacityInWeight": 0,
+          "serviceTimeInMins": 0,
+          "clientNodeId": 15415508,
+          "startTimeWindow": 1560617657000,
+          "endTimeWindow": 1560621257000,
+          "packageValue": 1000.0,
+          "shipmentOrderTypeCd": "DELIVER",
+          "deliveryTypeCd": "DELIVERYLOCATION",
+          "paymentType": "COD",
+          "originClientNodeId": 941107,
+          "destClientNodeId": 15415508,
+          "clientNodeName": "Chirag S.",
+          "address": "Supreme buisness Park, Hiranandani Gardens, Mumbai 400076,hiranandani,powai,Andheri,400076",
+          "latitude": 19.119575,
+          "longitude": 72.906236,
+          "clientNodePhone": "9686049337",
+          "clientShipmentId": "OD_Ord_1169417",
+          "isPartialDeliveryAllowedFl": "N",
+          "packageStatusCd": "NOTDISPATCHED",
+          "orderNo": "OD_Ord_1169417",
+          "pincode": "400076",
+          "cashAmount": 1000.0,
+          "nodeMobileNumbers": [
+            "9686049337"
+          ],
+          "isP2POrder": false
+        }
+      ]
+    }
+  ],
+  "hasError": false
+}</td>  <td class='wrap text-center'>10:10:23s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  <tr>   <th class='text-center' scope='row'>8</th>  <td class='wrap text-center'>Fetch order - API</td>  <td class='wrap'>Should be able to fetch all new order using API</td>  <td class='wrap text-left'>Successfully fetched OD orders using API</td>  <td class='wrap text-center'>10:10:23s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  <tr>   <th class='text-center' scope='row'>9</th>  <td class='wrap text-center'>Verify Order Allocation</td>  <td class='wrap'>Should be able to verify Order allocation</td>  <td class='wrap text-left'><b>Order is getting allocated to user : testautomation_od with </b> Order# : OD_Ord_1169417</td>  <td class='wrap text-center'>10:10:23s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  <tr>   <th class='text-center' scope='row'>10</th>  <td class='wrap text-center'>Verify OD Order Allocation</td>  <td class='wrap'>Should be able to verify order allocation</td>  <td class='wrap text-left'>Successfully verified Order Allocation</td>  <td class='wrap text-center'>10:10:23s</td>  <td class='wrap text-center alert alert-success'>Passed</td></tr>  </tbody>  </table>  </div>  </div>  </div>  <div class='container executionDetails'>  <div class='row'>  <div class='col'>  </div>  </div>  <div class='row'>  <div class='col-12 text-center'>  <h2>Overall Test Status : <span>Passed</span></h2>  <br />  </div>  </div>  <div class='row'>  <div class='col-6'>  <table class=' table table-striped table-bordered'>  <thead class='thead-dark'>  <tr>  <th colspan='2' class='thead-dark text-center'>Overall    Execution Summary</th></tr></thead><tbody><tr> <td width='50%'>Total Tests Steps</td>  <td width='50%'>10</td></tr><tr>  <td>Passed</td>  <td>10</td> </tr> <tr>  <td>Failed</td>  <td>0</td></tr><tr>  <td>Executed By</td>  <td>jenkins</td></tr><tr><td  width='50%'>Scenario</td>  <td  width='50%' class='wrap'>OnDemand.verifyOrderAllocation</td></tr></tbody></table></div><div class='col-6'><table class=' table table-striped table-bordered'><thead class='thead-dark text-center'><tr>  <th colspan='2' class='thead-dark'>Overall Execution Timing</th></tr></thead><tbody><tr>  <td width='50%'>Time Taken</td>  <td width='50%'>1 min 16.26 sec </td></tr><tr>  <td>Started At</td>  <td>Jun 15,2019 22:09:07</td></tr><tr>  <td>Ended At</td>  <td>Jun 15,2019 22:10:23</td></tr></tbody></table></div></div></div><footer style='padding-top: 14px; padding-bottom: 5px; margin-top: 20px'> <div class='container'><div class='text-center'><h6 class='text-muted ' style='font-size: 14px;'> QA Test Automation Report - Designed and Developed at LogiNext <br> LogiNext Confidential. </h6> </div>  </div> </footer> <!-- Optional JavaScript --> <!-- jQuery first, then Popper.js, then Bootstrap JS --> <script src='https://code.jquery.com/jquery-3.2.1.slim.min.js'  integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous'></script> <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js'  integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous'></script> <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'  integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous'></script>  <script>  $(document).ready(function(){  $('[data-toggle="tooltip"]').tooltip(); 	});	</script> </body> </html>
