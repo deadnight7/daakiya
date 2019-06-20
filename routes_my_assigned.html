@@ -20,6 +20,8 @@
   <script src="./js/date.format.js"></script>
   <![endif]-->
   <link rel="icon" href="./img/favicon-d.png">
+  <script type="text/javascript" src="./js/moment.js"></script>
+
 </head>
 <html>
 <body>
@@ -30,6 +32,7 @@
 <!-- Add Firebase products that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-messaging.js"></script>
 <!--<script src="https://www.gstatic.com/firebasejs/6.1.1/firebase.js"></script>-->
 
 <!--Load Access Keys -->
@@ -61,7 +64,7 @@
     $("#navbarLoader").load('./templates/navbar.html')
     let htmlContent = '\n' +
       '  <div class="row">' +
-      '    <h3 class="col-xs-12 col-md-12 col-lg-12 text-center" >Getting your delivery fleet...</h3>\n' +
+      '    <h3 class="col-xs-12 col-md-12 col-lg-12 text-center" >Fetching your trips...</h3>\n' +
       '    <img src="./img/globe.gif" class="col-xs-12 col-md-12 col-lg-12" style="\n' +
       '    margin-top: -266px;\n' +
       '    z-index: -30;\n' +
@@ -69,20 +72,42 @@
       '    "/>\n' +
       '  </div>';
     //$("#render_container").html(htmlContent)
-    $("#render_container").html(htmlContent)
+    $("#routeList").html(htmlContent)
+
+    //Get Messaging Service from Firebase
+    const messaging = firebase.messaging();
+
+    messaging.requestPermission()
+      .then(function () {
+        console.log("Have permission...")
+        return messaging.getToken();
+      })
+      .then(function (token) {
+        //Store this value in Firestore and send it when there is an update of that record
+        console.log("FCM Token",token);
+      })
+      .catch(function (err) {
+        console.log("User denied push notif...", err)
+      })
 
 
+    let userEmail = "";
+    //
+    // messaging.onMessage(function (payload) {
+    //   console.log(payload)
+    // })
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
         console.log("Loaded ", user)
         $("#emailId").text(userDetails.email)
+        userEmail = userDetails.email;
 
         //Fetch all orders belonging to that user id - auth.currentUser.uid
         let currentUserId = firebase.auth().currentUser.uid; //W0snQdSu0hdDUmTH85BlJKzkPTr2
         console.log("currentUserId: ",currentUserId)
         //getOrders(currentUserId)
-        getDeliveryAssociates(currentUserId)
+        getRoutes(currentUserId, userEmail)
       } else {
         // No user is signed in.
         window.location.href = "/";
@@ -126,91 +151,32 @@
     console.log("Total orders : "+docs.docs.length)
     renderOrders (docs.docs);
   }
+  //
+  // async function getRoutes (currentUserId) {
+  //   let docs;
+  //   try {
+  //     //firebase.firestore().collection("orders").where("createdBy", "==", "W0snQdSu0hdDUmTH85BlJKzkPTr2").orderBy("creationDate", "desc").get();
+  //     docs = await firebase.firestore().collection("routes").where("createdBy", "==", currentUserId+"").orderBy("createdAt", "desc").get();
+  //   }
+  //   catch (e) {
+  //     console.log("error: ",e);
+  //   }
+  //   console.log("Total orders : "+docs.docs.length)
+  //   //renderOrders (docs.docs);
+  //   renderRoutes (docs.docs);
+  // }
 
-  async function getDeliveryAssociates (currentUserId) {
+  async function getRoutes (currentUserId, userEmail) {
     let docs;
     try {
       //firebase.firestore().collection("orders").where("createdBy", "==", "W0snQdSu0hdDUmTH85BlJKzkPTr2").orderBy("creationDate", "desc").get();
-      docs = await firebase.firestore().collection("delivery_associates").where("createdBy", "==", currentUserId+"").get();
+      docs = await firebase.firestore().collection("routes").where("assignedDeliveryAssociate.deliveryAssociateEmail", "==", userEmail +"").get();//.orderBy("creationDate", "desc").get();
     }
     catch (e) {
       console.log("error: ",e);
     }
     console.log("Total orders : "+docs.docs.length)
-    renderDeliveryAssociates (docs.docs);
-  }
-
-  function renderDeliveryAssociates (docs) {
-    try {
-
-      let htmlContent = '\n' +
-        '  <div class="row">\n' +
-        '    <div class="col-xs-12 col-md-12 col-lg-2"></div>\n' +
-        '\n' +
-        '    <div class="col-xs-12 col-md-12 col-lg-7">\n' +
-        '      <h4 class="text-center">No Delivery Associates present, Please add your fleet\n' +
-        '        <img src="./img/deliveryBoyIcon.jpg" style="width: 350px;\n' +
-        '    padding-top: 45px;"/>\n' +
-        '      </h4>\n' +
-        '    </div>\n' +
-        '  </div>\n' +
-        '  \n' +
-        '  <hr/>'
-
-      if (docs.length == 0){
-        $("#render_container").html(htmlContent)
-      }
-      else {
-        htmlContent = "";
-        //htmlContent += '<div class="row">' +
-        docs.forEach((doc) => {
-          let currentDocument = doc.data();
-
-          let format = ""
-          let statusFlagColor = "";
-          try {
-
-            if (currentDocument.custAddress == undefined) {
-              currentDocument.custAddress = "Not available";
-            }
-
-            if ((currentDocument.status+"").toUpperCase() == "AVAILABLE"){
-              statusFlagColor = "success";
-            }
-            else {
-              statusFlagColor = "warning";
-            }
-          }catch (e){
-            console.log("Unable to format dates",e)
-          }
-
-          htmlContent += '\n' +
-            '    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >\n' +
-            '      <h4>'+currentDocument.associateName+'</h4>\n' +
-            '      <p><b>Status</b> :\n' +
-            '        <span class="label label-'+statusFlagColor+'">'+currentDocument.status+'</span>\n' +
-            '        <br>\n' +
-            '        <b>Emp# </b> : '+currentDocument.employeeId+'<br>\n' +
-            '        <b>Address</b> : '+currentDocument.deliveryAssociateAddress+'</p>\n' +
-            '\n' +
-            '      <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->\n' +
-            '      <a href="./db_tracking_history.html?trackingId='+currentDocument.trackingId+'" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">\n' +
-            '        Track<span class="glyphicon glyphicon-map-marker"></span>\n' +
-            '      </a>' +
-            // '     <button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">\n' +
-            // '      Edit\n' +
-            // '    </button>\n' +
-            '    </div>'
-        })
-
-        htmlContent += '</div>\n' +
-
-        $("#render_container").html(htmlContent)
-      }
-    }catch (e) {
-      console.log(e)
-    }
-
+    renderRoutes (docs.docs);
   }
 
   function renderOrders (docs) {
@@ -323,6 +289,250 @@
     }catch (e) {
       console.log(e)
     }
+  }
+
+  function renderRoutes (docs) {
+    try {
+
+      let htmlContent = '\n' +
+        '  <div class="row">\n' +
+        '    <div class="col-xs-12 col-md-12 col-lg-2"></div>\n' +
+        '\n' +
+        '    <div class="col-xs-12 col-md-12 col-lg-7">\n' +
+        // '      <h4 class="text-center">No Routes available at this moment, Please add orders\n' +
+        // '        <img src="./img/bluBox.png"/>\n' +
+        // '      </h4>\n' +
+        '<h4 class="text-center">No Routes available at this moment<img src="./img/noRecentActivity.svg" style="\n' +
+        '    height: 300px;\n' +
+        '    padding-top: 23px;\n' +
+        '">\n' +
+        '      </h4>'+
+        '    </div>\n' +
+        '  </div>\n' +
+        '  \n' +
+        '  <hr/>'
+
+      if (docs.length == 0){
+        $("#routeList").html(htmlContent)
+      }
+      else {
+        htmlContent = '<div class="table-responsive">\n' +
+          '    <table class="table">\n' +
+          '      <thead>\n' +
+          '      <tr>\n' +
+          '        <th>TripID</th>\n' +
+          '        <th>Assigned To</th>\n' +
+          // '        <th class="text-center">Status</th>\n' +
+          '        <th>Created On</th>\n' +
+          '        <th class="text-center">Track</th>\n' +
+          '      </tr>\n' +
+          '      </thead>\n' +
+          '      <tbody>';
+        docs.forEach((doc) => {
+          let currentDocument = doc.data();
+
+          let format = ""
+          let statusFlagColor = "";
+          try {
+
+            if (currentDocument.createdAt != "" && currentDocument.createdAt != undefined) {
+              let eta = new Date((currentDocument.createdAt));
+              format = moment(eta).format('MMMM Do YYYY, h:mm:ss a');;//(eta, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+
+              if (format == ""){
+                format = moment(eta).format('MMMM Do YYYY');
+              }
+            }
+            //
+            // if ((currentDocument.status+"").toUpperCase() == "NEW"){
+            //   statusFlagColor = "success";
+            // }
+            // else if ((currentDocument.status+"").toUpperCase() == "INTRANSIT"){
+            //   statusFlagColor = "warning";
+            // }
+            // else if ((currentDocument.status+"").toUpperCase() == "COMPLETED"){
+            //   statusFlagColor = "info";
+            // }
+            // else if ((currentDocument.status+"").toUpperCase() == "CANCELLED"){
+            //   statusFlagColor = "danger";
+            // }
+            // else {
+            //   statusFlagColor = "info";
+            // }
+          }catch (e){
+            console.log("Unable to format dates",e)
+          }
+
+          htmlContent += '<tr>\n' +
+            '        <td><a href="./route_details.html?routingId='+doc.id+'">'+currentDocument.tripName+'</a></td>\n' +
+            '        <td>'+currentDocument.assignedDeliveryAssociate.associateName+'</td>\n' +
+            // '        <td class="text-center">'+currentDocument.tripStatus+'</td>\n' +
+            '        <td>'+format+'</td>\n' +
+            '        <td class="text-center">\n' +
+            '          <a href="./db_tracking_history.html?trackingId='+currentDocument.assignedDeliveryAssociate.trackingId+'">\n' +
+            '            <span class="glyphicon glyphicon-map-marker"></span>\n' +
+            '          </a>\n' +
+            '        </td>\n' +
+            '      </tr>\n';
+          /**
+
+           <tr>
+           <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</a></td>
+           <td>Ram Shankar</td>
+           <td class="text-success text-center">NEW</td>
+           <td>03-06-2017 30:30</td>
+           <td class="text-center">
+           <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">
+           <span class="glyphicon glyphicon-map-marker"></span>
+           </a>
+           </td>
+           </tr>
+
+           <tr>
+           <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</a></td>
+           <td>Ram Shankar</td>
+           <td class="text-success text-center">NEW</td>
+           <td>03-06-2017 30:30</td>
+           <td class="text-center">
+           <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">
+           <span class="glyphicon glyphicon-map-marker"></span>
+           </a>
+           </td>
+           </tr>
+
+           <tr>
+           <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</a></td>
+           <td>Ram Shankar</td>
+           <td class="text-success text-center">NEW</td>
+           <td>03-06-2017 30:30</td>
+           <td class="text-center">
+           <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">
+           <span class="glyphicon glyphicon-map-marker"></span>
+           </a>
+           </td>
+           </tr>
+
+           <tr>
+           <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</a></td>
+           <td>Ram Shankar</td>
+           <td class="text-success text-center">NEW</td>
+           <td>03-06-2017 30:30</td>
+           <td class="text-center">
+           <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">
+           <span class="glyphicon glyphicon-map-marker"></span>
+           </a>
+           </td>
+           </tr>
+
+           <tr>
+           <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</a></td>
+           <td>Ram Shankar</td>
+           <td class="text-success text-center">NEW</td>
+           <td>03-06-2017 30:30</td>
+           <td class="text-center">
+           <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">
+           <span class="glyphicon glyphicon-map-marker"></span>
+           </a>
+           </td>
+           </tr>
+
+           </tbody>
+           </table>
+           </div>
+           * @type {string}
+           */
+          //
+          // let format = ""
+          // let statusFlagColor = "";
+          // try {
+          //
+          //   if (currentDocument.eta != "" && currentDocument.eta != undefined) {
+          //     let eta = new Date((currentDocument.eta));
+          //     format = moment(eta).format('MMMM Do YYYY, h:mm:ss a');;//(eta, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+          //
+          //     if (format == ""){
+          //       format = moment(eta).format('MMMM Do YYYY');
+          //     }
+          //   }
+          //
+          //   if (currentDocument.custAddress == undefined) {
+          //     currentDocument.custAddress = "Not available";
+          //   }
+          //
+          //   if ((currentDocument.status+"").toUpperCase() == "NEW"){
+          //     statusFlagColor = "success";
+          //   }
+          //   else if ((currentDocument.status+"").toUpperCase() == "INTRANSIT"){
+          //     statusFlagColor = "warning";
+          //   }
+          //   else if ((currentDocument.status+"").toUpperCase() == "COMPLETED"){
+          //     statusFlagColor = "info";
+          //   }
+          //   else if ((currentDocument.status+"").toUpperCase() == "CANCELLED"){
+          //     statusFlagColor = "danger";
+          //   }
+          //   else {
+          //     statusFlagColor = "info";
+          //   }
+          // }catch (e){
+          //   console.log("Unable to format dates",e)
+          // }
+          //
+          // htmlContent += '\n' +
+          //   '  <div class="row" id="row-'+currentDocument.orderNumber+'">\n' +
+          //   '\n' +
+          //   '    <img src="https://image.maps.api.here.com/mia/1.6/mapview?c='+currentDocument.position[0]+'%2C'+currentDocument.position[1]+'&z=14&w=250&h=120&f=1&app_id='+module_HEREDeveloperAccess.app_id+'&app_code='+module_HEREDeveloperAccess.app_code+'"\n' +
+          //   '         class="col-xs-12 col-md-12 col-lg-3 thumbnail "/>\n' +
+          //   '\n' +
+          //   '    <div class="col-xs-12 col-md-12 col-lg-7">\n' +
+          //   '      <h4>Order# - '+currentDocument.orderNumber+'</h4>\n' +
+          //   '      <p><b>Status</b> : <span class="label label-'+statusFlagColor+'">'+currentDocument.status+'</span> <br/>\n' +
+          //   '        <b>ETA</b> : '+format+'<br/>\n' +
+          //   '        <b>Customer</b> : '+ currentDocument.customerName+' <br/>\n' +
+          //   '        <b>Address</b> : '+currentDocument.custAddress+'</p>\n' +
+          //   '\n' +
+          //   '      <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->\n' +
+          //   '    </div>\n' +
+          //   '\n' +
+          //   '    <div class="buttons col-xs-12 col-md-12 col-lg-2">\n' +
+          //   '      <a href="./order_edit_form.html?orderNumber='+currentDocument.orderNumber+'" type="button" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11 btn btn-default">\n' +
+          //   '        Edit\n' +
+          //   '      </a>\n' +
+          //   '      <button type="button" onclick="deleteOrder(this)" data-id="'+currentDocument.orderNumber+'" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11  btn btn-default">\n' +
+          //   '        Delete\n' +
+          //   '      </button>\n' +
+          //   // '\n' +
+          //   // '      <div class = "btn-group">\n' +
+          //   // '        <button type = "button"  style="margin:5px" class = "btn btn-primary dropdown-toggle" data-toggle = "dropdown">\n' +
+          //   // '          More Option\n' +
+          //   // '          <span class = "caret"></span>\n' +
+          //   // '        </button>\n' +
+          //   // '\n' +
+          //   // '        <ul class = "dropdown-menu" role = "menu">\n' +
+          //   // '          <li><a href = "#">Mark Order Complete</a></li>\n' +
+          //   // '          <li><a href = "#">Mark In Transit</a></li>\n' +
+          //   // '          <li><a href = "#">Order Cancelled</a></li>\n' +
+          //   // '\n' +
+          //   // '          <li class = "divider"></li>\n' +
+          //   // '          <li><a href = "#">Navigate to order</a></li>\n' +
+          //   // '        </ul>\n' +
+          //   // '      </div>\n' +
+          //   '\n' +
+          //   '    </div>\n' +
+          //   '\n' +
+          //   ' <hr/> </div>\n' +
+          //   '  '
+        })
+        htmlContent +='\n' +
+          '      </tbody>\n' +
+          '    </table>\n' +
+          '  </div>'
+
+        $("#routeList").html(htmlContent)
+      }
+    }catch (e) {
+      console.log(e)
+    }
 
   }
 
@@ -411,7 +621,7 @@
   <div class="container">
     <div class="">
       <div class="row">
-        <div class="col-xs-12 col-md-12 col-lg-6"><h1>Delivery Associates</h1></div>
+        <div class="col-xs-12 col-md-12 col-lg-6"><h1>Assigned Trips</h1></div>
 
         <div class="col-xs-12 col-md-12 col-lg-6" style="margin-top: 15px;">
 
@@ -446,7 +656,7 @@
             <!--            </ul>-->
           </div>
 
-          <div class="col-xs-7 col-md-6 col-lg-4" style="margin-left: -20px;">
+          <div class="col-xs-1 col-md-6 col-lg-5" style="margin-left: -20px;">
             <!--            <input type="email"  style="margin-top: 5px; margin-left: 20px;" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Order Number" />-->
           </div>
 
@@ -456,8 +666,12 @@
           <!--          <button class="col-xs-2 col-md-2 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 40px;border: 1px solid #FFF;">-->
           <!--          <span class="glyphicon glyphicon-plus" style=""></span>-->
           <!--          </button>-->
-          <a href="./delivery_associate_add_form.html" class="col-xs-6 col-md-6 col-lg-4 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 135px;border: 1px solid #FFF;">
-            Add Associate <span class="glyphicon glyphicon-plus" style=""></span>
+<!--          <a href="./order_assigned_trips.html.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->
+<!--            Assigned Trips-->
+<!--&lt;!&ndash;            <span class="glyphicon glyphicon-plus" style=""></span>&ndash;&gt;-->
+<!--          </a>-->
+          <a href="./routes_planning.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">
+            Plan Trip <span class="glyphicon glyphicon-plus" style=""></span>
           </a>
         </div>
 
@@ -469,9 +683,85 @@
 
 </div>
 
-<div class="container" role="main">
+<div class="container" id="routeList" role="main">
 
-  <div id="render_container"></div>
+  <div class="table-responsive">
+<!--    <table class="table">-->
+<!--      <thead>-->
+<!--      <tr>-->
+<!--        <th>TripID</th>-->
+<!--        <th>Assigned To</th>-->
+<!--        <th class="text-center">Status</th>-->
+<!--        <th>Created On</th>-->
+<!--        <th class="text-center">Track</th>-->
+<!--      </tr>-->
+<!--      </thead>-->
+<!--      <tbody>-->
+<!--      <tr>-->
+<!--        <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</a></td>-->
+<!--        <td>Ram Shankar</td>-->
+<!--        <td class="text-success text-center">NEW</td>-->
+<!--        <td>03-06-2017 30:30</td>-->
+<!--        <td class="text-center">-->
+<!--          <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">-->
+<!--            <span class="glyphicon glyphicon-map-marker"></span>-->
+<!--          </a>-->
+<!--        </td>-->
+<!--      </tr>-->
+
+<!--      <tr>-->
+<!--        <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</a></td>-->
+<!--        <td>Ram Shankar</td>-->
+<!--        <td class="text-success text-center">NEW</td>-->
+<!--        <td>03-06-2017 30:30</td>-->
+<!--        <td class="text-center">-->
+<!--          <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">-->
+<!--            <span class="glyphicon glyphicon-map-marker"></span>-->
+<!--          </a>-->
+<!--        </td>-->
+<!--      </tr>-->
+
+<!--      <tr>-->
+<!--        <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</a></td>-->
+<!--        <td>Ram Shankar</td>-->
+<!--        <td class="text-success text-center">NEW</td>-->
+<!--        <td>03-06-2017 30:30</td>-->
+<!--        <td class="text-center">-->
+<!--          <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">-->
+<!--            <span class="glyphicon glyphicon-map-marker"></span>-->
+<!--          </a>-->
+<!--        </td>-->
+<!--      </tr>-->
+
+<!--      <tr>-->
+<!--        <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</a></td>-->
+<!--        <td>Ram Shankar</td>-->
+<!--        <td class="text-success text-center">NEW</td>-->
+<!--        <td>03-06-2017 30:30</td>-->
+<!--        <td class="text-center">-->
+<!--          <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">-->
+<!--            <span class="glyphicon glyphicon-map-marker"></span>-->
+<!--          </a>-->
+<!--        </td>-->
+<!--      </tr>-->
+
+<!--      <tr>-->
+<!--        <td><a href="./route_details.html?TRIP-12343424232">TRIP-12343424232</td>-->
+<!--        <td>Ram Shankar</td>-->
+<!--        <td class="text-success text-center">NEW</td>-->
+<!--        <td>03-06-2017 30:30</td>-->
+<!--        <td class="text-center">-->
+<!--          <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51">-->
+<!--            <span class="glyphicon glyphicon-map-marker"></span>-->
+<!--          </a>-->
+<!--        </td>-->
+<!--      </tr>-->
+
+<!--      </tbody>-->
+<!--    </table>-->
+  </div>
+
+  <div id="render_container1"></div>
 
 
   <!--  <div class="row">-->
@@ -484,151 +774,7 @@
 
   <!--  </div>-->
 
-  <style type="text/css">
-    .boxPadding {
-      margin-left: 0px;
-      padding-left: 13px;
-      padding-bottom: 6px;
-      padding-top: 10px;
-    }
-  </style>
-
-  <div class="row">
-
-<!--    -->
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
-
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
-
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
-
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
-
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
-
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
-
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
-
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
-
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
-
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
-
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
-
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
-
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
-
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
-
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding ">-->
-<!--      <h4>Daniel Webb</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-warning">INTRANSIT</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
-
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
-
-
-
-  </div>
-  <!--    -->
-  <!--    -->
+  <!--  <div class="row">-->
   <!--    <img src="https://image.maps.api.here.com/mia/1.6/mapview?c=19.1186%2C72.9026&z=14&w=250&h=120&f=1&app_id=st58tn5HdBdzSlMNw5OX&app_code=53DQ_ew0UvU1KmWtUJQDYQ"-->
   <!--         onerror="this.onerror=null;this.src='./img/Address-not-found.png';" class="col-xs-12 col-md-12 col-lg-3 thumbnail "/>-->
   <!--    <div class="col-xs-12 col-md-12 col-lg-7">-->

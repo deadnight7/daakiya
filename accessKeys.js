@@ -16,7 +16,7 @@ var module_HERETrackingAccount = {
 };
 
 var module_HEREDeveloperAccess = {
-  trackingEmail : "cpandit203@gmail.com",
-  app_id: 'st58tn5HdBdzSlMNw5OX',
-  app_code: '53DQ_ew0UvU1KmWtUJQDYQ'
+  trackingEmail : "cpandit202@gmail.com",//"cpandit203@gmail.com",
+  app_id: "hVA6vKr6ixW90KYvkb7k",//'st58tn5HdBdzSlMNw5OX',//
+  app_code: "IulCKZdfTxT9b5NPveT_og",//'53DQ_ew0UvU1KmWtUJQDYQ'
 };

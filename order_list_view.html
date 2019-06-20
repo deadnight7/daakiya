@@ -157,7 +157,7 @@
         '\n' +
         '    <div class="col-xs-12 col-md-12 col-lg-7">\n' +
         '      <h4 class="text-center">No Orders available at this moment, Please add orders\n' +
-        '        <img src="./img/bluBox.png"/>\n' +
+        '        <img style="padding-top:75px" src="./img/OrdersIcon.jpeg"/>\n' +
         '      </h4>\n' +
         '    </div>\n' +
         '  </div>\n' +
@@ -208,6 +208,10 @@
             console.log("Unable to format dates",e)
           }
 
+          let completed = "COMPLETED";
+          let intransit = "INTRANSIT";
+          let newStatus = "NEW";
+
           htmlContent += '\n' +
             '  <div class="row" id="row-'+currentDocument.orderNumber+'">\n' +
             '\n' +
@@ -231,22 +235,23 @@
             '      <button type="button" onclick="deleteOrder(this)" data-id="'+currentDocument.orderNumber+'" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11  btn btn-default">\n' +
             '        Delete\n' +
             '      </button>\n' +
-            // '\n' +
-            // '      <div class = "btn-group">\n' +
-            // '        <button type = "button"  style="margin:5px" class = "btn btn-primary dropdown-toggle" data-toggle = "dropdown">\n' +
-            // '          More Option\n' +
-            // '          <span class = "caret"></span>\n' +
-            // '        </button>\n' +
-            // '\n' +
-            // '        <ul class = "dropdown-menu" role = "menu">\n' +
-            // '          <li><a href = "#">Mark Order Complete</a></li>\n' +
-            // '          <li><a href = "#">Mark In Transit</a></li>\n' +
+            '\n' +
+            '      <div class = "btn-group">\n' +
+            '        <button type = "button"  style="margin:5px" class = "btn btn-primary dropdown-toggle" data-toggle = "dropdown">\n' +
+            '          More Option\n' +
+            '          <span class = "caret"></span>\n' +
+            '        </button>\n' +
+            '\n' +
+            '        <ul class = "dropdown-menu" role = "menu">\n' +
+            '          <li><a onclick="completeOrder('+currentDocument.orderNumber+', \''+completed+'\')">Mark Order Complete</a></li>\n' +
+            '          <li><a onclick="completeOrder('+currentDocument.orderNumber+', \''+intransit+'\')">Mark In Transit</a></li>\n' +
+            '          <li><a onclick="completeOrder('+currentDocument.orderNumber+', \''+newStatus+'\')">Reassign to New</a></li>\n' +
             // '          <li><a href = "#">Order Cancelled</a></li>\n' +
-            // '\n' +
+            '\n' +
             // '          <li class = "divider"></li>\n' +
             // '          <li><a href = "#">Navigate to order</a></li>\n' +
-            // '        </ul>\n' +
-            // '      </div>\n' +
+            '        </ul>\n' +
+            '      </div>\n' +
             '\n' +
             '    </div>\n' +
             '\n' +
@@ -260,6 +265,34 @@
     }
 
   }
+
+
+  async function completeOrder (orderNumber, status){
+    try {
+
+      //
+      // let doc = await firebase.firestore().collection("orders").where("orderNumber", "==", ""+orderNumber).get()
+
+      await firebase.firestore().collection("orders").where("orderNumber", "==", ""+orderNumber)
+        .get()
+        .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+            console.log(doc.id, " => ", doc.data());
+            // Build doc ref from doc.id
+            firebase.firestore().collection("orders").doc(doc.id).update({status: status});
+             $('#myModal').modal({show : true})
+          });
+        }).catch(function (error) {
+          console.log("Unable to mark order "+status+": ",error)
+        })
+      //console.log(doc.ref.update({status: "COMPLETED"}))
+
+
+    }catch (error) {
+      console.log("Unable to mark order "+status+": ",error)
+    }
+  }
+
 
 
 </script>
@@ -397,7 +430,6 @@
         </div>
 
       </div>
-
 
     </div>
   </div>
@@ -1156,6 +1188,35 @@
 
 
 <!--</div> &lt;!&ndash; /container &ndash;&gt;-->
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel"><span id="myMessage">Order Status Changed</span></h4>
+      </div>
+      <!--                    <div class="modal-body">-->
+      <!--                      <form>-->
+      <!--                        <div class="form-group">-->
+      <!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
+      <!--                          <input type="text" class="form-control" id="recipient-name">-->
+      <!--                        </div>-->
+      <!--                        <div class="form-group">-->
+      <!--                          <label for="message-text" class="control-label">Message:</label>-->
+      <!--                          <textarea class="form-control" id="message-text"></textarea>-->
+      <!--                        </div>-->
+      <!--                      </form>-->
+      <!--                    </div>-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload()">Close</button>
+        <!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
+        <!--        <a href="" type="button" class="btn btn-primary">View all orders</a>-->
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <svg xmlns="http://www.w3.org/2000/svg" width="1140" height="500" viewBox="0 0 1140 500" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="57" style="font-weight:bold;font-size:57pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thirdslide</text></svg></body>

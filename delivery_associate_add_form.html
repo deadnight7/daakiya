@@ -315,7 +315,7 @@
 
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload();">Add an another delivery associate</button>
-                    <button type="button" class="btn btn-primary">View all delivery associates</button>
+                    <a href="./delivery_associates_list_view.html" type="button" class="btn btn-primary">View all delivery associates</a>
                   </div>
                 </div>
               </div>
@@ -410,12 +410,11 @@
     }
   });
 
+
   async function addDeliveryAssociate (){
     try{
-
       document.getElementById("addDeliveryAssociate").setAttribute("disabled","true");
       let validationFailed = false;
-
       //Check whether every value is present - id="customerName"
       let customerName = document.getElementById("customerName").value;
       if (customerName == ""){
@@ -423,7 +422,6 @@
         validationFailed = true;
         //return;
       }
-
       //id="deliveryAssociateAddress"
       let deliveryAssociateAddress = document.getElementById("deliveryAssociateAddress").value;
       if (deliveryAssociateAddress == ""){
@@ -431,7 +429,6 @@
         validationFailed = true;
         //return;
       }
-
       //id="deliveryAssociateEmail"
       let deliveryAssociateEmail = document.getElementById("deliveryAssociateEmail").value;
       if (deliveryAssociateEmail == ""){
@@ -439,7 +436,6 @@
         validationFailed = true;
         //return;
       }
-
       //id="deliveryAssociateEmail"
       let deliveryAssociatePassword = document.getElementById("deliveryAssociatePassword").value;
       if (deliveryAssociatePassword == ""){
@@ -447,7 +443,6 @@
         validationFailed = true;
         //return;
       }
-
       //id="deliveryAssociatePassword"
       let licenceSelect = document.getElementById("licence");
       let licenceOption = licenceSelect.options[licenceSelect.selectedIndex].value;//id="licence"
@@ -461,7 +456,6 @@
         document.getElementById("addDeliveryAssociate").removeAttribute("disabled");
         return;
       }
-
       //Check deviceID, TrackingId, DeviceName
       let trackingId = document.getElementById("trackingId").value;
       let deviceId = document.getElementById("deviceId").value;
@@ -477,17 +471,15 @@
           let responseNewName = await editDeviceDetails (trackingId, deviceName ,accessToken)
         }
       }
-
       //Add Data to Firebase under `delivery_associates` table
       //var firebaseConfig = module_firebaseConfig;
       // Initialize Firebase
       //firebase.initializeApp(firebaseConfig);
-
       // Get a reference to the database service
       //var database = firebase.database();
-
       var db = firebase.firestore();
       let doc = {
+        status : "AVAILABLE",
         associateName: customerName,
         employeeId : employeeId,
         deliveryAssociateAddress : deliveryAssociateAddress,
@@ -499,7 +491,6 @@
         licenceType : licenceOption,
         createdBy : firebase.auth().currentUser.uid
       }
-
       //Add a delivery boy to database
       let userRegistered = {
         userRegistered : false,
@@ -520,7 +511,6 @@
         //$("#errorMessage").text(e.message)
         //$('#errorMessage').show()
       }
-
       let documentAdd = await db.collection("delivery_associates").add(doc);
       console.log(documentAdd)
       if (documentAdd) {
@@ -535,7 +525,6 @@
           if (userRegistered.errorMessage.message){
             messageText += " Error : "+userRegistered.errorMessage.message
           }
-
         }
         $("#myMessage").text(messageText)
         document.getElementById("addDeliveryAssociate").removeAttribute("disabled");

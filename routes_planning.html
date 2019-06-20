@@ -378,6 +378,37 @@
 
   }
 
+
+  function distinct(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+  async function completeOrder (orderNumber, status){
+    try {
+
+      //
+      // let doc = await firebase.firestore().collection("orders").where("orderNumber", "==", ""+orderNumber).get()
+
+      await firebase.firestore().collection("orders").where("orderNumber", "==", ""+orderNumber)
+        .get()
+        .then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+            console.log(doc.id, " => ", doc.data());
+            // Build doc ref from doc.id
+            firebase.firestore().collection("orders").doc(doc.id).update({status: status});
+            // $('#myModal').modal({show : true})
+          });
+        }).catch(function (error) {
+          console.log("Unable to mark order "+status+": ",error)
+        })
+      //console.log(doc.ref.update({status: "COMPLETED"}))
+
+
+    }catch (error) {
+      console.log("Unable to mark order "+status+": ",error)
+    }
+  }
+
   async function planTrip () {
     try {
 
@@ -398,6 +429,8 @@
       for (let i = 0; i < orders.length; i++){
         let order = orders[i]
 
+        completeOrder(order+"", "INTRANSIT")
+
         //order;//Current Order
         let doc = await firebase.firestore().collection("orders")
           .where("createdBy", "==", "" + firebase.auth().currentUser.uid)
@@ -408,6 +441,8 @@
           console.log("adding : ", orderRecord.data())
         });
       }
+
+      //selectedOrders = selectedOrders.filter( distinct );
 
       console.log("selectedOrders: "+selectedOrders)
 
@@ -424,11 +459,7 @@
           .doc(deliveryAssociateId).get()
         console.log("DB Data: ",doc.data());
         selectedDBs.push(doc.data())
-        //
-        // await doc.forEach(async (dbRecord) => {
-        //   selectedDBs.push(dbRecord.data())
-        //   console.log("adding : ", dbRecord.data())
-        // });
+
       }
       console.log("selectedDBs: ",selectedDBs)
 
@@ -483,7 +514,9 @@
 
         //Get its orderNumber
         let currentOrderNumber = currentOrder.orderNumber;
+//
 
+//
         //Get its eta : Append - ':00Z' after - DateTime - <2019-09-09T16:52>
         let eta = currentOrder.eta + ":00Z";
 
@@ -534,10 +567,19 @@
       // });
       let waypointsResponse = await getWaypointsData(waypointsURL)
 
+      if (waypointsResponse.results.length <=0 ) {
+        console.log("Unable to create a route plan "+waypointsResponse)
+        throw new Error ("Unable to create a route plan.");
+      }
+
       //FadeOut for location loader
       let doc = {
         tripName: $("#tripName").val(),
+        tripStatus : "NEW",
         waypointsData : waypointsResponse,
+        orders : orders,
+        assignedDeliveryAssociate : selectedDBs[0],
+        createdAt : new Date().getTime(),
         createdBy : firebase.auth().currentUser.uid
       }
 
@@ -553,7 +595,7 @@
 
       //For fetching data - firebase.firestore().collection("routes").doc("Aqj1xqHMg1UY66kezJvu").get().then((doc) => {console.log(doc.data())})
 
-        //Render output to screen5 - timelineList
+      //Render output to screen5 - timelineList
       await renderTimeline(waypointsResponse)
 
       console.log(serviceTime)
