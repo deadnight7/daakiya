@@ -1,10 +1,51 @@
-const functions = require('firebase-functions');
-const admin = require("firebase-admin");
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
 
-admin.initializeApp();
+//Firebase
+const functions = require('firebase-functions');
+const admin = require("firebase-admin");
+admin.initializeApp(functions.config().firebase);
+
+exports.sendNotification =
+  functions.firestore
+    .document('orders/{orderRowId}')
+    .onUpdate((change, context) => {
+      // Get an object representing the document
+      // e.g. {'name': 'Marie', 'age': 66}
+      const newValue = change.after.data();
+      console.log("newValue: " , newValue)
+
+      // ...or the previous value before this update
+      const previousValue = change.before.data();
+      console.log("newValue: " , newValue)
+
+      // access a particular field as you would any JS property
+      //const name = newValue.name;
+
+      // perform desired operations ...
+      const payload = {
+        notification : {
+          title : "Record Updated",
+          body : "Order is updated"
+        }
+      }
+
+      console.info(payload)
+
+
+      // admin.messaging().sendToDevice([
+      //   "c5M2luSfiDk:APA91bH-u1Vg4v_F4vDNDUwCcnCzwVBRxEnjq36WxWqB9H7GkDILHtGUYdtHGPiycQVsU9lV-OtU8WzFrgNShIfctLm17O6KsLHaN2pSVFpQypnLyc3VzxEcdNh20HoWSOHFU0hhCEtO"
+      //   ,  "c5M2luSfiDk:APA91bH-u1Vg4v_F4vDNDUwCcnCzwVBRxEnjq36WxWqB9H7GkDILHtGUYdtHGPiycQVsU9lV-OtU8WzFrgNShIfctLm17O6KsLHaN2pSVFpQypnLyc3VzxEcdNh20HoWSOHFU0hhCEtO"
+      //   ,  "c5M2luSfiDk:APA91bH-u1Vg4v_F4vDNDUwCcnCzwVBRxEnjq36WxWqB9H7GkDILHtGUYdtHGPiycQVsU9lV-OtU8WzFrgNShIfctLm17O6KsLHaN2pSVFpQypnLyc3VzxEcdNh20HoWSOHFU0hhCEtO"
+      //   ,  "c5M2luSfiDk:APA91bH-u1Vg4v_F4vDNDUwCcnCzwVBRxEnjq36WxWqB9H7GkDILHtGUYdtHGPiycQVsU9lV-OtU8WzFrgNShIfctLm17O6KsLHaN2pSVFpQypnLyc3VzxEcdNh20HoWSOHFU0hhCEtO"
+      //   ,  "c5M2luSfiDk:APA91bH-u1Vg4v_F4vDNDUwCcnCzwVBRxEnjq36WxWqB9H7GkDILHtGUYdtHGPiycQVsU9lV-OtU8WzFrgNShIfctLm17O6KsLHaN2pSVFpQypnLyc3VzxEcdNh20HoWSOHFU0hhCEtO"
+      // ], payload)
+
+    });
+//functions.database.ref("")
+
 
 // Automatically allow cross-origin requests
 app.use(cors({ origin: true }));

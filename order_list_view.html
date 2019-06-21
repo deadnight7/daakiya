@@ -72,22 +72,6 @@
     //$("#render_container").html(htmlContent)
     $("#render_container").html(htmlContent)
 
-    //Get Messaging Service from Firebase
-    const messaging = firebase.messaging();
-
-    messaging.requestPermission()
-      .then(function () {
-        console.log("Have permission...")
-        return messaging.getToken();
-      })
-      .then(function (token) {
-        //Store this value in Firestore and send it when there is an update of that record
-        console.log("FCM Token",token);
-      })
-      .catch(function (err) {
-        console.log("User denied push notif...", err)
-      })
-
 
     //
     // messaging.onMessage(function (payload) {
@@ -104,13 +88,46 @@
         let currentUserId = firebase.auth().currentUser.uid; //W0snQdSu0hdDUmTH85BlJKzkPTr2
         console.log("currentUserId: ",currentUserId)
         getOrders(currentUserId)
+        subscribeToNotifications();
       } else {
         // No user is signed in.
         window.location.href = "/";
       }
     });
 
+
+
   });
+
+
+
+
+
+  function subscribeToNotifications () {
+
+    //Get Messaging Service from Firebase
+    const messaging = firebase.messaging();
+
+    messaging.requestPermission()
+      .then(function () {
+        console.log("Have permission...")
+        return messaging.getToken();
+      })
+      .then(function (token) {
+        //Store this value in Firestore and send it when there is an update of that record
+        console.log("FCM Token",token);
+
+        //Add Token to DB with that user id
+        firebase.firestore().collection("tokens").add({
+          token : token,
+          uid : firebase.auth().currentUser.uid})
+
+      })
+      .catch(function (err) {
+        console.log("User denied push notif...", err)
+      })
+
+  }
 
   async function deleteOrder (orderRef) {
     try {
