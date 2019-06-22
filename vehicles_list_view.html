@@ -84,7 +84,19 @@
         //getOrders(currentUserId)
         //getDeliveryAssociates(currentUserId)
         //getPooledVehicles();
-        renderPooledVehicles ();
+
+        //Retrieve Data from Tracking API - Eg https://tracking.api.here.com/traces/v2/HERE-970436b8-ab88-4c86-864e-70bdf7faa98c?count=1000  - [{"description":"","enabled":true,"key":"Content-Type","type":"text","value":"application/json"},{"description":"","enabled":true,"key":"Authorization","type":"text","value":"Bearer h1.QqQ1511VSx110Ql_bkhY4w.}
+        var url_string = location.href; //Current URL Parameter - eg - HERE-970436b8-ab88-4c86-864e-70bdf7faa98c
+        var url = new URL(url_string);
+        var deliveryDocId = url.searchParams.get("deliveryDocId");
+        console.log("trackingId", deliveryDocId);
+        if (deliveryDocId && deliveryDocId != null) {
+          console.log("Get Delivery Associate's ID "+deliveryDocId)
+        } else {
+          console.log("Unable to Get Delivery Associate's ID")
+        }
+
+        renderPooledVehicles (deliveryDocId);
 
       } else {
         // No user is signed in.
@@ -94,17 +106,238 @@
 
   });
 
-  async function renderPooledVehicles () {
+
+  function bookVehicle (deliveryDocID, featureIdVehicleObject) {
+    $('#myModal').modal({show : true})
+    $("#myMessage").text("Please wait while vehicle is getting booked..")
+    console.log("Delivery Associate",deliveryDocID, "Delivery Associate",featureIdVehicleObject)
+    bookVehicleAsync(deliveryDocID, featureIdVehicleObject)
+  }
+
+  async function bookVehicleAsync (deliveryDocID, featureIdVehicleObject) {
+
     try {
-      let pooledVehicles = await getPooledVehicles()
+
+      //Get Delivery Associate Details
+      let deliveryAssociateObjectSnapshot = await firebase.firestore().collection("delivery_associates").doc(deliveryDocID).get();
+      console.log("DB Details",deliveryAssociateObjectSnapshot.data())
+
+      //Get Feature Details
+      let vehicleDetailsSnapshot = await getFeatureDetails(featureIdVehicleObject);
+      console.log("vehicleDetailsSnapshot: ",vehicleDetailsSnapshot)
+
+      //Add Feature Data to Delivery Associate Doc
+      firebase.firestore().collection("delivery_associates").doc(deliveryDocID).update({
+        vehicleDetailsSnapshot : vehicleDetailsSnapshot
+      }).then(function() {
+        console.log("Document successfully updated!");
+        $("#myMessage").text("Vehicle booked successfully..")
+
+        //window.history.back();
+      }).catch (function (error) {
+        $("#myMessage").text("Error in booking vehicle..")
+        console.log("Error in updating document...",error);
+      });
+
+      //Update Feature Data - Set assigned to Property
+      // let vehicleDetailsFeatureNew = vehicleDetailsSnapshot;
+      // await $.extend(true, vehicleDetailsFeatureNew, {
+      //   properties : {
+      //     assignedto : deliveryAssociateObjectSnapshot.data().associateName,
+      //     trackingid : deliveryAssociateObjectSnapshot.data().trackingId
+      //   }
+      // });
+
+      //console.log("JSON Stringified : ");
+
+      //await updateFeatureDetails(featureIdVehicleObject, vehicleDetailsSnapshot)
+
+
     } catch (e) {
-      console.log(e)
+      console.log("Error: ",e)
+    }
+
+  }
+
+  function getFeatureDetails (featureIdVehicleObject) {
+    return new Promise ((resolve, reject) => {
+      $.ajax({
+        url: 'https://xyz.api.here.com/hub/spaces/'+module_XYZ.vehiclesDataSpaceId+'/features/'+featureIdVehicleObject,
+        dataType: 'json',
+        type: 'get',
+        contentType: 'application/json',
+        processData: false,
+        headers: {
+          'Authorization': 'Bearer '+module_XYZ.xyzToken//AJZNL8IDaCkcqDfrqZKCh74'
+          ,'accept':'application/geo+json'
+        },
+        success: function( data, textStatus, jQxhr ){
+          //$('#response pre').html( JSON.stringify( data ) );
+          console.log("data", data);
+          resolve(data)
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+          console.log( errorThrown );
+          reject(jqXhr)
+        }
+      });
+    });
+  }
+
+  function updateFeatureDetails (featureIdVehicleObject, newFeatureObject) {
+    return new Promise ((resolve, reject) => {
+      console.log(newFeatureObject);
+
+      fetch("https://xyz.api.here.com/hub/spaces/7nVQzZ0c/features/dx9GsI7cFRiEzgj4", {
+        method: 'PUT', // 'GET', 'PUT', 'DELETE', etc.
+        body: JSON.stringify(newFeatureObject), // Coordinate the body type with 'Content-Type'
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer '+module_XYZ.xyzToken//AJZNL8IDaCkcqDfrqZKCh74'
+        })
+      })
+        .then(response => resolve(response.json()))
+        .catch(err => {reject(err)})
+
+      // $.ajax({
+      //   url: 'https://xyz.api.here.com/hub/spaces/'+module_XYZ.vehiclesDataSpaceId+'/features/'+featureIdVehicleObject,
+      //     //'https://xyz.api.here.com/hub/spaces/7nVQzZ0c/features/'+featureIdVehicleObject,
+      //   type: 'put',
+      //   body : jQuery.parseJSON(JSON.stringify(newFeatureObject)),
+      //   contentType: 'application/json',
+      //   headers: {
+      //     'Authorization': 'Bearer '+module_XYZ.xyzToken//AJZNL8IDaCkcqDfrqZKCh74'
+      //
+      //   },
+      //   dataType: 'json',
+      //
+      //   success: function( data, textStatus, jQxhr ){
+      //     //$('#response pre').html( JSON.stringify( data ) );
+      //     console.log("data", data);
+      //     resolve(data)
+      //   },
+      //   error: function( jqXhr, textStatus, errorThrown ){
+      //     console.log( errorThrown );
+      //     reject(jqXhr)
+      //   }
+      });
+
+  }
+
+  function releaseVehicle (deliveryBoyId) {
+
+  }
+
+  async function renderPooledVehicles (deliveryDocId) {
+    try {
+
+      if (deliveryDocId == undefined) {
+        let htmlContent = '<div class="row">\n' +
+          '      <h3 class="col-xs-12 col-md-12 col-lg-12 text-center" >Please select a delivery agent to book a pooled vehicle...<br/><br/></h3>\n' +
+          '    </div>';
+
+        $("#render_vehicles").html(htmlContent)
+        return;
+      }
+
+      let pooledVehicles = await getPooledVehicles()
+
+      deliveryDocId = deliveryDocId + "";
+      //Iterate through features array
+      let featuresAllVehiclesArr = pooledVehicles.features;
+
+      let htmlContent = "";
+
+      let freeVehicleArr = [];
+      let bookedVehicleArr = [];
+
+      for(let i=0 ; i < featuresAllVehiclesArr.length; i++) {
+        let currentVehicle = featuresAllVehiclesArr[i];
+
+        //If Resource is free - display a badge next to it
+        if (currentVehicle.properties.assignedto == "FREE") {
+          freeVehicleArr.push(currentVehicle)
+        }
+        else {
+          bookedVehicleArr.push(currentVehicle)
+        }
+      }
+
+      featuresAllVehiclesArr = freeVehicleArr.concat(bookedVehicleArr)
+
+      //Render Pooled vehicles
+      for(let i=0 ; i < featuresAllVehiclesArr.length; i++) {
+        let currentVehicle = featuresAllVehiclesArr[i];
+
+        //If Resource is free - display a badge next to it
+        if (currentVehicle.properties.assignedto == "FREE") {
+          let vehicleType = currentVehicle.properties.type ? currentVehicle.properties.type : "";
+          let vehicleModel = currentVehicle.properties.model ? currentVehicle.properties.model : "";
+          let vehicleCapacity = currentVehicle.properties.capacity ? currentVehicle.properties.capacity : ""
+          // let vehicleType = currentVehicle.properties.type
+
+          htmlContent+= '<div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">\n' +
+            '      <h4 id="'+currentVehicle.id+'">'+vehicleType+' - '+vehicleModel+'</h4>\n' +
+            '      <p>\n' +
+            '        <b>Capacity# </b> : '+vehicleCapacity+'<br>\n' +
+            // '        <b>Status: </b> :\n' +
+            // '        <span class="label label-success">'+currentVehicle.properties.assignedto+'</span>\n' +
+            '        <br>\n' +
+            '\n' +
+            '        <a onclick=\'bookVehicle("'+deliveryDocId+'", "'+currentVehicle.id+'")\' ' +
+            ' ' +
+            'class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">\n' +
+            '          Book Vehicle\n' +
+            '        </a>\n' +
+            '    </p></div>';
+        }
+        else {
+
+          let vehicleType = currentVehicle.properties.type ? currentVehicle.properties.type : "";
+          let vehicleModel = currentVehicle.properties.model ? currentVehicle.properties.model : "";
+          let vehicleCapacity = currentVehicle.properties.capacity ? currentVehicle.properties.capacity : ""
+          // let vehicleType = currentVehicle.properties.type
+
+          htmlContent += '<div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">\n' +
+            '      <h4 id="'+currentVehicle.id+'">'+vehicleType+' - '+vehicleModel+'</h4>\n' +
+            '      <p>\n' +
+            // '        <b>Model# </b> : Tata Glanza<br>\n' +
+            '        <b>Capacity# </b> : '+vehicleCapacity+'<br>\n' +
+            // '        <b>Booked By</b> :\n' +
+            // '        <span>'+currentVehicle.properties.assignedto+'</span>\n' +
+            '        <br>\n' +
+            '        <!--        <b>Emp# </b> : 23343545<br>-->\n' +
+            '        <!--        <b>Address</b> : Thane West</p>-->\n' +
+            '\n' +
+            '        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->\n' +
+            // '        <a href="./db_tracking_history.html?trackingId=HERE-48c6c18d-af95-4da8-921f-d978c7e76d51" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">\n' +
+            // '          Track<span class="glyphicon glyphicon-map-marker"></span>\n' +
+            // '        </a>\n' +
+
+            '        <a onclick=\'bookVehicle("'+deliveryDocId+'", "'+currentVehicle.id+'")\' ' +
+            ' ' +
+            'class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">\n' +
+            '          Book Vehicle\n' +
+            '        </a>\n' +
+            '        <!--        <a href="./routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->\n' +
+            '        <!--          Book Vehicle-->\n' +
+            '        <!--          &lt;!&ndash;            <span class="glyphicon glyphicon-plus" style=""></span>&ndash;&gt;-->\n' +
+            '        <!--        </a>-->\n' +
+            '    </p></div>';
+        }
+      }
+
+      $("#render_vehicles").html(htmlContent)
+      $("#map").show()
+
+    } catch (e) {
+      console.log("Error unable to ",e)
     }
   }
 
   //Get all pooled vehicles from HERE Spaces
   function getPooledVehicles () {
-    return new Promise ((reject, resolve) => {
+    return new Promise ((resolve, reject) => {
       $.ajax({
         url: 'https://xyz.api.here.com/hub/spaces/7nVQzZ0c/iterate?limit=30000',
         dataType: 'json',
@@ -241,7 +474,7 @@
 
         htmlContent += '</div>\n' +
 
-        $("#render_container").html(htmlContent)
+          $("#render_container").html(htmlContent)
       }
     }catch (e) {
       console.log(e)
@@ -447,7 +680,7 @@
   <div class="container">
     <div class="">
       <div class="row">
-        <div class="col-xs-12 col-md-12 col-lg-6"><h1>Vehicles</h1></div>
+        <div class="col-xs-12 col-md-12 col-lg-6"><h1>Pooled Vehicles</h1></div>
 
         <div class="col-xs-12 col-md-12 col-lg-6" style="margin-top: 15px;">
 
@@ -492,13 +725,13 @@
           <!--          <button class="col-xs-2 col-md-2 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 40px;border: 1px solid #FFF;">-->
           <!--          <span class="glyphicon glyphicon-plus" style=""></span>-->
           <!--          </button>-->
-          <a href="./routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">
-            Book Vehicle
-            <!--            <span class="glyphicon glyphicon-plus" style=""></span>-->
-          </a>
-          <a href="./routes_planning.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">
-            Add Vehicle <span class="glyphicon glyphicon-plus" style=""></span>
-          </a>
+          <!--          <a href="./routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->
+          <!--            Book Vehicle-->
+          <!--            &lt;!&ndash;            <span class="glyphicon glyphicon-plus" style=""></span>&ndash;&gt;-->
+          <!--          </a>-->
+          <!--          <a href="./routes_planning.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->
+          <!--            Add Vehicle <span class="glyphicon glyphicon-plus" style=""></span>-->
+          <!--          </a>-->
         </div>
 
       </div>
@@ -509,107 +742,33 @@
 
 </div>
 
-<div class="container">
-  <div class="row">
-<!--    <iframe class="col-xs-12 col-md-12 col-lg-12" src="https://xyz.here.com/viewer/?project_id=8ec53857-c14f-43e5-8adf-e93f560b6ec9" frameborder="0" style="-->
-<!--    height: 600px;-->
-<!--"></iframe>-->
-  </div>
-</div>
 <br/><br/>
 <div class="container" role="main">
 
-  <div id="render_vehicles">
-
-    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">
-      <h4 id="uniqueVehicleID featureId">CAR - Tata Glanza</h4>
-      <p>
-        <b>Model# </b> : Tata Glanza<br>
-        <b>Capacity# </b> : 3000kg<br>
-        <b>Booked By</b> :
-        <span class="label label-success">FREE</span>
-        <br>
-        <!--        <b>Emp# </b> : 23343545<br>-->
-        <!--        <b>Address</b> : Thane West</p>-->
-
-        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->
-        <a href="./db_tracking_history.html?trackingId=HERE-68574334-e9f2-4985-a579-c5acaae7a029" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">
-          Track<span class="glyphicon glyphicon-map-marker"></span>
-        </a>
-        <a href="./routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">
-          Book Vehicle
-          <!--            <span class="glyphicon glyphicon-plus" style=""></span>-->
-        </a>
-    </div>
-
-    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">
-      <h4 id="uniqueVehicleID">CAR - Toyota Etios</h4>
-      <p>
-        <b>Model# </b> : Toyota Etios<br>
-        <b>Capacity# </b> : 3000kg<br>
-
-        <b>Booked By</b> :
-        <span >Madhav</span>
-        <br>
-        <!--        <b>Emp# </b> : 23343545<br>-->
-        <!--        <b>Address</b> : Thane West</p>-->
-
-        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->
-        <a href="./db_tracking_history.html?trackingId=HERE-68574334-e9f2-4985-a579-c5acaae7a029" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">
-          Track<span class="glyphicon glyphicon-map-marker"></span>
-        </a>
-        <!--        <a href="./routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->
-        <!--          Book Vehicle-->
-        <!--          &lt;!&ndash;            <span class="glyphicon glyphicon-plus" style=""></span>&ndash;&gt;-->
-        <!--        </a>-->
-    </div>
-
-    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">
-      <h4 id="uniqueVehicleID">CAR</h4>
-      <p>
-        <b>Model# </b> : Toyota Etios<br>
-        <b>Capacity# </b> : 3000kg<br>
-
-        <b>Booked By</b> :
-        <span >Madhav</span>
-        <br>
-        <!--        <b>Emp# </b> : 23343545<br>-->
-        <!--        <b>Address</b> : Thane West</p>-->
-
-        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->
-        <a href="./db_tracking_history.html?trackingId=HERE-68574334-e9f2-4985-a579-c5acaae7a029" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">
-          Track<span class="glyphicon glyphicon-map-marker"></span>
-        </a>
-        <!--        <a href="./routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->
-        <!--          Book Vehicle-->
-        <!--          &lt;!&ndash;            <span class="glyphicon glyphicon-plus" style=""></span>&ndash;&gt;-->
-        <!--        </a>-->
-    </div>
-
-    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">
-      <h4 id="uniqueVehicleIDFeatureId">CYCLE - Hercules 550</h4>
-      <p>
-        <b>Model# </b> : Hercules 550<br>
-        <b>Capacity# </b> : 3000kg<br>
-        <b>Booked By</b> :
-        <span class="label label-success">FREE</span>
-        <br>
-        <!--        <b>Emp# </b> : 23343545<br>-->
-        <!--        <b>Address</b> : Thane West</p>-->
-
-        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->
-        <a href="./db_tracking_history.html?trackingId=HERE-68574334-e9f2-4985-a579-c5acaae7a029" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">
-          Track<span class="glyphicon glyphicon-map-marker"></span>
-        </a>
-        <a href="./routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">
-          Book Vehicle
-          <!--            <span class="glyphicon glyphicon-plus" style=""></span>-->
-        </a>
+  <div id="map" style="display: false;">
+    <div class="container">
+      <div class="row">
+        <iframe class="col-xs-12 col-md-12 col-lg-12" src="https://xyz.here.com/viewer/?project_id=8ec53857-c14f-43e5-8adf-e93f560b6ec9" frameborder="0" style="
+          height: 600px;
+    "></iframe>
+      </div>
     </div>
 
   </div>
+  <br/><br/><br/>
+  <div id="render_vehicles">
+    <div class="row">
+      <h3 class="col-xs-12 col-md-12 col-lg-12 text-center" >Fetching vehicles...</h3>
+      <img src="./img/globe.gif" class="col-xs-12 col-md-12 col-lg-12" style="
+        margin-top: -266px;
+        z-index: -30;
+        margin-left: 17px;
+        "/>
 
-<!--  <div id="render_container"></div>-->
+    </div>
+  </div>
+
+  <!--  <div id="render_container"></div>-->
 
 
   <!--  <div class="row">-->
@@ -633,134 +792,134 @@
 
   <div class="row">
 
-<!--    -->
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
+    <!--    -->
+    <!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
+    <!--      <h4>Franz Ferdinand</h4>-->
+    <!--      <p><b>Status</b> :-->
+    <!--        <span class="label label-success">AVAILABLE</span>-->
+    <!--        <br>-->
+    <!--        <b>Emp# </b> : 274534<br>-->
+    <!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
 
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
+    <!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
+    <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
+    <!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
+    <!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
+    <!--      Delete-->
+    <!--    </button>-->
+    <!--    </div>-->
 
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
+    <!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
+    <!--      <h4>Franz Ferdinand</h4>-->
+    <!--      <p><b>Status</b> :-->
+    <!--        <span class="label label-success">AVAILABLE</span>-->
+    <!--        <br>-->
+    <!--        <b>Emp# </b> : 274534<br>-->
+    <!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
 
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
+    <!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
+    <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
+    <!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
+    <!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
+    <!--      Delete-->
+    <!--    </button>-->
+    <!--    </div>-->
 
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
+    <!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
+    <!--      <h4>Franz Ferdinand</h4>-->
+    <!--      <p><b>Status</b> :-->
+    <!--        <span class="label label-success">AVAILABLE</span>-->
+    <!--        <br>-->
+    <!--        <b>Emp# </b> : 274534<br>-->
+    <!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
 
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
+    <!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
+    <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
+    <!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
+    <!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
+    <!--      Delete-->
+    <!--    </button>-->
+    <!--    </div>-->
 
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
+    <!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
+    <!--      <h4>Franz Ferdinand</h4>-->
+    <!--      <p><b>Status</b> :-->
+    <!--        <span class="label label-success">AVAILABLE</span>-->
+    <!--        <br>-->
+    <!--        <b>Emp# </b> : 274534<br>-->
+    <!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
 
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
+    <!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
+    <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
+    <!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
+    <!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
+    <!--      Delete-->
+    <!--    </button>-->
+    <!--    </div>-->
 
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
+    <!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
+    <!--      <h4>Franz Ferdinand</h4>-->
+    <!--      <p><b>Status</b> :-->
+    <!--        <span class="label label-success">AVAILABLE</span>-->
+    <!--        <br>-->
+    <!--        <b>Emp# </b> : 274534<br>-->
+    <!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
 
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
+    <!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
+    <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
+    <!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
+    <!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
+    <!--      Delete-->
+    <!--    </button>-->
+    <!--    </div>-->
 
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
+    <!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
+    <!--      <h4>Franz Ferdinand</h4>-->
+    <!--      <p><b>Status</b> :-->
+    <!--        <span class="label label-success">AVAILABLE</span>-->
+    <!--        <br>-->
+    <!--        <b>Emp# </b> : 274534<br>-->
+    <!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
 
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
+    <!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
+    <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
+    <!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
+    <!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
+    <!--      Delete-->
+    <!--    </button>-->
+    <!--    </div>-->
 
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
-<!--      <h4>Franz Ferdinand</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-success">AVAILABLE</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
+    <!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >-->
+    <!--      <h4>Franz Ferdinand</h4>-->
+    <!--      <p><b>Status</b> :-->
+    <!--        <span class="label label-success">AVAILABLE</span>-->
+    <!--        <br>-->
+    <!--        <b>Emp# </b> : 274534<br>-->
+    <!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
 
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
+    <!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
+    <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
+    <!--        Track<span class="glyphicon glyphicon-map-marker"></span>-->
+    <!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
+    <!--      Delete-->
+    <!--    </button>-->
+    <!--    </div>-->
 
-<!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding ">-->
-<!--      <h4>Daniel Webb</h4>-->
-<!--      <p><b>Status</b> :-->
-<!--        <span class="label label-warning">INTRANSIT</span>-->
-<!--        <br>-->
-<!--        <b>Emp# </b> : 274534<br>-->
-<!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
+    <!--    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding ">-->
+    <!--      <h4>Daniel Webb</h4>-->
+    <!--      <p><b>Status</b> :-->
+    <!--        <span class="label label-warning">INTRANSIT</span>-->
+    <!--        <br>-->
+    <!--        <b>Emp# </b> : 274534<br>-->
+    <!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
 
-<!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
-<!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
-<!--        Track-->
-<!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
-<!--      Delete-->
-<!--    </button>-->
-<!--    </div>-->
+    <!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
+    <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">-->
+    <!--        Track-->
+    <!--      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">-->
+    <!--      Delete-->
+    <!--    </button>-->
+    <!--    </div>-->
 
 
 
@@ -1503,6 +1662,34 @@
 
 
 <!--</div> &lt;!&ndash; /container &ndash;&gt;-->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel"><span id="myMessage">New message</span></h4>
+      </div>
+      <!--                    <div class="modal-body">-->
+      <!--                      <form>-->
+      <!--                        <div class="form-group">-->
+      <!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
+      <!--                          <input type="text" class="form-control" id="recipient-name">-->
+      <!--                        </div>-->
+      <!--                        <div class="form-group">-->
+      <!--                          <label for="message-text" class="control-label">Message:</label>-->
+      <!--                          <textarea class="form-control" id="message-text"></textarea>-->
+      <!--                        </div>-->
+      <!--                      </form>-->
+      <!--                    </div>-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="window.history.back();">Go back</button>
+        <!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
+<!--        <a href="./order_list_view.html" type="button" class="btn btn-primary">View all orders</a>-->
+      </div>
+    </div>
+  </div>
+</div>
 
 <svg xmlns="http://www.w3.org/2000/svg" width="1140" height="500" viewBox="0 0 1140 500" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="57" style="font-weight:bold;font-size:57pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thirdslide</text></svg></body>
 </html>

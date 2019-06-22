@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0042)http://localhost:8000/routes_planning.html -->
+<!-- saved from url=(0045)http://localhost:7000/vehicles_list_view.html -->
 <html lang="en" class="gr__localhost"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,7 +19,7 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <script src="./js/date.format.js"></script>
   <![endif]-->
-  <link rel="icon" href="http://localhost:8000/img/favicon-d.png">
+  <link rel="icon" href="http://localhost:7000/img/favicon-d.png">
 </head>
 
 <body data-gr-c-s-loaded="true">
@@ -61,7 +61,7 @@
     $("#navbarLoader").load('./templates/navbar.html')
     let htmlContent = '\n' +
       '  <div class="row">' +
-      '    <h3 class="col-xs-12 col-md-12 col-lg-12 text-center" >Getting your delivery fleet...</h3>\n' +
+      '    <h3 class="col-xs-12 col-md-12 col-lg-12 text-center" >Getting all pooled vehicles...</h3>\n' +
       '    <img src="./img/globe.gif" class="col-xs-12 col-md-12 col-lg-12" style="\n' +
       '    margin-top: -266px;\n' +
       '    z-index: -30;\n' +
@@ -69,7 +69,8 @@
       '    "/>\n' +
       '  </div>';
     //$("#render_container").html(htmlContent)
-    //$("#render_container").html(htmlContent)
+    $("#render_container").html(htmlContent)
+
 
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -82,6 +83,9 @@
         console.log("currentUserId: ",currentUserId)
         //getOrders(currentUserId)
         //getDeliveryAssociates(currentUserId)
+        //getPooledVehicles();
+        renderPooledVehicles ();
+
       } else {
         // No user is signed in.
         window.location.href = "/";
@@ -89,6 +93,44 @@
     });
 
   });
+
+  async function renderPooledVehicles () {
+    try {
+      let pooledVehicles = await getPooledVehicles()
+
+      //Render Pooled vehicles
+
+      
+
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  //Get all pooled vehicles from HERE Spaces
+  function getPooledVehicles () {
+    return new Promise ((reject, resolve) => {
+      $.ajax({
+        url: 'https://xyz.api.here.com/hub/spaces/7nVQzZ0c/iterate?limit=30000',
+        dataType: 'json',
+        type: 'get',
+        contentType: 'application/json',
+        processData: false,
+        headers: {
+          'Authorization': 'Bearer '+module_XYZ.xyzToken//AJZNL8IDaCkcqDfrqZKCh74'
+        },
+        success: function( data, textStatus, jQxhr ){
+          //$('#response pre').html( JSON.stringify( data ) );
+          console.log("data", data);
+          resolve(data)
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+          console.log( errorThrown );
+          reject(jqXhr)
+        }
+      });
+    });
+  }
 
   async function deleteOrder (orderRef) {
     try {
@@ -148,7 +190,8 @@
         '\n' +
         '    <div class="col-xs-12 col-md-12 col-lg-7">\n' +
         '      <h4 class="text-center">No Delivery Associates present, Please add your fleet\n' +
-        // '        <img src="./img/bluBox.png"/>\n' +
+        '        <img src="./img/deliveryBoyIcon.jpg" style="width: 350px;\n' +
+        '    padding-top: 45px;"/>\n' +
         '      </h4>\n' +
         '    </div>\n' +
         '  </div>\n' +
@@ -188,15 +231,16 @@
             '      <p><b>Status</b> :\n' +
             '        <span class="label label-'+statusFlagColor+'">'+currentDocument.status+'</span>\n' +
             '        <br>\n' +
-            '        <b>Emp# </b> : 274534<br>\n' +
-            '        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>\n' +
+            '        <b>Emp# </b> : '+currentDocument.employeeId+'<br>\n' +
+            '        <b>Address</b> : '+currentDocument.deliveryAssociateAddress+'</p>\n' +
             '\n' +
             '      <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->\n' +
-            '      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">\n' +
+            '      <a href="./db_tracking_history.html?trackingId='+currentDocument.trackingId+'" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">\n' +
             '        Track<span class="glyphicon glyphicon-map-marker"></span>\n' +
-            '      </button><button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">\n' +
-            '      Edit\n' +
-            '    </button>\n' +
+            '      </a>' +
+            // '     <button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">\n' +
+            // '      Edit\n' +
+            // '    </button>\n' +
             '    </div>'
         })
 
@@ -379,7 +423,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand col-xs-1 col-md-2 col-lg-2" href="http://localhost:8000/routes_planning.html#">Daakiya</a>
+      <a class="navbar-brand col-xs-1 col-md-2 col-lg-2" href="http://localhost:7000/vehicles_list_view.html#">Daakiya</a>
     </div>
 
     <!--    <div id="navbar" class="navbar-collapse collapse">-->
@@ -405,9 +449,9 @@
     <!--    -->
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">--&gt;
-        <li><a href="http://localhost:8000/order_list_view.html">Orders</a></li>
-        <li><a href="http://localhost:8000/delivery_associates_list_view.html">Fleet</a></li>
-        <li><a href="http://localhost:8000/routes_list_view.html">Routes</a></li>
+        <li><a href="http://localhost:7000/order_list_view.html">Orders</a></li>
+        <li><a href="http://localhost:7000/delivery_associates_list_view.html">Fleet</a></li>
+        <li><a href="http://localhost:7000/routes_list_view.html">Routes</a></li>
 
         <!--        <li class="dropdown">-->
         <!--          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
@@ -471,8 +515,8 @@
       <!--      </ul>-->
 
       <ul class="nav navbar-nav col-xs-12 col-md-4 col-lg-4" style="float: right;">
-        <li><a href="http://localhost:8000/routes_planning.html#" class="navbar-nav col-xs-12 col-md-12 col-lg-4" style="text-align: left;" id="emailId">dead.night7@gmail.com</a></li>
-        <li><a href="http://localhost:8000/routes_planning.html#" class="navbar-nav col-xs-12 col-md-12 col-lg-4" style="text-align: left;" onclick="logOut()">Logout</a></li>
+        <li><a href="http://localhost:7000/vehicles_list_view.html#" class="navbar-nav col-xs-12 col-md-12 col-lg-4" style="text-align: left;" id="emailId">dead.night7@gmail.com</a></li>
+        <li><a href="http://localhost:7000/vehicles_list_view.html#" class="navbar-nav col-xs-12 col-md-12 col-lg-4" style="text-align: left;" onclick="logOut()">Logout</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>
@@ -526,7 +570,7 @@
   <div class="container">
     <div class="">
       <div class="row">
-        <div class="col-xs-12 col-md-12 col-lg-6"><h1>Route Planning</h1></div>
+        <div class="col-xs-12 col-md-12 col-lg-6"><h1>Vehicles</h1></div>
 
         <div class="col-xs-12 col-md-12 col-lg-6" style="margin-top: 15px;">
 
@@ -561,7 +605,7 @@
             <!--            </ul>-->
           </div>
 
-          <div class="col-xs-7 col-md-6 col-lg-4" style="margin-left: -20px;">
+          <div class="col-xs-1 col-md-6 col-lg-2" style="margin-left: -20px;">
             <!--            <input type="email"  style="margin-top: 5px; margin-left: 20px;" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Order Number" />-->
           </div>
 
@@ -571,8 +615,12 @@
           <!--          <button class="col-xs-2 col-md-2 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 40px;border: 1px solid #FFF;">-->
           <!--          <span class="glyphicon glyphicon-plus" style=""></span>-->
           <!--          </button>-->
-          <a href="http://localhost:8000/delivery_associate_add_form.html" class="col-xs-6 col-md-6 col-lg-4 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 135px;border: 1px solid #FFF;">
-            Create Plan <span class="glyphicon glyphicon-plus" style=""></span>
+          <a href="http://localhost:7000/routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">
+            Book Vehicle
+            <!--            <span class="glyphicon glyphicon-plus" style=""></span>-->
+          </a>
+          <a href="http://localhost:7000/routes_planning.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">
+            Add Vehicle <span class="glyphicon glyphicon-plus" style=""></span>
           </a>
         </div>
 
@@ -584,9 +632,107 @@
 
 </div>
 
+<div class="container">
+  <div class="row">
+<!--    <iframe class="col-xs-12 col-md-12 col-lg-12" src="https://xyz.here.com/viewer/?project_id=8ec53857-c14f-43e5-8adf-e93f560b6ec9" frameborder="0" style="-->
+<!--    height: 600px;-->
+<!--"></iframe>-->
+  </div>
+</div>
+<br><br>
 <div class="container" role="main">
 
-  <div id="render_container"></div>
+  <div id="render_vehicles">
+
+    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">
+      <h4 id="uniqueVehicleID featureId">CAR - Tata Glanza</h4>
+      <p>
+        <b>Model# </b> : Tata Glanza<br>
+        <b>Capacity# </b> : 3000kg<br>
+        <b>Booked By</b> :
+        <span class="label label-success">FREE</span>
+        <br>
+        <!--        <b>Emp# </b> : 23343545<br>-->
+        <!--        <b>Address</b> : Thane West</p>-->
+
+        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->
+        <a href="http://localhost:7000/db_tracking_history.html?trackingId=HERE-68574334-e9f2-4985-a579-c5acaae7a029" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">
+          Track<span class="glyphicon glyphicon-map-marker"></span>
+        </a>
+        <a href="http://localhost:7000/routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">
+          Book Vehicle
+          <!--            <span class="glyphicon glyphicon-plus" style=""></span>-->
+        </a>
+    </p></div>
+
+    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">
+      <h4 id="uniqueVehicleID">CAR - Toyota Etios</h4>
+      <p>
+        <b>Model# </b> : Toyota Etios<br>
+        <b>Capacity# </b> : 3000kg<br>
+
+        <b>Booked By</b> :
+        <span>Madhav</span>
+        <br>
+        <!--        <b>Emp# </b> : 23343545<br>-->
+        <!--        <b>Address</b> : Thane West</p>-->
+
+        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->
+        <a href="http://localhost:7000/db_tracking_history.html?trackingId=HERE-68574334-e9f2-4985-a579-c5acaae7a029" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">
+          Track<span class="glyphicon glyphicon-map-marker"></span>
+        </a>
+        <!--        <a href="./routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->
+        <!--          Book Vehicle-->
+        <!--          &lt;!&ndash;            <span class="glyphicon glyphicon-plus" style=""></span>&ndash;&gt;-->
+        <!--        </a>-->
+    </p></div>
+
+    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">
+      <h4 id="uniqueVehicleID">CAR</h4>
+      <p>
+        <b>Model# </b> : Toyota Etios<br>
+        <b>Capacity# </b> : 3000kg<br>
+
+        <b>Booked By</b> :
+        <span>Madhav</span>
+        <br>
+        <!--        <b>Emp# </b> : 23343545<br>-->
+        <!--        <b>Address</b> : Thane West</p>-->
+
+        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->
+        <a href="http://localhost:7000/db_tracking_history.html?trackingId=HERE-68574334-e9f2-4985-a579-c5acaae7a029" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">
+          Track<span class="glyphicon glyphicon-map-marker"></span>
+        </a>
+        <!--        <a href="./routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->
+        <!--          Book Vehicle-->
+        <!--          &lt;!&ndash;            <span class="glyphicon glyphicon-plus" style=""></span>&ndash;&gt;-->
+        <!--        </a>-->
+    </p></div>
+
+    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding">
+      <h4 id="uniqueVehicleIDFeatureId">CYCLE - Hercules 550</h4>
+      <p>
+        <b>Model# </b> : Hercules 550<br>
+        <b>Capacity# </b> : 3000kg<br>
+        <b>Booked By</b> :
+        <span class="label label-success">FREE</span>
+        <br>
+        <!--        <b>Emp# </b> : 23343545<br>-->
+        <!--        <b>Address</b> : Thane West</p>-->
+
+        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->
+        <a href="http://localhost:7000/db_tracking_history.html?trackingId=HERE-68574334-e9f2-4985-a579-c5acaae7a029" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">
+          Track<span class="glyphicon glyphicon-map-marker"></span>
+        </a>
+        <a href="http://localhost:7000/routes_my_assigned.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">
+          Book Vehicle
+          <!--            <span class="glyphicon glyphicon-plus" style=""></span>-->
+        </a>
+    </p></div>
+
+  </div>
+
+<!--  <div id="render_container"></div>-->
 
 
   <!--  <div class="row">-->
@@ -871,99 +1017,51 @@
   <!--    </div>-->
 
   <!--  </div>-->
-<!--    <hr/>-->
+  <!--  <hr/>-->
+  <!--  <div class="row">-->
 
-  <div class="row">
-    <div id="accordion">
-      <div class="card">
-        <div class="card-header" id="headingOne">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-              Collapsible Group Item #1
-            </button>
-          </h5>
-        </div>
+  <!--    <img src="https://image.maps.api.here.com/mia/1.6/mapview?c=42.943080%2C-73.944220&z=14&w=250&h=120&f=1&app_id=st58tn5HdBdzSlMNw5OX&app_code=53DQ_ew0UvU1KmWtUJQDYQ"-->
+  <!--         class="col-xs-12 col-md-12 col-lg-3 thumbnail "/>-->
 
-        <div id="collapseOne" class="show collapse" aria-labelledby="headingOne" data-parent="#accordion" aria-expanded="false" style="height: 0px;">
-          <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header" id="headingTwo">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-              Collapsible Group Item #2
-            </button>
-          </h5>
-        </div>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-          <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-header" id="headingThree">
-          <h5 class="mb-0">
-            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-              Collapsible Group Item #3
-            </button>
-          </h5>
-        </div>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-          <div class="card-body">
-            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-          </div>
-        </div>
-      </div>
+  <!--    <div class="col-xs-12 col-md-12 col-lg-7">-->
+  <!--      <h4>Order# - 39835567</h4>-->
+  <!--      <p><b>Status</b> : <span class="label label-danger">Cancelled</span><br/>-->
+  <!--        <b>ETA</b> : Tomorrow, 3:30pm<br/>-->
+  <!--        <b>Customer</b> : Satish Avhad<br/>-->
+  <!--        <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>-->
 
-  </div>
+  <!--      &lt;!&ndash;    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>&ndash;&gt;-->
+  <!--    </div>-->
 
-    <div class="row">
+  <!--    <div class="buttons col-xs-12 col-md-12 col-lg-2">-->
+  <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11 btn btn-default">-->
+  <!--        Edit-->
+  <!--      </button>-->
+  <!--      <button type="button" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11  btn btn-default">-->
+  <!--        Delete-->
+  <!--      </button>-->
 
-      <img src="./Daakiya - Route Optimization and Delivery Management_files/mapview" class="col-xs-12 col-md-12 col-lg-3 thumbnail ">
+  <!--      <div class = "btn-group">-->
+  <!--        <button type = "button"  style="margin:5px" class = "btn btn-primary dropdown-toggle" data-toggle = "dropdown">-->
+  <!--          More Option-->
+  <!--          <span class = "caret"></span>-->
+  <!--        </button>-->
 
-      <div class="col-xs-12 col-md-12 col-lg-7">
-        <h4>Order# - 39835567</h4>
-        <p><b>Status</b> : <span class="label label-danger">Cancelled</span><br>
-          <b>ETA</b> : Tomorrow, 3:30pm<br>
-          <b>Customer</b> : Satish Avhad<br>
-          <b>Address</b> : IIT Powai, Near Powai Lake, Hiranandani, Andheri (East), Mumbai - 400003</p>
+  <!--        <ul class = "dropdown-menu" role = "menu">-->
+  <!--          <li><a href = "#">Mark Order Complete</a></li>-->
+  <!--          <li><a href = "#">Mark In Transit</a></li>-->
+  <!--          <li><a href = "#">Order Cancelled</a></li>-->
 
-        <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->
-      </div>
+  <!--          <li class = "divider"></li>-->
+  <!--          <li><a href = "#">Navigate to order</a></li>-->
+  <!--        </ul>-->
+  <!--      </div>-->
 
-      <div class="buttons col-xs-12 col-md-12 col-lg-2">
-        <button type="button" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11 btn btn-default">
-          Edit
-        </button>
-        <button type="button" style="margin:5px" class="col-xs-2 col-md-3 col-lg-11  btn btn-default">
-          Delete
-        </button>
+  <!--    </div>-->
 
-        <div class="btn-group">
-          <button type="button" style="margin:5px" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-            More Option
-            <span class="caret"></span>
-          </button>
+  <!--  </div>-->
 
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="http://localhost:8000/routes_planning.html#">Mark Order Complete</a></li>
-            <li><a href="http://localhost:8000/routes_planning.html#">Mark In Transit</a></li>
-            <li><a href="http://localhost:8000/routes_planning.html#">Order Cancelled</a></li>
-
-            <li class="divider"></li>
-            <li><a href="http://localhost:8000/routes_planning.html#">Navigate to order</a></li>
-          </ul>
-        </div>
-
-      </div>
-
-    </div>
-
-<!--    <hr/>-->
+  <!--  <hr/>-->
 
 </div>
 
@@ -1529,8 +1627,7 @@
 
 <!--</div> &lt;!&ndash; /container &ndash;&gt;-->
 
-
 <svg xmlns="http://www.w3.org/2000/svg" width="1140" height="500" viewBox="0 0 1140 500" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="57" style="font-weight:bold;font-size:57pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thirdslide</text></svg>
 
 
-</div></body></html>
+</body></html>

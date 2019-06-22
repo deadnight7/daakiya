@@ -140,6 +140,28 @@
     renderDeliveryAssociates (docs.docs);
   }
 
+  function releaseVehicle (docRef) {
+
+    $('#myModal').modal({show : true})
+    $("#myMessage").text("Please wait while vehicle is getting released..")
+
+    documentId = docRef.id;
+
+    //Add Feature Data to Delivery Associate Doc
+    firebase.firestore().collection("delivery_associates").doc(documentId).update({
+      vehicleDetailsSnapshot : {}
+    }).then(function() {
+      console.log("Document successfully updated!");
+      $("#myMessage").text("Vehicle is sucessfully released..")
+      window.location.reload()
+    }).catch (function (error) {
+      $("#myMessage").text("Error in releasing vehicle..")
+      console.log("Error in updating document...",error);
+    });
+
+
+  }
+
   function renderDeliveryAssociates (docs) {
     try {
 
@@ -184,7 +206,39 @@
             console.log("Unable to format dates",e)
           }
 
-          htmlContent += '\n' +
+          let releaseVehicleButton =
+          '     <a onclick="releaseVehicle(this)" id="'+doc.id+'"  type="button" style="margin:5px" class="  btn btn-danger">\n' +
+          '      Release Vehicle\n' +
+          '    </a>\n' ;
+            //
+            // releaseVehicleButton =
+            //   '     <button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">\n' +
+            //   '      Release Vehicle \n' +
+            //   '    </button>\n' ;
+
+          let bookedVehicleButton =
+          '     <a href="./vehicles_list_view.html?deliveryDocId='+doc.id+'" type="button" style="margin:5px" class="  btn btn-primary">\n' +
+          '      Book Vehicle\n' +
+          '    </a>\n' ;
+          //
+          // bookedVehicleButton =
+          //   '     <button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">\n' +
+          //   '      Release Vehicle \n' +
+          //   '    </button>\n' ;
+
+          let expectedButton = "";
+
+          //Show release button if document is assigned to a vehicle
+          if (doc.data().vehicleDetailsSnapshot && doc.data().vehicleDetailsSnapshot.id) {
+            expectedButton = releaseVehicleButton;
+          }
+          //Show book vehicle for all other cases
+          else {
+            expectedButton = bookedVehicleButton;
+          }
+
+          htmlContent +=
+            '\n' +
             '    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >\n' +
             '      <h4>'+currentDocument.associateName+'</h4>\n' +
             '      <p><b>Status</b> :\n' +
@@ -197,10 +251,29 @@
             '      <a href="./db_tracking_history.html?trackingId='+currentDocument.trackingId+'" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">\n' +
             '        Track<span class="glyphicon glyphicon-map-marker"></span>\n' +
             '      </a>' +
+            expectedButton+
+            //
             // '     <button type="button" style="margin:5px" class="col-xs-2 col-md-3  btn btn-default">\n' +
-            // '      Edit\n' +
+            // '      Release Vehicle \n' +
             // '    </button>\n' +
             '    </div>'
+            // '\n' +
+            // '    <div class="col-xs-12 col-md-12 col-lg-3 thumbnail boxPadding" >\n' +
+            // '      <h4>'+currentDocument.associateName+'</h4>\n' +
+            // '      <p><b>Status</b> :\n' +
+            // '        <span class="label label-'+statusFlagColor+'">'+currentDocument.status+'</span>\n' +
+            // '        <br>\n' +
+            // '        <b>Emp# </b> : '+currentDocument.employeeId+'<br>\n' +
+            // '        <b>Address</b> : '+currentDocument.deliveryAssociateAddress+'</p>\n' +
+            // '\n' +
+            // '      <!--    Edit, Mark Complete, Delete,     <span class="label label-danger">Non Geocoded</span>-->\n' +
+            // '      <a href="./db_tracking_history.html?trackingId='+currentDocument.trackingId+'" target="_blank" type="button" style="margin:5px" class="col-xs-2 col-md-3 btn btn-default">\n' +
+            // '        Track<span class="glyphicon glyphicon-map-marker"></span>\n' +
+            // '      </a>' +
+            // '     <a href="./vehicles_list_view.html?deliveryDocId='+doc.id+'" type="button" style="margin:5px" class="  btn btn-primary">\n' +
+            // '      Book Vehicle\n' +
+            // '    </a>\n'
+            // '    </div>'
         })
 
         htmlContent += '</div>\n' +
@@ -460,6 +533,59 @@
             Add Associate <span class="glyphicon glyphicon-plus" style=""></span>
           </a>
         </div>
+
+
+<!--        <div class="col-xs-12 col-md-12 col-lg-6" style="margin-top: 15px;">-->
+
+<!--          <div class = "col-xs-3 col-md-3 col-lg-2 btn-group">-->
+<!--            &lt;!&ndash;            <button type = "button" style="margin:5px" class = "btn btn-default dropdown-toggle" data-toggle = "dropdown">&ndash;&gt;-->
+<!--            &lt;!&ndash;              Filter By&ndash;&gt;-->
+<!--            &lt;!&ndash;              <span class = "caret"></span>&ndash;&gt;-->
+<!--            &lt;!&ndash;            </button>&ndash;&gt;-->
+
+<!--            &lt;!&ndash;            <ul class = "dropdown-menu" role = "menu">&ndash;&gt;-->
+<!--            &lt;!&ndash;              <li><a href = "#">All New Orders</a></li>&ndash;&gt;-->
+<!--            &lt;!&ndash;              <li><a href = "#">All In Transit Orders</a></li>&ndash;&gt;-->
+<!--            &lt;!&ndash;              <li><a href = "#">All Completed Orders</a></li>&ndash;&gt;-->
+<!--            &lt;!&ndash;              <li><a href = "#">All Cancelled Orders</a></li>&ndash;&gt;-->
+<!--            &lt;!&ndash;            </ul>&ndash;&gt;-->
+<!--          </div>-->
+
+<!--          <div class = "col-xs-9 col-md-9 col-lg-2 btn-group">-->
+<!--            &lt;!&ndash;            <button type = "button" style="margin:5px" class = "btn btn-default dropdown-toggle" data-toggle = "dropdown">&ndash;&gt;-->
+<!--            &lt;!&ndash;              Sort By&ndash;&gt;-->
+<!--            &lt;!&ndash;              <span class = "caret"></span>&ndash;&gt;-->
+<!--            &lt;!&ndash;            </button>&ndash;&gt;-->
+
+<!--            &lt;!&ndash;            <ul class = "dropdown-menu" role = "menu">&ndash;&gt;-->
+<!--            &lt;!&ndash;              <li><a href = "#">Sort by last added date desc</a></li>&ndash;&gt;-->
+<!--            &lt;!&ndash;              <li><a href = "#">Order Number desc</a></li>&ndash;&gt;-->
+<!--            &lt;!&ndash;              <li><a href = "#">Customer Name desc</a></li>&ndash;&gt;-->
+
+<!--            &lt;!&ndash;              <li><a href = "#">Sort by last added date asc</a></li>&ndash;&gt;-->
+<!--            &lt;!&ndash;              <li><a href = "#">Order Number asc</a></li>&ndash;&gt;-->
+<!--            &lt;!&ndash;              <li><a href = "#">Customer Name asc</a></li>&ndash;&gt;-->
+<!--            &lt;!&ndash;            </ul>&ndash;&gt;-->
+<!--          </div>-->
+
+<!--          <div class="col-xs-1 col-md-6 col-lg-2" style="margin-left: -20px;">-->
+<!--            &lt;!&ndash;            <input type="email"  style="margin-top: 5px; margin-left: 20px;" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Search Order Number" />&ndash;&gt;-->
+<!--          </div>-->
+
+<!--          &lt;!&ndash;          <button class="col-xs-3 col-md-3 col-lg-2 btn btn-primary" type="button" style="margin:5px">&ndash;&gt;-->
+<!--          &lt;!&ndash;            Search <span class="glyphicon glyphicon-search"></span>&ndash;&gt;-->
+<!--          &lt;!&ndash;          </button>&ndash;&gt;-->
+<!--          &lt;!&ndash;          <button class="col-xs-2 col-md-2 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 40px;border: 1px solid #FFF;">&ndash;&gt;-->
+<!--          &lt;!&ndash;          <span class="glyphicon glyphicon-plus" style=""></span>&ndash;&gt;-->
+<!--          &lt;!&ndash;          </button>&ndash;&gt;-->
+<!--          <a href="./vehicles_list_view.html" class="col-xs-6 col-md-6 col-lg-1 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->
+<!--            Pooled Vehicles-->
+<!--            &lt;!&ndash;            <span class="glyphicon glyphicon-plus" style=""></span>&ndash;&gt;-->
+<!--          </a>-->
+<!--          <a href="./delivery_associate_add_form.html" class="col-xs-6 col-md-6 col-lg-2 btn btn-primary" type="button" style="margin: 5px;border-radius: 82px;width: 120px;border: 1px solid #FFF;">-->
+<!--            Add Associate <span class="" style=""></span>-->
+<!--          </a>-->
+<!--        </div>-->
 
       </div>
 
@@ -1365,6 +1491,34 @@
 
 
 <!--</div> &lt;!&ndash; /container &ndash;&gt;-->
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel"><span id="myMessage">New message</span></h4>
+      </div>
+      <!--                    <div class="modal-body">-->
+      <!--                      <form>-->
+      <!--                        <div class="form-group">-->
+      <!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
+      <!--                          <input type="text" class="form-control" id="recipient-name">-->
+      <!--                        </div>-->
+      <!--                        <div class="form-group">-->
+      <!--                          <label for="message-text" class="control-label">Message:</label>-->
+      <!--                          <textarea class="form-control" id="message-text"></textarea>-->
+      <!--                        </div>-->
+      <!--                      </form>-->
+      <!--                    </div>-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="window.history.back();">Go back</button>
+        <!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
+        <!--        <a href="./order_list_view.html" type="button" class="btn btn-primary">View all orders</a>-->
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <svg xmlns="http://www.w3.org/2000/svg" width="1140" height="500" viewBox="0 0 1140 500" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="57" style="font-weight:bold;font-size:57pt;font-family:Arial, Helvetica, Open Sans, sans-serif">Thirdslide</text></svg></body>

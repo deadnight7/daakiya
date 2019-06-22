@@ -20,3 +20,8 @@ var module_HEREDeveloperAccess = {
   app_id: "hVA6vKr6ixW90KYvkb7k",//'st58tn5HdBdzSlMNw5OX',//
   app_code: "IulCKZdfTxT9b5NPveT_og",//'53DQ_ew0UvU1KmWtUJQDYQ'
 };
+
+var module_XYZ = {
+  vehiclesDataSpaceId : "7nVQzZ0c",//"cpandit203@gmail.com",
+  xyzToken : "AJZNL8IDaCkcqDfrqZKCh74"
+};
