@@ -1,13 +1,12 @@
-/**
- *
- * <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js"></script>
- <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
- <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
- <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-messaging.js"></script>
- <script src="./accessKeys.js"></script>
- */
+//
+// importScripts('/__/firebase/6.1.1/firebase-app.js');
+// importScripts('/__/firebase/6.1.1/firebase-messaging.js');
+// importScripts('/__/firebase/init.js');
+//
+// firebase.messaging();
+
 importScripts("https://www.gstatic.com/firebasejs/6.1.1/firebase-app.js")
-importScripts("https://www.gstatic.com/firebasejs/6.1.1/firebase-mes saging.js")
+importScripts("https://www.gstatic.com/firebasejs/6.1.1/firebase-messaging.js")
 //importScripts("./accessKeys.js")
 
 var module_firebaseConfig = {

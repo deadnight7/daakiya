@@ -26,42 +26,41 @@
 
 <body>
 <!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-              aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Daakiya</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Delivery Associates</a></li>
-        <li><a href="#">Orders</a></li>
-        <li><a href="#">Routes</a></li>
+<!--<nav class="navbar navbar-inverse navbar-fixed-top">-->
+<!--  <div class="container">-->
+<!--    <div class="navbar-header">-->
+<!--      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"-->
+<!--              aria-expanded="false" aria-controls="navbar">-->
+<!--        <span class="sr-only">Toggle navigation</span>-->
+<!--        <span class="icon-bar"></span>-->
+<!--        <span class="icon-bar"></span>-->
+<!--        <span class="icon-bar"></span>-->
+<!--      </button>-->
+<!--      <a class="navbar-brand" href="#">Daakiya</a>-->
+<!--    </div>-->
+<!--    <div id="navbar" class="navbar-collapse collapse">-->
+<!--      <ul class="nav navbar-nav">-->
+<!--        <li><a href="./order_list_view.html">Orders</a></li>-->
+<!--        <li><a href="#">Fleet</a></li>-->
+<!--        <li><a href="#">Routes</a></li>-->
 
-
-        <!--        <li class="dropdown">-->
-        <!--          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
-        <!--          <ul class="dropdown-menu">-->
-        <!--            <li><a href="#">Action</a></li>-->
-        <!--            <li><a href="#">Another action</a></li>-->
-        <!--            <li><a href="#">Something else here</a></li>-->
-        <!--            <li role="separator" class="divider"></li>-->
-        <!--            <li class="dropdown-header">Nav header</li>-->
-        <!--            <li><a href="#">Separated link</a></li>-->
-        <!--            <li><a href="#">One more separated link</a></li>-->
-        <!--          </ul>-->
-        <!--        </li>-->
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</nav>
+<!--        &lt;!&ndash;        <li class="dropdown">&ndash;&gt;-->
+<!--        &lt;!&ndash;          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>&ndash;&gt;-->
+<!--        &lt;!&ndash;          <ul class="dropdown-menu">&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">Action</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">Another action</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">Something else here</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li role="separator" class="divider"></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li class="dropdown-header">Nav header</li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">Separated link</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">One more separated link</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;          </ul>&ndash;&gt;-->
+<!--        &lt;!&ndash;        </li>&ndash;&gt;-->
+<!--      </ul>-->
+<!--    </div>&lt;!&ndash;/.nav-collapse &ndash;&gt;-->
+<!--  </div>-->
+<!--</nav>-->
+<div id="navbarLoader"></div>
 
 <style type="text/css">
   .body {
@@ -191,9 +190,9 @@
             </div>
 
             <div class="form-group">
-              <label class="control-label col-sm-3">Order Tags: </label>
+              <label class="control-label col-sm-3">Order alias: </label>
               <div class="col-sm-9">
-                <input autocomplete="new-customer" id="orderName" type="text" class="form-control" placeholder="Your order tags (Eg. Jack's Order)">
+                <input autocomplete="new-customer" id="orderName" type="text" class="form-control" placeholder="Your order alias (Eg. Jack's Order)">
               </div>
             </div>
 
@@ -248,22 +247,22 @@
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title" id="exampleModalLabel"><span id="myMessage">New message</span></h4>
                     </div>
-<!--                    <div class="modal-body">-->
-<!--                      <form>-->
-<!--                        <div class="form-group">-->
-<!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
-<!--                          <input type="text" class="form-control" id="recipient-name">-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                          <label for="message-text" class="control-label">Message:</label>-->
-<!--                          <textarea class="form-control" id="message-text"></textarea>-->
-<!--                        </div>-->
-<!--                      </form>-->
-<!--                    </div>-->
+                    <!--                    <div class="modal-body">-->
+                    <!--                      <form>-->
+                    <!--                        <div class="form-group">-->
+                    <!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
+                    <!--                          <input type="text" class="form-control" id="recipient-name">-->
+                    <!--                        </div>-->
+                    <!--                        <div class="form-group">-->
+                    <!--                          <label for="message-text" class="control-label">Message:</label>-->
+                    <!--                          <textarea class="form-control" id="message-text"></textarea>-->
+                    <!--                        </div>-->
+                    <!--                      </form>-->
+                    <!--                    </div>-->
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload();">Add an another order</button>
-<!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
-                      <button type="button" class="btn btn-primary">View all orders</button>
+                      <!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
+                      <a href="./order_list_view.html" type="button" class="btn btn-primary">View all orders</a>
                     </div>
                   </div>
                 </div>
@@ -762,6 +761,7 @@
     //typeahead.initialize();
     genrerateNumber();
 
+    $("#navbarLoader").load('./templates/navbar_standard.html')
 
     //
     // let onSubmitAdd = document.getElementById("addOrderSubmit");
@@ -778,6 +778,8 @@
 <!-- Add Firebase products that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-firestore.js"></script>
+
+
 
 <style type="text/css">
   .background-input {
@@ -796,6 +798,23 @@
   //var database = firebase.database();
 
   var db = firebase.firestore();
+
+  var userId = "";
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      console.log("Loaded ", user)
+      $("#emailId").text(user.email)
+
+      //Fetch all orders belonging to that user id - auth.currentUser.uid
+      let currentUserId = firebase.auth().currentUser.uid; //W0snQdSu0hdDUmTH85BlJKzkPTr2
+      console.log("currentUserId: ",currentUserId)
+      userId = currentUserId;
+    } else {
+      // No user is signed in.
+      window.location.href = "/";
+    }
+  });
 
   async function addOrder () {
 
@@ -851,7 +870,8 @@
       eta : eta,
       position : [lat, long],
       creationDate : creationDate,
-      status : status
+      status : status,
+      createdBy : userId
     }
     console.log(doc);
 

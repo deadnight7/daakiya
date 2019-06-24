@@ -28,42 +28,43 @@
 
 <body>
 <!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-              aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Daakiya</a>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="#">Delivery Associates</a></li>
-        <li><a href="#">Orders</a></li>
-        <li><a href="#">Routes</a></li>
+<!--<nav class="navbar navbar-inverse navbar-fixed-top">-->
+<!--  <div class="container">-->
+<!--    <div class="navbar-header">-->
+<!--      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"-->
+<!--              aria-expanded="false" aria-controls="navbar">-->
+<!--        <span class="sr-only">Toggle navigation</span>-->
+<!--        <span class="icon-bar"></span>-->
+<!--        <span class="icon-bar"></span>-->
+<!--        <span class="icon-bar"></span>-->
+<!--      </button>-->
+<!--      <a class="navbar-brand" href="#">Daakiya</a>-->
+<!--    </div>-->
+<!--    <div id="navbar" class="navbar-collapse collapse">-->
+<!--      <ul class="nav navbar-nav">-->
+<!--        <li><a href="#">Dashboard</a></li>-->
+<!--        <li><a href="#">Delivery Associates</a></li>-->
+<!--        <li><a href="#">Orders</a></li>-->
+<!--        <li><a href="#">Routes</a></li>-->
 
 
-        <!--        <li class="dropdown">-->
-        <!--          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>-->
-        <!--          <ul class="dropdown-menu">-->
-        <!--            <li><a href="#">Action</a></li>-->
-        <!--            <li><a href="#">Another action</a></li>-->
-        <!--            <li><a href="#">Something else here</a></li>-->
-        <!--            <li role="separator" class="divider"></li>-->
-        <!--            <li class="dropdown-header">Nav header</li>-->
-        <!--            <li><a href="#">Separated link</a></li>-->
-        <!--            <li><a href="#">One more separated link</a></li>-->
-        <!--          </ul>-->
-        <!--        </li>-->
-      </ul>
-    </div><!--/.nav-collapse -->
-  </div>
-</nav>
+<!--        &lt;!&ndash;        <li class="dropdown">&ndash;&gt;-->
+<!--        &lt;!&ndash;          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>&ndash;&gt;-->
+<!--        &lt;!&ndash;          <ul class="dropdown-menu">&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">Action</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">Another action</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">Something else here</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li role="separator" class="divider"></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li class="dropdown-header">Nav header</li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">Separated link</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;            <li><a href="#">One more separated link</a></li>&ndash;&gt;-->
+<!--        &lt;!&ndash;          </ul>&ndash;&gt;-->
+<!--        &lt;!&ndash;        </li>&ndash;&gt;-->
+<!--      </ul>-->
+<!--    </div>&lt;!&ndash;/.nav-collapse &ndash;&gt;-->
+<!--  </div>-->
+<!--</nav>-->
+<div id="navbarLoader"></div>
 
 <style type="text/css">
   .body {
@@ -314,7 +315,7 @@
 
                   <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload();">Add an another delivery associate</button>
-                    <button type="button" class="btn btn-primary">View all delivery associates</button>
+                    <a href="./delivery_associates_list_view.html" type="button" class="btn btn-primary">View all delivery associates</a>
                   </div>
                 </div>
               </div>
@@ -325,6 +326,7 @@
             <script type="text/javascript">
               $(document).ready(function(){
                 $('[data-toggle="popover"]').popover();
+                $("#navbarLoader").load('./templates/navbar_standard.html')
               });
             </script>
           </div>
@@ -381,12 +383,38 @@
 
 <script type="text/javascript">
 
+  // Your web app's Firebase configuration
+  var firebaseConfig = module_firebaseConfig;
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Get a reference to the database service
+  //var database = firebase.database();
+
+  var db = firebase.firestore();
+
+  var userId = "";
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      console.log("Loaded ", user)
+      $("#emailId").text(user.email)
+
+      //Fetch all orders belonging to that user id - auth.currentUser.uid
+      let currentUserId = firebase.auth().currentUser.uid; //W0snQdSu0hdDUmTH85BlJKzkPTr2
+      console.log("currentUserId: ",currentUserId)
+      userId = currentUserId;
+    } else {
+      // No user is signed in.
+      window.location.href = "/";
+    }
+  });
+
+
   async function addDeliveryAssociate (){
     try{
-
       document.getElementById("addDeliveryAssociate").setAttribute("disabled","true");
       let validationFailed = false;
-
       //Check whether every value is present - id="customerName"
       let customerName = document.getElementById("customerName").value;
       if (customerName == ""){
@@ -394,7 +422,6 @@
         validationFailed = true;
         //return;
       }
-
       //id="deliveryAssociateAddress"
       let deliveryAssociateAddress = document.getElementById("deliveryAssociateAddress").value;
       if (deliveryAssociateAddress == ""){
@@ -402,7 +429,6 @@
         validationFailed = true;
         //return;
       }
-
       //id="deliveryAssociateEmail"
       let deliveryAssociateEmail = document.getElementById("deliveryAssociateEmail").value;
       if (deliveryAssociateEmail == ""){
@@ -410,7 +436,6 @@
         validationFailed = true;
         //return;
       }
-
       //id="deliveryAssociateEmail"
       let deliveryAssociatePassword = document.getElementById("deliveryAssociatePassword").value;
       if (deliveryAssociatePassword == ""){
@@ -418,7 +443,6 @@
         validationFailed = true;
         //return;
       }
-
       //id="deliveryAssociatePassword"
       let licenceSelect = document.getElementById("licence");
       let licenceOption = licenceSelect.options[licenceSelect.selectedIndex].value;//id="licence"
@@ -432,7 +456,6 @@
         document.getElementById("addDeliveryAssociate").removeAttribute("disabled");
         return;
       }
-
       //Check deviceID, TrackingId, DeviceName
       let trackingId = document.getElementById("trackingId").value;
       let deviceId = document.getElementById("deviceId").value;
@@ -448,17 +471,15 @@
           let responseNewName = await editDeviceDetails (trackingId, deviceName ,accessToken)
         }
       }
-
       //Add Data to Firebase under `delivery_associates` table
-      var firebaseConfig = module_firebaseConfig;
+      //var firebaseConfig = module_firebaseConfig;
       // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-
+      //firebase.initializeApp(firebaseConfig);
       // Get a reference to the database service
       //var database = firebase.database();
-
       var db = firebase.firestore();
       let doc = {
+        status : "AVAILABLE",
         associateName: customerName,
         employeeId : employeeId,
         deliveryAssociateAddress : deliveryAssociateAddress,
@@ -467,9 +488,29 @@
         trackingId : trackingId,
         deviceId : deviceId,
         deviceName : deviceName,
-        licenceType : licenceOption
+        licenceType : licenceOption,
+        createdBy : firebase.auth().currentUser.uid
       }
-
+      //Add a delivery boy to database
+      let userRegistered = {
+        userRegistered : false,
+        errorMessage : {}
+      };
+      try {
+        const auth = firebase.auth();
+        let isLoggedIn = await auth.createUserWithEmailAndPassword (deliveryAssociateEmail, deliveryAssociatePassword);
+        console.log(isLoggedIn)
+        if (isLoggedIn) {
+          userRegistered.userRegistered = true;
+          console.log("User created...")
+          //window.location.refresh();
+        }
+      }catch (e) {
+        console.log("error: unable to register: ", e)
+        userRegistered.errorMessage = e
+        //$("#errorMessage").text(e.message)
+        //$('#errorMessage').show()
+      }
       let documentAdd = await db.collection("delivery_associates").add(doc);
       console.log(documentAdd)
       if (documentAdd) {
@@ -478,7 +519,14 @@
         // if (trackingId != ""){
         //   $("#myMessage").text("Delivery Associate added successfully, Save the QR..")
         // }
-        $("#myMessage").text("Delivery Associate added successfully")
+        let messageText = "Delivery Associate added successfully";
+        if (userRegistered.userRegistered == false) {
+          messageText += " However user is not registered. ";
+          if (userRegistered.errorMessage.message){
+            messageText += " Error : "+userRegistered.errorMessage.message
+          }
+        }
+        $("#myMessage").text(messageText)
         document.getElementById("addDeliveryAssociate").removeAttribute("disabled");
         $('#myModal').modal({show: true})
       }
