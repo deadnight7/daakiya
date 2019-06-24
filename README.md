@@ -32,8 +32,15 @@ freemium developer offering from HERE at https://developer.here.com/ to try it o
 
 Along with getting an access to HERE Location APIs, you will also have to have a project in Firebase, Go to https://console.firebase.google.com for getting an access.
 
-I am really thankful to HERE Technologies and Google Firebase to provide me with their infra for accomplishing this project. 
+I am really thankful to HERE Technologies and Google Firebase and Browserstack to provide me with their infra for accomplishing this project. 
 
+### Testing Partners
+
+![Testing partners Browserstack](/img/Browserstack-logo1.png)
+
+
+### Licence
+Project is [MIT licensed](./LICENSE).
 
 ### Screens 
 ![Frontpage](./img/Screenshots/p1de3spn2j1vgq1cak197igg516044-2.jpg)
