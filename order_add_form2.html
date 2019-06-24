@@ -25,41 +25,7 @@
 <html>
 
 <body>
-<!-- Fixed navbar -->
-<!--<nav class="navbar navbar-inverse navbar-fixed-top">-->
-<!--  <div class="container">-->
-<!--    <div class="navbar-header">-->
-<!--      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"-->
-<!--              aria-expanded="false" aria-controls="navbar">-->
-<!--        <span class="sr-only">Toggle navigation</span>-->
-<!--        <span class="icon-bar"></span>-->
-<!--        <span class="icon-bar"></span>-->
-<!--        <span class="icon-bar"></span>-->
-<!--      </button>-->
-<!--      <a class="navbar-brand" href="#">Daakiya</a>-->
-<!--    </div>-->
-<!--    <div id="navbar" class="navbar-collapse collapse">-->
-<!--      <ul class="nav navbar-nav">-->
-<!--        <li><a href="./order_list_view.html">Orders</a></li>-->
-<!--        <li><a href="#">Fleet</a></li>-->
-<!--        <li><a href="#">Routes</a></li>-->
 
-<!--        &lt;!&ndash;        <li class="dropdown">&ndash;&gt;-->
-<!--        &lt;!&ndash;          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>&ndash;&gt;-->
-<!--        &lt;!&ndash;          <ul class="dropdown-menu">&ndash;&gt;-->
-<!--        &lt;!&ndash;            <li><a href="#">Action</a></li>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <li><a href="#">Another action</a></li>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <li><a href="#">Something else here</a></li>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <li role="separator" class="divider"></li>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <li class="dropdown-header">Nav header</li>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <li><a href="#">Separated link</a></li>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <li><a href="#">One more separated link</a></li>&ndash;&gt;-->
-<!--        &lt;!&ndash;          </ul>&ndash;&gt;-->
-<!--        &lt;!&ndash;        </li>&ndash;&gt;-->
-<!--      </ul>-->
-<!--    </div>&lt;!&ndash;/.nav-collapse &ndash;&gt;-->
-<!--  </div>-->
-<!--</nav>-->
 <div id="navbarLoader"></div>
 
 <style type="text/css">
@@ -98,9 +64,6 @@
     /*display:table;*/
   }
 
-
-
-
   .dropdown-menu {
     top: 27px;
     left: 0px;
@@ -117,16 +80,8 @@
       <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-6" style="height: 450px;">
 
-          <!--          <div class="form-group">-->
-          <!--            <div class="hidden-xs">-->
-          <!--              <input type="password" class="form-control" id="pwd" >-->
-          <!--            </div>-->
-          <!--          </div>-->
-
           <div class="">
             <div class="dropdown">
-              <!--              <input onchange="" class="form-control" id="typeahead" placeholder="Search order address here..." type="text"-->
-              <!--                     autocomplete="off" data-provide="typeahead"/>-->
               <input onchange="this.value = strip(this.value);" class="form-control"
                      id="typeahead"
                      class=" typeahead"
@@ -171,7 +126,7 @@
             <div class="form-group">
               <label class="control-label col-sm-3">Order Number *: </label>
               <div class="col-sm-9">
-                <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
+
                 <div class="input-group">
                   <input type="text" class="form-control" id="orderNumber"  autocomplete="new-order" placeholder="Order Number" readonly required/>
                   <span class="input-group-btn">
@@ -180,7 +135,6 @@
                 </div><!-- /input-group -->
               </div>
             </div>
-            <!--                <input type="email" class="form-control" id="orderNumber" placeholder="Enter Order number">-->
 
             <div class="form-group">
               <label class="control-label col-sm-3">Customer*: </label>
@@ -202,11 +156,6 @@
                 <input autocomplete="new-address" id="address" type="text" class="form-control" id="address" placeholder="Enter address" required/>
               </div>
 
-
-              <!--              <div class="dropdown col-sm-9">-->
-              <!--                <input autocomplete="false" onkeypress="getPlaces()" class="form-control" id="typeahead" placeholder="Search an address" type="text"-->
-              <!--                       data-provide="typeahead"/>-->
-              <!--              </div>-->
             </div>
             <div class="form-group">
               <label class="control-label col-sm-3">Delivery ETA:</label>
@@ -235,11 +184,6 @@
                 <button type="button" id="addOrderSubmit" onclick="addOrder()" class="btn btn-primary">Add Order</button>
               </div>
 
-<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>-->
-<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>-->
-<!--              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>-->
-<!--              ...more buttons...-->
-
               <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
@@ -247,21 +191,10 @@
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title" id="exampleModalLabel"><span id="myMessage">New message</span></h4>
                     </div>
-                    <!--                    <div class="modal-body">-->
-                    <!--                      <form>-->
-                    <!--                        <div class="form-group">-->
-                    <!--                          <label for="recipient-name" class="control-label">Recipient:</label>-->
-                    <!--                          <input type="text" class="form-control" id="recipient-name">-->
-                    <!--                        </div>-->
-                    <!--                        <div class="form-group">-->
-                    <!--                          <label for="message-text" class="control-label">Message:</label>-->
-                    <!--                          <textarea class="form-control" id="message-text"></textarea>-->
-                    <!--                        </div>-->
-                    <!--                      </form>-->
-                    <!--                    </div>-->
+
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal" onclick="window.location.reload();">Add an another order</button>
-                      <!--                      <button type="button" class="btn btn-default">Add an another order</button>-->
+
                       <a href="./order_list_view.html" type="button" class="btn btn-primary">View all orders</a>
                     </div>
                   </div>
@@ -420,11 +353,6 @@
 
     if (target instanceof H.map.Marker || target instanceof H.map.DomMarker) {
       behavior.enable();
-
-      // if (target instanceof mapsjs.map.Marker || target instanceof mapsjs.map.DomMarker) {
-      //   behavior.enable();
-      //
-
 
       latitude = target.getPosition().lat;
       longitude = target.getPosition().lng;

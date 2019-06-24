@@ -22,6 +22,7 @@ var module_HEREDeveloperAccess = {
 };
 
 var module_XYZ = {
-  vehiclesDataSpaceId : "7nVQzZ0c",//"cpandit203@gmail.com",
-  xyzToken : "AJZNL8IDaCkcqDfrqZKCh74"
+  vehiclesDataSpaceId : "7nVQzZ0c",//"cpandit202@gmail.com",
+  xyzToken : "AJZNL8IDaCkcqDfrqZKCh74",
+  xyzUserName : "cpandit202@gmail.com"
 };
