@@ -3,6 +3,7 @@
 Route Optimization, Planning and Management for Last Mile Trips
 
 [![Build Status](https://travis-ci.org/deadnight7/daakiya.svg?branch=master)](https://travis-ci.org/deadnight7/daakiya)
+[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=QlVsVTFFN29CWmhac1JXMjNWRzVSeFVrMkFWNnovSy9Ya21JdVhYZUE1Yz0tLW9hVHk2RUp2WGNFREptN1lUY2o2Nnc9PQ==--57b05b7fb119887ecd1e90c2b448f7c80f53c655)](https://www.browserstack.com/automate/public-build/QlVsVTFFN29CWmhac1JXMjNWRzVSeFVrMkFWNnovSy9Ya21JdVhYZUE1Yz0tLW9hVHk2RUp2WGNFREptN1lUY2o2Nnc9PQ==--57b05b7fb119887ecd1e90c2b448f7c80f53c655)
 
 ### Features
 - Add orders via order add form
