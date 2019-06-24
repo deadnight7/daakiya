@@ -52,3 +52,4 @@ I am really thankful to HERE Technologies and Google Firebase to provide me with
 
 ![Trip Creation and Delivery](./img/Screenshots/p1de3spn2j1vgq1cak197igg516044-9.jpg) 
 
+![HERE Location Servies Involved](./img/Screenshots/p1de3spn2j1vgq1cak197igg516044-11.jpg)  
